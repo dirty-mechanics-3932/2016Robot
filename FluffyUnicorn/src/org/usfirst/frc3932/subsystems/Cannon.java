@@ -45,5 +45,15 @@ public class Cannon extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+    
+    // Extend the cannon solenoid
+    public void out() {
+    	cannonSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    // Retract the cannon solenoid
+    public void in() {
+    	cannonSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
 }
 
