@@ -13,6 +13,8 @@ package org.usfirst.frc3932.subsystems;
 
 import org.usfirst.frc3932.RobotMap;
 import org.usfirst.frc3932.commands.*;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -44,6 +46,15 @@ public class Platform extends Subsystem {
 
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
+    }
+    
+    // Tilt the platform up
+    public void tiltUp() {
+    	platformSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    public void tiltDown() {
+    	platformSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 }
 
