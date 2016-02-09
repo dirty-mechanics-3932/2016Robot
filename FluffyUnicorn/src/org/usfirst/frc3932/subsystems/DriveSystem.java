@@ -57,7 +57,15 @@ public class DriveSystem extends Subsystem {
 		GenericHID leftStick = Robot.oi.driverJoy1;
 		GenericHID rightStick = Robot.oi.driverJoy2;
 		boolean squaredInputs = true;
+		boolean isInverted = true;
+		
+		tankDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, isInverted);
+		tankDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, isInverted);
+		tankDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, isInverted);
+		tankDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, isInverted);
+
 		tankDrive.tankDrive(leftStick, rightStick, squaredInputs);
+		
 		
 	}
 }
