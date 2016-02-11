@@ -31,7 +31,9 @@
             	                                         <tr><td>3</td><td>DriveSystem LeftFront</td><td></td></tr>
             	                                         <tr><td>4</td><td>DriveSystem RightRear</td><td></td></tr>
             	                                         <tr><td>5</td><td>DriveSystem LeftRear</td><td></td></tr>
-            	                                                                                                                                                                                                                                                     	</table>
+            	                                         <tr><td>6</td><td>ShooterWheels LeftWheel</td><td></td></tr>
+            	                                         <tr><td>7</td><td>ShooterWheels RightWheel</td><td></td></tr>
+            	                                                                                                                                                                                                                             	</table>
     
             
             
@@ -41,8 +43,9 @@
 	        <th>Solenoid</th></tr>
 	                                               <tr><td>0</td><td>Cannon CannonSolenoid Forward </td><td></td></tr>
             	                                         <tr><td>1</td><td>Cannon CannonSolenoid Reverse </td><td></td></tr>
-            	                                         <tr><td>2</td><td>Platform PlatformSolenoid Output </td><td></td></tr>
-            	                                                                                                                                                                                                                                                                                         	    </table>
+            	                                         <tr><td>2</td><td>Platform PlatformSolenoid Forward </td><td></td></tr>
+            	                                         <tr><td>3</td><td>Platform PlatformSolenoid Reverse </td><td></td></tr>
+            	                                                                                                                                                                                                                                                                             	    </table>
                                                                                                                                                                                                                                                     
                 <h2>Compressor</h2>
 	<table><tr>

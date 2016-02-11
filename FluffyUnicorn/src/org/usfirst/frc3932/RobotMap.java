@@ -34,6 +34,7 @@ public class RobotMap {
     public static CANTalon driveSystemRightRear;
     public static RobotDrive driveSystemTankDrive;
     public static DoubleSolenoid platformPlatformSolenoid;
+    public static DoubleSolenoid cameraCameraSolenoid;
     public static DoubleSolenoid cannonCannonSolenoid;
     public static Compressor onBoardCompressorRobotCompressor;
     public static CANTalon shooterWheelsLeftWheel;
@@ -65,6 +66,9 @@ public class RobotMap {
 
         platformPlatformSolenoid = new DoubleSolenoid(0, 2, 3);
         LiveWindow.addActuator("Platform", "PlatformSolenoid", platformPlatformSolenoid);
+        
+        cameraCameraSolenoid = new DoubleSolenoid(0, 4, 5);
+        LiveWindow.addActuator("Camera", "CameraSolenoid", cameraCameraSolenoid);
         
         cannonCannonSolenoid = new DoubleSolenoid(0, 0, 1);
         LiveWindow.addActuator("Cannon", "CannonSolenoid", cannonCannonSolenoid);
