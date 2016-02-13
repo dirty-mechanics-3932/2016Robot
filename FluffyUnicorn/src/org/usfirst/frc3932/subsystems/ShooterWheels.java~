@@ -66,7 +66,7 @@ public class ShooterWheels extends Subsystem {
     // Turn the shooter wheels off
     public void off() {
     	leftWheel.set(OFF_SPEED);
-    	rightWheel.set(OFF_SPEED);
+    	rightWheel.set(OFF_SPEED);  
     }
 }
 
