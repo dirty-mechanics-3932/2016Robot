@@ -63,7 +63,10 @@ public class RobotMap {
         driveSystemTankDrive.setExpiration(0.1);
         driveSystemTankDrive.setSensitivity(0.5);
         driveSystemTankDrive.setMaxOutput(1.0);
-
+        driveSystemTankDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+        driveSystemTankDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+        driveSystemTankDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+        driveSystemTankDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
         platformPlatformSolenoid = new DoubleSolenoid(0, 2, 3);
         LiveWindow.addActuator("Platform", "PlatformSolenoid", platformPlatformSolenoid);
         
