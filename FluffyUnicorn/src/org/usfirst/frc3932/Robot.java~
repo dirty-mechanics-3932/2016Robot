@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot {
     public static AxisCamera axis11;
     public static AxisCamera axis12;
     public static AxisCamera axis21;
-    private static AxisCamera currentCamera;
+    public static AxisCamera currentCamera;
     static Image image;   
 
     /**
