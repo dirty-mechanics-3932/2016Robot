@@ -73,15 +73,15 @@ public class OI {
 
         driverRight = new Joystick(1);
         
-        cameraSwitchButton = new JoystickButton(driverRight, 1);
+        cameraSwitchButton = new JoystickButton(driverRight, 2);
         cameraSwitchButton.whenPressed(new CameraSwitch());
         setEqualToJoy1 = new JoystickButton(driverRight, 1);
         setEqualToJoy1.whileHeld(new goForward());
-        camera21Button = new JoystickButton(driverRight, 4);
+        camera21Button = new JoystickButton(driverRight, 5);
         camera21Button.whenPressed(new Camera21());
-        camera12Button = new JoystickButton(driverRight, 3);
+        camera12Button = new JoystickButton(driverRight, 4);
         camera12Button.whenPressed(new Camera12());
-        camera11Button = new JoystickButton(driverRight, 2);
+        camera11Button = new JoystickButton(driverRight, 3);
         camera11Button.whenPressed(new Camera11());
         driverLeft = new Joystick(0);
         
