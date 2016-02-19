@@ -139,8 +139,13 @@ public class Robot extends IterativeRobot {
     
 	
 	private void runCamera(){
-		currentCamera.getImage(image);
-		CameraServer.getInstance().setImage(image);
+		try {
+			currentCamera.getImage(image);
+			CameraServer.getInstance().setImage(image);
+		} catch (Exception e) {
+			System.err.println("Failed to get image from camera");
+			System.err.println(e.getStackTrace());
+		}
 	}
 	
     public void teleopPeriodic() {
