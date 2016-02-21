@@ -25,6 +25,7 @@ import org.usfirst.frc3932.subsystems.*;
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.I2C;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +55,7 @@ public class Robot extends IterativeRobot {
     public static AxisCamera axis21;
     public static AxisCamera currentCamera;
     static Image image;   
+    public static LIDAR rangefinder;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -85,13 +87,17 @@ public class Robot extends IterativeRobot {
         
 		image = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		
-		axis11 = initCamera("10.39.35.11");
+		axis11 = initCamera("10.39.31.11");
 		
-		axis12 = initCamera("10.39.35.12");
+		axis12 = initCamera("10.39.31.12");
 		
-		axis21 = initCamera("10.39.35.13");
+		axis21 = initCamera("10.39.31.13");
 		
 		currentCamera = axis12;
+		
+		rangefinder = new LIDAR(I2C.Port.kMXP);
+		rangefinder.start();
+
     }
     
     public AxisCamera initCamera(String ipAddress) {
@@ -130,6 +136,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        
         
     }
 
