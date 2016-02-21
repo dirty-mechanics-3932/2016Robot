@@ -75,7 +75,7 @@ public class RobotMap {
         LiveWindow.addActuator("Cannon", "CannonSolenoid", cannonCannonSolenoid);
         
         onBoardCompressorRobotCompressor = new Compressor(0);
-        
+
         
         shooterWheelsLeftWheel = new CANTalon(6);
         LiveWindow.addActuator("ShooterWheels", "LeftWheel", shooterWheelsLeftWheel);

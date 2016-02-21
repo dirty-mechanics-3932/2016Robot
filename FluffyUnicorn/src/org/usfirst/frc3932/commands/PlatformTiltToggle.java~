@@ -49,7 +49,7 @@ public class PlatformTiltToggle extends Command {
     	if(finished)return;
     	
        	if(isPlatformTiltDown()){
-          	Robot.platform.tiltUp();         	
+          	Robot.platform.tiltUp();              	
     	}
     	else {
     		Robot.platform.tiltDown();    		

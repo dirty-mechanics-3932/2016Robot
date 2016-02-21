@@ -44,9 +44,14 @@ public class CameraSwitch extends Command {
     		Robot.switchCameraTo(Robot.axis12);
     	}
     	else if (Robot.currentCamera == Robot.axis12){
-    		Robot.switchCameraTo(Robot.axis21);
+    		if (Robot.thirdCamera){
+    			Robot.switchCameraTo(Robot.axis13);
+    		}
+    		else {
+    			Robot.switchCameraTo(Robot.axis11);
+    		}
     	}
-    	else if (Robot.currentCamera == Robot.axis21){
+    	else if (Robot.currentCamera == Robot.axis13){
     		Robot.switchCameraTo(Robot.axis11);
     	}
     }

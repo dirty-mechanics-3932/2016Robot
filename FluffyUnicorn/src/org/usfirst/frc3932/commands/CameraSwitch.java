@@ -40,15 +40,8 @@ public class CameraSwitch extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-    	if (Robot.currentCamera == Robot.axis11){
-    		Robot.switchCameraTo(Robot.axis12);
-    	}
-    	else if (Robot.currentCamera == Robot.axis12){
-    		Robot.switchCameraTo(Robot.axis21);
-    	}
-    	else if (Robot.currentCamera == Robot.axis21){
-    		Robot.switchCameraTo(Robot.axis11);
-    	}
+    	Robot.switchCameras();
+
     }
 
     // Called repeatedly when this Command is scheduled to run
