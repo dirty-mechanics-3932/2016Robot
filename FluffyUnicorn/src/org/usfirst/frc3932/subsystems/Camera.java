@@ -52,5 +52,9 @@ public class Camera extends Subsystem {
    public void TiltDown(){
 	   cameraSolenoid.set(DoubleSolenoid.Value.kReverse);	
     } 
+   
+   public boolean isDown() {
+	   return DoubleSolenoid.Value.kReverse.equals(cameraSolenoid.get());
+   }
 }
 
