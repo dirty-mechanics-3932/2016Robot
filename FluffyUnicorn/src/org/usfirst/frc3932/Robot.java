@@ -180,20 +180,20 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	private void checkCompressor() {
-		if (powerDistributionBoard.getVoltage() < MIN_VOLTAGE) {
-			onBoardCompressor.stop();
-		}
-		else {
-			onBoardCompressor.automatic();
-		}
-	}
+//	private void checkCompressor() {
+//		if (powerDistributionBoard.getVoltage() < MIN_VOLTAGE) {
+//			onBoardCompressor.stop();
+//		}
+//		else {
+//			onBoardCompressor.automatic();
+//		}
+//	}
 	
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         
         
-        checkCompressor();
+//        checkCompressor();
         runCamera();
     }
 
