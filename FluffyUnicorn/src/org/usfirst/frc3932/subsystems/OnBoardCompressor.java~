@@ -45,5 +45,18 @@ public class OnBoardCompressor extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+    
+    public void stop() {
+    	if (!stopped) {
+    		robotCompressor.setClosedLoopControl(false);
+    		robotCompressor.stop();
+    	}
+    }
+    
+    public void automatic() {
+    	if (stopped) {
+    		robotCompressor.setClosedLoopControl(true);
+    	}
+    }
 }
 

@@ -50,11 +50,15 @@ public class Platform extends Subsystem {
     
     // Tilt the platform up
     public void tiltUp() {
-    	platformSolenoid.set(DoubleSolenoid.Value.kForward);
+    	platformSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     public void tiltDown() {
-    	platformSolenoid.set(DoubleSolenoid.Value.kReverse);
+    	platformSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    public boolean isDown() {
+    	return DoubleSolenoid.Value.kForward.equals(platformSolenoid.get());
     }
 }
 
