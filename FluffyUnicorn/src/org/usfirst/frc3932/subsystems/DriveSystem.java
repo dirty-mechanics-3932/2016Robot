@@ -103,11 +103,30 @@ public class DriveSystem extends Subsystem {
 //		leftFront.set(SPEED*left);
 //		rightFront.set(SPEED*right);
 		
-		leftFront.set(left);
-		rightFront.set(right);
-		
-    	leftRear.set(leftFront.getDeviceID());
-    	rightRear.set(rightFront.getDeviceID());
+		drivePercent(left, right);
+	}
+
+
+	public void drivePercent(double leftPercent, double rightPercent) {
+		driveLeftPercent(leftPercent);
+    	driveRightPercent(rightPercent);
+	}
+
+
+	public void driveRightPercent(double rightPercent) {
+		rightRear.set(rightFront.getDeviceID());
+    	rightFront.set(rightPercent);
+	}
+
+
+	public void driveLeftPercent(double leftPercent) {
+		leftFront.set(leftPercent);
+		leftRear.set(leftFront.getDeviceID());
+	}
+	
+	public void setPercent(CANTalon masterTalon, CANTalon slaveTalon, double leftPercent) {
+		masterTalon.set(leftPercent);
+		slaveTalon.set(masterTalon.getDeviceID());
 	}
 }
 

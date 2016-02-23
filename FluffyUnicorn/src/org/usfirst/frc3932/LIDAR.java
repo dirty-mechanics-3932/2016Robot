@@ -1,5 +1,6 @@
 package org.usfirst.frc3932;
 
+
 import edu.wpi.first.wpilibj.I2C;
 
 import java.util.TimerTask;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class LIDAR implements PIDSource{
 	private I2C i2c;
 	private byte[] distance;
+	private int dist;
 	private java.util.Timer updater;
 	
 	private final int LIDAR_ADDR = 0x62;
@@ -21,14 +23,14 @@ public class LIDAR implements PIDSource{
 	public LIDAR(Port port) {
 		i2c = new I2C(port, LIDAR_ADDR);
 		
-		distance = new byte[2];
+		distance = new byte[1];
 		
 		updater = new java.util.Timer();
 	}
 	
 	// Distance in cm
 	public int getDistance() {
-		return (int)Integer.toUnsignedLong(distance[0] << 8) + Byte.toUnsignedInt(distance[1]);
+		return dist;
 	}
 
 	public double pidGet() {
@@ -52,10 +54,15 @@ public class LIDAR implements PIDSource{
 	
 	// Update distance variable
 	public void update() {
+		int d = 0;
 		i2c.write(LIDAR_CONFIG_REGISTER, 0x04); // Initiate measurement
 		Timer.delay(0.04); // Delay for measurement to be taken
-		i2c.read(LIDAR_DISTANCE_REGISTER, 2, distance); // Read in measurement
-		Timer.delay(0.005); // Delay to prevent over polling
+		i2c.read(0x0f, 1, distance); // Read in measurement
+		Timer.delay(0.008); // Delay to prevent over polling
+		d += Integer.toUnsignedLong(distance[0] << 8);
+		i2c.read(0x10, 1, distance);
+		d += Byte.toUnsignedInt(distance[0]);
+		dist = d;
 	}
 	
 	// Timer task to keep distance updated
@@ -71,7 +78,7 @@ public class LIDAR implements PIDSource{
 			}
 		}
 	}
-
+	
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
 		// TODO Auto-generated method stub
