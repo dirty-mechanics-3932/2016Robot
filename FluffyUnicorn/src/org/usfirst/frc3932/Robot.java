@@ -162,6 +162,9 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         
+        Robot.platform.tiltDown();
+        Robot.camera.TiltUp();
+        
         
     }
 
@@ -195,9 +198,15 @@ public class Robot extends IterativeRobot {
         
 //        checkCompressor();
         runCamera();
+        writeLIDAR();
     }
 
-    /**
+    private void writeLIDAR() {
+		SmartDashboard.putNumber("Distance (cm)", rangefinder.getDistance());
+		
+	}
+
+	/**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {

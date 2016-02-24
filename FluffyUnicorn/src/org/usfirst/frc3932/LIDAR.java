@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
@@ -19,6 +20,8 @@ public class LIDAR implements PIDSource{
 	private final int LIDAR_ADDR = 0x62;
 	private final int LIDAR_CONFIG_REGISTER = 0x00;
 	private final int LIDAR_DISTANCE_REGISTER = 0x8f;
+	
+	int i= 0;
 	
 	public LIDAR(Port port) {
 		i2c = new I2C(port, LIDAR_ADDR);
