@@ -94,11 +94,11 @@ public class Robot extends IterativeRobot {
         
 		image = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		
-		axis13 = initCamera("10.39.31.13");
+		axis13 = initCamera("10.39.32.14");
 		
-		axis11 = initCamera("10.39.31.11");
+		axis11 = initCamera("10.39.32.11");
 		
-		axis12 = initCamera("10.39.31.12");
+		axis12 = initCamera("10.39.32.13");
 		
 
 		
@@ -118,10 +118,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Camera 3", axis13+"");
 		
 		
-		currentCamera = axis12;
+		currentCamera = axis11;
 		
 		rangefinder = new LIDAR(I2C.Port.kMXP);
 		rangefinder.start();
+		
+		camera.lightOn();
 
     }
     
