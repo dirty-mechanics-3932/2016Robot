@@ -35,9 +35,9 @@ public class NetworkTablesRoboRealmClient {
 			//This is broken because BFSC is being captured as an
 			//array, it needs to be either read as an array or
 			//captured as a flat number.
-			double y = table.getNumber("BFSC", 0.0);
-			System.out.println("distance" + x);
-			System.out.println("BFSC" + y);
+			double y = table.getNumber("BFSC ", 0.0);
+			System.out.println("distance " + x);
+			System.out.println("BFSC " + y);
 		}
 	}
 }
