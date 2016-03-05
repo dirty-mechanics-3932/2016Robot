@@ -97,7 +97,6 @@ public class DriveSystem extends Subsystem {
 		else
 		{
 			GenericHID leftStick = Robot.oi.driverRight;
-			GenericHID rightStick = Robot.oi.driverRight;
 			
 			left = leftStick.getY();
 			right = leftStick.getY();
@@ -118,8 +117,8 @@ public class DriveSystem extends Subsystem {
 
 
 	public void driveRightPercent(double rightPercent) {
+		rightFront.set(rightPercent);
 		rightRear.set(rightFront.getDeviceID());
-    	rightFront.set(rightPercent);
 	}
 
 
