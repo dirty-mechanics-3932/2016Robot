@@ -8,10 +8,7 @@ public class DriveTenFeet {
 
 	
 	//9.42 inches per rotation
-	public static final double INCHES_PER_ROTATION = 9.42d;
-	public static final double ROTATIONS_TO_TEN_FEET = 120d /INCHES_PER_ROTATION;
-	public static final double GEAR_RATIO = 12.75d; //doesn't enter into it, encoder connected to wheel
-	public static final double TICKS_TO_TEN_FEET = 360d * ROTATIONS_TO_TEN_FEET;
+	
 	public static final double DRIVE_SPEED = .6d * -1;
 	int ticksMoved = 0;
 	CANTalon masterTalon;
@@ -22,6 +19,7 @@ public class DriveTenFeet {
 		this.masterTalon = masterTalon;
 		this.slaveTalon = slaveTalon; 
 		this.encoderDecrements = encoderDecrements;
+		masterTalon.setEncPosition(0);   
 		
 	}
 	
@@ -54,6 +52,7 @@ public class DriveTenFeet {
 	void stop() {
 		Robot.driveSystem.setPercent(masterTalon, slaveTalon, 0d);
 		ticksMoved = 0;
+		masterTalon.setEncPosition(0);
 	}
 
     // Called when another command which requires one or more of the same

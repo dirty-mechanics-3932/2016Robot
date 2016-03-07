@@ -33,6 +33,7 @@ public class DriveAutomaticallyDelegate {
 		if (DRIVES_REVERSE) {
 			this.speed = -this.speed;
 		}
+		masterTalon.setEncPosition(0);
 	}
 	
 	// Called just before this Command runs the first time
@@ -64,6 +65,7 @@ public class DriveAutomaticallyDelegate {
 	void stop() {
 		Robot.driveSystem.setPercent(masterTalon, slaveTalon, 0d);
 		ticksMoved = 0;
+		masterTalon.setEncPosition(0);
 	}
 
     // Called when another command which requires one or more of the same
