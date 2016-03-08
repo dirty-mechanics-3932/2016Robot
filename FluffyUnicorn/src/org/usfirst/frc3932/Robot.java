@@ -184,6 +184,10 @@ public class Robot extends IterativeRobot {
 		try {
 			currentCamera.getImage(image);
 			CameraServer.getInstance().setImage(image);
+			
+			image.free();
+			image = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+			
 		} catch (Exception e) {
 			System.err.println("Failed to get image from camera");
 			System.err.println(e.getStackTrace());

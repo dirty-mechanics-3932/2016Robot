@@ -41,7 +41,7 @@ public class DriveTenFeet {
     	if (encoderDecrements) {
     		ticksMovedAdjusted = ticksMovedAdjusted * -1;
     	}
-        return ticksMovedAdjusted > TICKS_TO_TEN_FEET;
+        return ticksMovedAdjusted > DriveAutomatically.TICKS_TO_TEN_FEET;
     }
 
     // Called once after isFinished returns true

@@ -37,19 +37,19 @@ public class DriveAutomaticallyDelegate {
 	}
 	
 	// Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
     	//360 ticks per rev
     	masterTalon.setEncPosition(0);    	
     }
 
     // Called repeatedly when this Command is scheduled to run
-	protected void execute() {
+	public void execute() {
 		Robot.driveSystem.setPercent(masterTalon, slaveTalon, speed);
 		ticksMoved = masterTalon.getEncPosition();
 	}
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
     	int ticksMovedAdjusted = ticksMoved;
     	if (encoderDecrements) {
     		ticksMovedAdjusted = ticksMovedAdjusted * -1;
@@ -58,7 +58,7 @@ public class DriveAutomaticallyDelegate {
     }
 
     // Called once after isFinished returns true
-    protected void end() {
+    public void end() {
     	stop();
     }
 
@@ -70,7 +70,7 @@ public class DriveAutomaticallyDelegate {
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
-    protected void interrupted() {
+    public void interrupted() {
     	stop();
     }
 
