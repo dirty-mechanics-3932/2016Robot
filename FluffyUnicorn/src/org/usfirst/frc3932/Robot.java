@@ -214,6 +214,7 @@ public class Robot extends IterativeRobot {
 
     private void writeLIDAR() {
 		SmartDashboard.putNumber("Distance (cm)", rangefinder.getDistance());
+		SmartDashboard.putNumber("Yaw", ahrs.getYaw());
 		
 	}
 
