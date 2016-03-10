@@ -37,7 +37,7 @@ public class Camera21 extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.switchCameraTo(Robot.axis13);
+    	Robot.switchCameraTo(Robot.cameraC);
     }
 
     // Called repeatedly when this Command is scheduled to run
