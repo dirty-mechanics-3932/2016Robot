@@ -60,15 +60,15 @@ public class Robot extends IterativeRobot {
     
     public static AHRS ahrs;
     
-
+//
     public static CameraConfig[] cameras = {
-    		new CameraConfig("cameraA.local"),
-    		new CameraConfig("cameraB.local"),
-    		new CameraConfig("cameraC.local")
+//    		new CameraConfig("cameraA.local"),
+//    		new CameraConfig("cameraB.local"),
+//    		new CameraConfig("cameraC.local")
     };
     public static int cameraIndex = 0; 
     
-    public static final int NUMBER_OF_CAMERAS = cameras.length;
+//    public static final int NUMBER_OF_CAMERAS = cameras.length;
     
     
     public static LIDAR rangefinder;
@@ -155,10 +155,10 @@ public class Robot extends IterativeRobot {
     
 	
 	private void runCamera(){
-		counter = !counter;
-		if (counter) {
-			currentCamera().sendImage();
-		}
+//		counter = !counter;
+//		if (counter) {
+//			currentCamera().sendImage();
+//		}
 	}
 	
 //	private void checkCompressor() {
@@ -175,7 +175,7 @@ public class Robot extends IterativeRobot {
         
         
 //        checkCompressor();
-        runCamera();
+//        runCamera();
         writeLIDAR();
     }
 
@@ -192,24 +192,24 @@ public class Robot extends IterativeRobot {
     }
     
     public static void switchCameraTo(int camera) {
-    	cameraIndex = camera;
+//    	cameraIndex = camera;
     }
     
     public static void switchCameras() {
-    	int numberOfSwitches = 1;
-    	switchCameraToNext();
-    	
-    	while (!currentCamera().exists() && numberOfSwitches < NUMBER_OF_CAMERAS){
-    		switchCameraToNext();
-    		numberOfSwitches++;
-    	}
+//    	int numberOfSwitches = 1;
+//    	switchCameraToNext();
+//    	
+//    	while (!currentCamera().exists() && numberOfSwitches < NUMBER_OF_CAMERAS){
+//    		switchCameraToNext();
+//    		numberOfSwitches++;
+//    	}
     }
     
     private static void switchCameraToNext() {
-    	cameraIndex++;
-    	if (cameraIndex >= NUMBER_OF_CAMERAS){
-    		cameraIndex = 0;
-    	}
+//    	cameraIndex++;
+//    	if (cameraIndex >= NUMBER_OF_CAMERAS){
+//    		cameraIndex = 0;
+//    	}
     }
     
     private static CameraConfig currentCamera() {
