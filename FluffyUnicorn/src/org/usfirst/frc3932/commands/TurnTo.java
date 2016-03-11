@@ -75,7 +75,7 @@ public class TurnTo extends Command{
     protected void initialize() {
     	controller.setSetpoint(m_degrees);
     	controller.enable();
-    	setTimeout(3);
+    	setTimeout(5);
     }
 
     // Called repeatedly when this Command is scheduled to run

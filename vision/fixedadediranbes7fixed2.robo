@@ -9,8 +9,8 @@
   <compression_index>6</compression_index>
   <contrast_value>50</contrast_value>
   <exposure_value>50</exposure_value>
-  <ip_address>10.39.32.12</ip_address>
-  <is_active>TRUE</is_active>
+  <ip_address>cameraB.local</ip_address>
+  <is_active>FALSE</is_active>
   <mirrot>FALSE</mirrot>
   <password>FRC</password>
   <port>80</port>
