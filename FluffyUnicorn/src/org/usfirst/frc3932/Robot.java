@@ -110,11 +110,11 @@ public class Robot extends IterativeRobot {
         obstacleChooser.addObject("Moat", new AutoMoat());
         SmartDashboard.putData("Auto-Obstacle", obstacleChooser);
         
-        positionChooser.addDefault("1 (Low Bar)", null);
-        positionChooser.addObject("2", null);
-        positionChooser.addObject("3", null);
-        positionChooser.addObject("4", null);
-        positionChooser.addObject("5", null);
+        positionChooser.addDefault("1 (Low Bar)", new DriveFromPosition1());
+        positionChooser.addObject("2", new DriveFromPosition2());
+        positionChooser.addObject("3", new DriveFromPosition3());
+        positionChooser.addObject("4", new DriveFromPosition4());
+        positionChooser.addObject("5", new DriveFromPosition5());
         SmartDashboard.putData("Auto-Position", positionChooser);
 	
 		ahrs = new AHRS(SPI.Port.kMXP);
@@ -141,7 +141,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-    	autonomousCommand = (Command) obstacleChooser.getSelected();
+    	autonomousCommand = (Command) positionChooser.getSelected();
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
