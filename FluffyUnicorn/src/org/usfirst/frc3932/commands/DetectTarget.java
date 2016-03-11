@@ -28,6 +28,9 @@ public class DetectTarget extends Command {
 	
 	NetworkTable table = null;
 	
+	private static final double H_RES = 480;
+	private static final double FIELD_OF_VIEW = 67;
+	
 	double[] blob = null;
 	public double angle = 0;
 	public boolean angleReady = false;
@@ -61,7 +64,7 @@ public class DetectTarget extends Command {
     	
     	if (x.length > 0){
     		System.out.println(x[0]);
-    		angle = x[0];
+    		angle = (x[0] - H_RES/2) * (FIELD_OF_VIEW/H_RES);
     		angleReady = true;
     	}
     }
