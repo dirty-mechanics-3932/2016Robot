@@ -72,6 +72,8 @@ public class Robot extends IterativeRobot {
     
     
     public static LIDAR rangefinder;
+    
+
    
 
     /**
