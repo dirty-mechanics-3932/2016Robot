@@ -9,8 +9,8 @@
   <compression_index>6</compression_index>
   <contrast_value>50</contrast_value>
   <exposure_value>50</exposure_value>
-  <ip_address>cameraB.local</ip_address>
-  <is_active>FALSE</is_active>
+  <ip_address>cameraA.local</ip_address>
+  <is_active>TRUE</is_active>
   <mirrot>FALSE</mirrot>
   <password>FRC</password>
   <port>80</port>
@@ -22,7 +22,7 @@
   <channel_type>2</channel_type>
   <filter_size>25</filter_size>
   <max_threshold>255</max_threshold>
-  <mean_offset>-52</mean_offset>
+  <mean_offset>-48</mean_offset>
   <min_threshold>247</min_threshold>
 </Adaptive_Threshold>
 <Marker>
@@ -49,41 +49,33 @@
         <filter_id>8</filter_id>
         <invert_count>0</invert_count>
         <invert_threshold>0</invert_threshold>
-        <minimum_size>592</minimum_size>
+        <minimum_size/>
         <weight_threshold>0.5</weight_threshold>
       </filter>
       <filter:2>
-        <count_threshold>0</count_threshold>
-        <create_array>0</create_array>
-        <filter_id>56</filter_id>
-        <invert_count>0</invert_count>
-        <invert_threshold>0</invert_threshold>
-        <weight_threshold>0.62</weight_threshold>
-      </filter:2>
-      <filter:3>
         <count_threshold>0</count_threshold>
         <create_array>0</create_array>
         <filter_id>21</filter_id>
         <invert_count>0</invert_count>
         <invert_threshold>0</invert_threshold>
         <weight_threshold>1</weight_threshold>
-      </filter:3>
-      <filter:4>
+      </filter:2>
+      <filter:3>
         <count_threshold>36</count_threshold>
         <create_array>0</create_array>
         <filter_id>42</filter_id>
         <invert_count>0</invert_count>
         <invert_threshold>0</invert_threshold>
         <weight_threshold>0.81</weight_threshold>
-      </filter:4>
-      <filter:5>
+      </filter:3>
+      <filter:4>
         <count_threshold>0</count_threshold>
         <create_array>0</create_array>
         <filter_id>155</filter_id>
         <invert_count>0</invert_count>
         <invert_threshold>0</invert_threshold>
         <weight_threshold>0.31</weight_threshold>
-      </filter:5>
+      </filter:4>
     </tab>
     <tab:2/>
     <tab:3/>
@@ -284,7 +276,7 @@ end if
 <NetworkTables>
   <delay>500</delay>
   <filter_type_index>0</filter_type_index>
-  <hostname>127.0.0.1</hostname>
+  <hostname>roborio-3932-frc.local</hostname>
   <port>1735</port>
   <prefix>/dad/</prefix>
   <variables_to_send>BLOBS
