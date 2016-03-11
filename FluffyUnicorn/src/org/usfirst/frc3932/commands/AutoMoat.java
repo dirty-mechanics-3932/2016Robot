@@ -41,8 +41,10 @@ public class AutoMoat extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new CameraUp());
+    	addSequential(new PlatformUp());
+    	addSequential(new WaitFor(1));
     	addParallel(new DriveAutoToRampart());
-    	addParallel(new PlatformUp());
+
     	
     	addSequential(new DriveOverMoat());
     	
