@@ -75,6 +75,7 @@ public class TurnTo extends Command{
     protected void initialize() {
     	controller.setSetpoint(m_degrees);
     	controller.enable();
+    	setTimeout(3);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -91,7 +92,7 @@ public class TurnTo extends Command{
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return controller.onTarget();
+        return controller.onTarget() || isTimedOut();
         
     }
 
