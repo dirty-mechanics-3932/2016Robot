@@ -41,9 +41,13 @@ public class AutoLowBar extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	addParallel(new DriveAutoToRampart());
-    	addParallel(new PlatformDown());
     	addParallel(new CameraDown());
+    	addSequential(new PlatformDown());
+    	addSequential(new WaitFor(1));
+    	
+    	addParallel(new DriveAutoToRampart());
+    	
+
     	
     	addSequential(new DriveThroughLowBar());
     	

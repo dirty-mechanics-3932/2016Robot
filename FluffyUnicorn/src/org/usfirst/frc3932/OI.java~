@@ -63,6 +63,7 @@ public class OI {
     public JoystickButton camera12Button;
     public JoystickButton camera21Button;
     public JoystickButton cameraSwitchButton;
+    public JoystickButton lineUpButton;
     public Joystick driverRight;
     public JoystickButton shootOut;
     public JoystickButton shootFeed;
@@ -93,7 +94,9 @@ public class OI {
         shootOut.whenPressed(new ShooterOut());
         driverRight = new Joystick(1);
         
-        cameraSwitchButton = new JoystickButton(driverRight, 2);
+        lineUpButton = new JoystickButton(driverRight, 2);
+        lineUpButton.whenPressed(new DetectTarget());
+        cameraSwitchButton = new JoystickButton(driverRight, 6);
         cameraSwitchButton.whenPressed(new CameraSwitch());
         camera21Button = new JoystickButton(driverRight, 5);
         camera21Button.whenPressed(new Camera21());

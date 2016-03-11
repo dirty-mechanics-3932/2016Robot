@@ -84,7 +84,7 @@ public class DetectTarget extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	SmartDashboard.putNumber("x", angle);
-    	Scheduler.getInstance().add(new TurnTo(Robot.ahrs.getYaw() + angle));
+    	Scheduler.getInstance().add(new TurnTo(Robot.ahrs.getYaw() + angle, 5));
     }
 
     // Called when another command which requires one or more of the same

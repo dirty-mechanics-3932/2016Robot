@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class FullAutonomous extends CommandGroup {
 	public FullAutonomous(Command obstacle, Command position){
+		addParallel(new ShooterOff());
 		addSequential(new ResetAngle());
 		addSequential(obstacle);
 		addSequential(position);

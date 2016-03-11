@@ -79,8 +79,8 @@ public class Robot extends IterativeRobot {
     
 
     public Robot(){
-        obstacleChooser.addDefault("Low Bar", Commands.AUTO_LOW_BAR);
-        obstacleChooser.addObject("Moat", Commands.AUTO_MOAT);
+        obstacleChooser.addDefault("Moat", Commands.AUTO_MOAT);
+        obstacleChooser.addObject("Low Bar", Commands.AUTO_LOW_BAR);
         SmartDashboard.putData("Auto-Obstacle", obstacleChooser);
         
         positionChooser.addDefault("1 (Low Bar)", Commands.DRIVE_FROM_POSITION_1);

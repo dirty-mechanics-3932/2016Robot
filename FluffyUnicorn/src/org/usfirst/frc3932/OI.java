@@ -57,6 +57,7 @@ public class OI {
     public JoystickButton driveSlowButton;
     public JoystickButton driveFastButton;
     public JoystickButton cameraLightButton;
+    public JoystickButton lIDARDriveButton;
     public Joystick driverLeft;
     public JoystickButton shootButton;
     public JoystickButton camera11Button;
@@ -108,6 +109,8 @@ public class OI {
         shootButton.whenPressed(new ActivateCannon());
         driverLeft = new Joystick(0);
         
+        lIDARDriveButton = new JoystickButton(driverLeft, 2);
+        lIDARDriveButton.whenPressed(new LIDARDrive());
         cameraLightButton = new JoystickButton(driverLeft, 6);
         cameraLightButton.whenPressed(new CameraLightToggle());
         driveFastButton = new JoystickButton(driverLeft, 4);
