@@ -81,6 +81,7 @@ public class Robot extends IterativeRobot {
     public Robot(){
         obstacleChooser.addDefault("Moat", Commands.AUTO_MOAT);
         obstacleChooser.addObject("Low Bar", Commands.AUTO_LOW_BAR);
+        obstacleChooser.addObject("Do Nothing", Commands.DO_NOTHING);
         SmartDashboard.putData("Auto-Obstacle", obstacleChooser);
         
         positionChooser.addDefault("1 (Low Bar)", Commands.DRIVE_FROM_POSITION_1);
@@ -155,7 +156,11 @@ public class Robot extends IterativeRobot {
     	Commands position = (Commands) positionChooser.getSelected();
     	Command positionCommand = CommandFactory.getCommand(position);
     	
-    	autonomousCommand = new FullAutonomous(obstacleCommand, positionCommand);
+    	if (obstacle == Commands.DO_NOTHING){
+    		autonomousCommand = obstacleCommand;
+    	} else {
+    		autonomousCommand = new FullAutonomous(obstacleCommand, positionCommand);
+    	}
         if (autonomousCommand != null) autonomousCommand.start();
     }
 

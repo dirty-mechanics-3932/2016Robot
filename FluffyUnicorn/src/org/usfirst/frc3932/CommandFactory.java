@@ -28,6 +28,8 @@ public class CommandFactory {
 			return new DriveFromPosition4();
 		case DRIVE_FROM_POSITION_5:
 			return new DriveFromPosition5();
+		case DO_NOTHING:
+			return new DoNothing();
 		default:
 			return new DoNothing();
 		}

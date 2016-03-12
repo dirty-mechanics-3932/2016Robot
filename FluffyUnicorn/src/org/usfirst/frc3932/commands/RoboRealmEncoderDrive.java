@@ -12,6 +12,8 @@
 package org.usfirst.frc3932.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
 import org.usfirst.frc3932.Robot;
 
 /**
@@ -40,16 +42,18 @@ public class RoboRealmEncoderDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	d = new DriveAutomatically(Robot.camera.driveDistance, 0.2);
+    	d = new DriveAutomatically(Robot.camera.driveDistance, 0.3);
+    	Scheduler.getInstance().add(d);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return d.isRunning();
     }
 
     // Called once after isFinished returns true
@@ -59,5 +63,6 @@ public class RoboRealmEncoderDrive extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	d.cancel();
     }
 }
