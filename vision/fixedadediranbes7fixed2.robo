@@ -141,8 +141,7 @@ Distance
   <auto_reload>TRUE</auto_reload>
   <continue_on_errors>FALSE</continue_on_errors>
   <font_size_index>10</font_size_index>
-  <script>
-list = GetArrayVariable("BFR_COORDINATES")
+  <script>list = GetArrayVariable("BFR_COORDINATES")
 if isArray(list) then
   if ubound(list) &gt; 0 then
 
@@ -151,9 +150,8 @@ if isArray(list) then
 
     ' calibrated for an Axis camera
     imageHeight = GetVariable("IMAGE_HEIGHT")
-SetVariable "ImageHeight", imageHeight
-  	cameraFieldOfView = 45.0
-	  targetHeight = 36.0
+  	cameraFieldOfView = 7
+	  targetHeight = 18.0
 
     for i = 0 to ubound(list) step 8
       ' grab list of coordinates from blob_replace
@@ -174,26 +172,16 @@ SetVariable "ImageHeight", imageHeight
 
     next
 
-
 		targetPixelHeight = targetPixelHeight / targetSamples
 
     ' we can use a known distance to determine FOV if we don't know it
 	  ' measuredDistance = 10.0*12.0
  	  ' write "Calculated FOV " &amp; (((atan((((targetHeight*imageHeight)/targetPixelHeight)/2)/measuredDistance)*2.0)*180.0)/3.14159) &amp; vbCRLF
-		' totalDistance = (((targetHeight*imageHeight)/targetPixelHeight)/2)/tan(((cameraFieldOfView*3.14159)/180.0)/2.0)
-
 
     ' determine distance in inches
-		numerator = (((targetHeight*imageHeight)/targetPixelHeight)/2)
-		denomerator = tan(((cameraFieldOfView*3.14159)/180.0)/2.0)
-    totalDistance = numerator / denomerator
-   
-		SetVariable "denomerator", denomerator
-	  SetVariable "numerator", numerator
-		
-		tempDistance = CDbl((totalDistance*100)/12)/100
-		finalDistance = tempDistance
-		SetVariable "Distance", finalDistance
+    totalDistance = (((targetHeight*imageHeight)/targetPixelHeight)/2)/tan(((cameraFieldOfView*3.14159)/180.0)/2.0)
+	
+		SetVariable "Distance", CInt((totalDistance*100)/12)/100
 		bfrCoordinates = GetArrayVariable("BFR_COORDINATES")
 
 
