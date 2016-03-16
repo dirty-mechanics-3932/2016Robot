@@ -139,5 +139,19 @@ public class DriveSystem extends Subsystem {
 	public void goSlow() {
 		scale = SLOW_SCALE;
 	}
+
+
+	public double getDistance() {
+		double leftEncoder = leftFront.getPosition();
+		double rightEncoder = rightFront.getPosition();
+		return (leftEncoder + rightEncoder)/2;
+	}
+
+
+	public void resetEncoders() {
+		leftFront.setEncPosition(0);
+		rightFront.setEncPosition(0);
+		
+	}
 }
 
