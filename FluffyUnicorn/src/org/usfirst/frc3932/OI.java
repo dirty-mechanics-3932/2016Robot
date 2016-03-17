@@ -65,6 +65,7 @@ public class OI {
     public JoystickButton camera21Button;
     public JoystickButton cameraSwitchButton;
     public JoystickButton lineUpButton;
+    public JoystickButton lowShotButton;
     public Joystick driverRight;
     public JoystickButton shootOut;
     public JoystickButton shootFeed;
@@ -95,6 +96,8 @@ public class OI {
         shootOut.whenPressed(new ShooterOut());
         driverRight = new Joystick(1);
         
+        lowShotButton = new JoystickButton(driverRight, 3);
+        lowShotButton.whenPressed(new LowShot());
         lineUpButton = new JoystickButton(driverRight, 2);
         lineUpButton.whenPressed(new DetectTarget());
         cameraSwitchButton = new JoystickButton(driverRight, 6);
@@ -103,7 +106,7 @@ public class OI {
         camera21Button.whenPressed(new Camera21());
         camera12Button = new JoystickButton(driverRight, 4);
         camera12Button.whenPressed(new Camera12());
-        camera11Button = new JoystickButton(driverRight, 3);
+        camera11Button = new JoystickButton(driverRight, 8);
         camera11Button.whenPressed(new Camera11());
         shootButton = new JoystickButton(driverRight, 1);
         shootButton.whenPressed(new ActivateCannon());
@@ -119,7 +122,6 @@ public class OI {
         driveSlowButton.whileHeld(new DriveSlow());
         setEqualToRightJoy = new JoystickButton(driverLeft, 1);
         setEqualToRightJoy.whileHeld(new goForward());
-
 
 
 
@@ -159,8 +161,7 @@ public class OI {
         SmartDashboard.putData("DetectTarget", new DetectTarget());
         SmartDashboard.putData("TurnToTarget", new TurnToTarget());
         SmartDashboard.putData("DriveReverse", new DriveReverse());
-       
-        
+       SmartDashboard.putData("LowShot", new LowShot());
         setEqualToRightJoy.whenReleased(new returnToNormal());
         
     }
