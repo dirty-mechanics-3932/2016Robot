@@ -50,10 +50,12 @@ public class RoboRealmDistanceGet extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	table = NetworkTable.getTable("dad");
-    	double d = table.getNumber("Distance", 0.0);
-    	SmartDashboard.putNumber("Distance", distance);
-    	System.out.println(distance);
+    	table = NetworkTable.getTable("SmartDashboard");
+    	double d = table.getNumber("RoboRealmDistance", 0.0);
+    	SmartDashboard.putNumber("Distance", d);
+    	double blob[] = table.getNumberArray("XRoboRealmBlob",new double[0] );
+    	System.out.println("Blobs" + blob[0]);
+    	
     	
     	if (d > 0){
     		distance = d;

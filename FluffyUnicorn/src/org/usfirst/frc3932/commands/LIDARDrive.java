@@ -48,6 +48,7 @@ public class LIDARDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	
         controller = new PIDController(P, I, D, Robot.rangefinder, new DriveSystemForwardPIDOutput());
         controller.setOutputRange(-.5,  .5);
         controller.setAbsoluteTolerance(10);

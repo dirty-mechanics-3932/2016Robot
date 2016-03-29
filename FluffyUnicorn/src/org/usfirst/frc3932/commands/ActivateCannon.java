@@ -40,6 +40,7 @@ public class ActivateCannon extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("Activate Canon Initialized");
     	Robot.cannon.out();
     	setTimeout(1);
     }
@@ -56,6 +57,7 @@ public class ActivateCannon extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("Activate Canon end");
     	Robot.cannon.in();
     }
 

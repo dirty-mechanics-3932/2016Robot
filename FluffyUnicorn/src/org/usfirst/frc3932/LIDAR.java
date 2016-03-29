@@ -66,6 +66,7 @@ public class LIDAR implements PIDSource{
 		i2c.read(0x10, 1, distance);
 		d += Byte.toUnsignedInt(distance[0]);
 		dist = d;
+	//	System.out.println("LIDAR Distance:" + dist);
 	}
 	
 	// Timer task to keep distance updated

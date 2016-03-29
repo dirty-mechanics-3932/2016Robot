@@ -2,6 +2,9 @@ package org.usfirst.frc3932;
 
 import org.usfirst.frc3932.commands.AutoLowBar;
 import org.usfirst.frc3932.commands.AutoMoat;
+import org.usfirst.frc3932.commands.AutoRampart;
+import org.usfirst.frc3932.commands.AutoRockWall;
+import org.usfirst.frc3932.commands.AutoRoughTerrain;
 import org.usfirst.frc3932.commands.DoNothing;
 import org.usfirst.frc3932.commands.DriveFromPosition1;
 import org.usfirst.frc3932.commands.DriveFromPosition2;
@@ -18,6 +21,12 @@ public class CommandFactory {
 			return new AutoLowBar();
 		case AUTO_MOAT:
 			return new AutoMoat();
+		case AUTO_RAMPART:
+			return new AutoRampart();
+		case AUTO_ROCKWALL:
+			return new AutoRockWall();
+		case AUTO_ROUGHTERRAIN:
+			return new AutoRoughTerrain();	
 		case DRIVE_FROM_POSITION_1:
 			return new DriveFromPosition1();
 		case DRIVE_FROM_POSITION_2:

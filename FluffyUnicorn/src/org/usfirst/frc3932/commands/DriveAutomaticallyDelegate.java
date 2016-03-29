@@ -1,6 +1,7 @@
 package org.usfirst.frc3932.commands;
 
 import org.usfirst.frc3932.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import edu.wpi.first.wpilibj.CANTalon;
 
@@ -33,7 +34,7 @@ public class DriveAutomaticallyDelegate {
 		if (DRIVES_REVERSE) {
 			this.speed = -this.speed;
 		}
-		masterTalon.setEncPosition(0);
+		masterTalon.setEncPosition(0);	
 	}
 	
 	// Called just before this Command runs the first time

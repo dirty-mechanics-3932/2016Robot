@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Simple sample client for Network tables that can 
@@ -22,8 +23,9 @@ public class NetworkTablesRoboRealmClient {
 		try {
 			table = NetworkTable.getTable("SmartDashboard");
 		} catch (Exception e) {
+			System.out.println("TableHelloError");
 			e.printStackTrace();
-			System.out.println("Hello");
+			
 		}
 		while (true) {
 			try {
@@ -31,13 +33,13 @@ public class NetworkTablesRoboRealmClient {
 			} catch (InterruptedException ex) {
 				Logger.getLogger(NetworkTable.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			double x = table.getNumber("distance", 0.0);
+			double x = table.getNumber("RoboRealmDistance", 0.0);
 			//This is broken because BFSC is being captured as an
 			//array, it needs to be either read as an array or
 			//captured as a flat number.
-			double y = table.getNumber("BFSC", 0.0);
+			double y = table.getNumber("XRoboRealmBlob", 0.0);
 			System.out.println("distance" + x);
-			System.out.println("BFSC" + y);
+			System.out.println("Blob" + y);
 		}
 	}
 }
