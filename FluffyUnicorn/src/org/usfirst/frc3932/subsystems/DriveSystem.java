@@ -47,6 +47,9 @@ public class DriveSystem extends Subsystem {
     private static final double SLOW_SCALE = 0.5;
     private double scale = FAST_SCALE;
     
+    private double initYaw = 0;
+    private boolean isYawInitialized = false;
+    
     public DriveSystem() {
     	super();
 //    	leftFront.changeControlMode(CANTalon.TalonControlMode.Speed);
@@ -90,16 +93,38 @@ public class DriveSystem extends Subsystem {
 			
 			left = leftStick.getY();
 			right = rightStick.getY();
-
+			
+			initYaw = Robot.ahrs.getAngle();
+			isYawInitialized = true;
 		}
 		
 		else
 		{
 			GenericHID leftStick = Robot.oi.driverRight;
-			
 			left = leftStick.getY();
 			right = leftStick.getY();
-
+			
+			double currentYaw = Robot.ahrs.getAngle();
+			double deltaYaw = currentYaw - initYaw;
+			double ratioYaw = deltaYaw % 360;
+			double factorYaw = deltaYaw/10;
+			
+			//recalculate left or right wheel if angle changed
+			if ((isYawInitialized)
+			&& (deltaYaw != 0)) {
+				
+				if (deltaYaw < 0) 	{
+					//compensate for left drive
+					left = left * ( 1 - factorYaw);
+				}
+				else {
+					//compensate for right drive
+					right = right * (1 + factorYaw ) ; 
+				}
+			
+				System.out.println("initYaw : " + initYaw +  " currentYaw : " + currentYaw + 
+						" factorYaw : " + factorYaw + " ratioYaw: " + ratioYaw + " left : " + left + " right : " + right);
+			}
 		}
 		
 //		leftFront.set(SPEED*left);

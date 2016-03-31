@@ -52,7 +52,8 @@ public class TurnToTarget extends Command {
    Robot.driveSystem.resetEncoders();
     	SmartDashboard.putNumber("RoboRealmCamera", Robot.camera.turnByAngle);
     //	t = new TurnTo(Robot.ahrs.getYaw(),5);
-   	t = new TurnTo(Robot.ahrs.getYaw() + Robot.camera.turnByAngle - 4 , 5);
+   	t = new TurnTo(Robot.ahrs.getYaw() + Robot.camera.turnByAngle -5 , 5);
+   	System.out.println("TurnAngle:" + Robot.camera.turnByAngle);
     //	t= new TurnTo(Robot.ahrs.getYaw()+ GotTheTarget.angle -4, 5);
     	t.initialize();
     }

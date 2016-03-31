@@ -51,7 +51,7 @@ public class TurnTo extends Command{
 	//private double timeout = 0;
 	private double m_timeout = 0;
 	
-	private static final int MAX_ERROR = 5;
+	private static final int MAX_ERROR = 3;
 	private int m_errorcounter = 0;
 	
 	

@@ -51,6 +51,7 @@ public class AutoShoot extends CommandGroup {
     	addSequential(new WaitFor(1.5));
 //    	addSequential(new LIDARDrive());
     	addSequential(new ActivateCannon());
+    	addSequential(new ShooterOff());
  
     } 
 }

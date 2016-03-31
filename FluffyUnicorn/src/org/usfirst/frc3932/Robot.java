@@ -89,9 +89,12 @@ public class Robot extends IterativeRobot {
         
         positionChooser.addDefault("Position1", Commands.DRIVE_FROM_POSITION_1);
         positionChooser.addObject("Position 2", Commands.DRIVE_FROM_POSITION_2);
+        positionChooser.addObject("Position 2A", Commands.DRIVE_FROM_POSITION_2A);
         positionChooser.addObject("Position 3", Commands.DRIVE_FROM_POSITION_3);
         positionChooser.addObject("Position 4", Commands.DRIVE_FROM_POSITION_4);
         positionChooser.addObject("Position 5", Commands.DRIVE_FROM_POSITION_5);
+        positionChooser.addObject("Position 5A", Commands.DRIVE_FROM_POSITION_5A);
+        positionChooser.addObject("Positions 5B",  Commands.DRIVE_FROM_POSITION_5B);
         SmartDashboard.putData("Auto-Position", positionChooser);
     }
    
@@ -164,6 +167,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
+    	ahrs.reset();
     	Commands obstacle = (Commands) obstacleChooser.getSelected();
     	Command obstacleCommand = CommandFactory.getCommand(obstacle);
     	

@@ -70,11 +70,15 @@ public class DriveStraight extends Command {
     protected void initialize() {
     //Code added by elias and dave
 //    	Robot.ahrs.reset();
-    	controller.disable();
+    	System.out.println("Before Init L:" + RobotMap.driveSystemLeftFront.getEncPosition() + 
+    			" R:" + RobotMap.driveSystemRightFront.getEncPosition());
+        controller.disable();
     	Robot.driveSystem.resetEncoders();
     	controller.setSetpoint(Robot.ahrs.getYaw());
     	System.out.println("DriveStraighINIT YAW:"+ Robot.ahrs.getYaw() + 
-    			" speed:" + m_speed + " distance:" + m_feet);
+    			" speed:" + m_speed + " distance:" + m_feet + 
+    			" After L:" + RobotMap.driveSystemLeftFront.getEncPosition() + 
+    			" R:" + RobotMap.driveSystemRightFront.getEncPosition());
     	controller.enable();
     	
     }
@@ -90,8 +94,7 @@ public class DriveStraight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	System.out.println("L:" + RobotMap.driveSystemLeftFront.getEncPosition() + " R:" + RobotMap.driveSystemRightFront.getEncPosition()
-    	+ " Yaw:" + Robot.ahrs.getYaw() + 
-    	RobotMap.driveSystemRightFront.getEncPosition());
+    	+ " Yaw:" + Robot.ahrs.getYaw());
         return Math.abs(getDistance()) > Math.abs(m_feet);
     }
 

@@ -8,9 +8,12 @@ import org.usfirst.frc3932.commands.AutoRoughTerrain;
 import org.usfirst.frc3932.commands.DoNothing;
 import org.usfirst.frc3932.commands.DriveFromPosition1;
 import org.usfirst.frc3932.commands.DriveFromPosition2;
+import org.usfirst.frc3932.commands.DriveFromPosition2A;
 import org.usfirst.frc3932.commands.DriveFromPosition3;
 import org.usfirst.frc3932.commands.DriveFromPosition4;
 import org.usfirst.frc3932.commands.DriveFromPosition5;
+import org.usfirst.frc3932.commands.DriveFromPosition5A;
+import org.usfirst.frc3932.commands.DriveFromPosition5B;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -31,12 +34,18 @@ public class CommandFactory {
 			return new DriveFromPosition1();
 		case DRIVE_FROM_POSITION_2:
 			return new DriveFromPosition2();
+		case DRIVE_FROM_POSITION_2A:
+			return new DriveFromPosition2A();
 		case DRIVE_FROM_POSITION_3:
 			return new DriveFromPosition3();
 		case DRIVE_FROM_POSITION_4:
 			return new DriveFromPosition4();
 		case DRIVE_FROM_POSITION_5:
 			return new DriveFromPosition5();
+		case DRIVE_FROM_POSITION_5A:
+			return new DriveFromPosition5A();
+		case DRIVE_FROM_POSITION_5B:
+			return new DriveFromPosition5B();
 		case DO_NOTHING:
 			return new DoNothing();
 		default:

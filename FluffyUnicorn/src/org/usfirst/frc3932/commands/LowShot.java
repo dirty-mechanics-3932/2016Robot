@@ -47,6 +47,7 @@ public class LowShot extends CommandGroup {
     	addParallel(new PlatformTiltToggle());
     	addSequential(new WaitFor(1.2));
     	addSequential(new ActivateCannon());
+    	addSequential (new ShooterOff());
  
     } 
 }

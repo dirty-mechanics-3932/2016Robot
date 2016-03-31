@@ -56,6 +56,7 @@ public class DriveFromPosition3 extends CommandGroup {
     	//addSequential (new WaitFor(1));
     	//addSequential(new DriveFromDefenses(FEET, ANGLE));
     	//addSequential (new WaitFor(.5));
+    	addSequential(new ShooterOut());
     	addSequential(new DetectTarget());
     	addSequential (new WaitFor(.5));
     //	addSequential (GotTheTarget);
@@ -63,7 +64,7 @@ public class DriveFromPosition3 extends CommandGroup {
     	//System.out.println("Angle Size" + angle + "Detected Angle" + GotTheTarget.angle);
     	addSequential(new TurnToTarget());
     	//addSequential (new WaitFor(1));
-    	addSequential(new ShooterOut());
+    	//addSequential(new ShooterOut());
     	//addSequential (new WaitFor(1));
     	addSequential(new ActivateCannon());
     	//addSequential (new WaitFor(1));

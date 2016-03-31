@@ -2,4 +2,4 @@
 package=org.usfirst.frc3932
 robot.class=${package}.Robot
 simulation.world.file=/usr/share/frcsim/worlds/GearsBotDemo.world
-userLibs=${user.home}/Documents/GitHub/2016Robot/FluffyUnicorn/lib/navx_frc.jar
+userLibs=./lib/navx_frc.jar
