@@ -48,12 +48,13 @@ public class AutoRampart extends CommandGroup {
     	addParallel(new CameraUp());
     	addParallel(new PlatformUp());
     	addSequential(new WaitFor(.3));
-    	addSequential (new DriveStraight(4.6,.6));
-    	addSequential(new WaitFor(.5));
+    	addSequential (new DriveStraight(4.6,.7));
+    	addSequential( new DriveStraight(7.76,.6));
+    	//addSequential(new WaitFor(.5));
     	//addSequential(new TurnTo(5, 1));
-    	addSequential (new DriveStraight(3.166,.5));
-    	addSequential (new TurnTo(-5,.3));
-    	addSequential (new DriveStraight(4,.3));
+    	//addSequential (new DriveStraight(3.166,.5));
+    	//addSequential (new TurnTo(-5,.3));
+    	//addSequential (new DriveStraight(4,.3));
     	addSequential (new TurnTo(0,1));
     	//addSequential (new TurnTo(-5,1 ));
     	

@@ -54,6 +54,7 @@ public class AutoLowBar extends CommandGroup {
     	Robot.driveSystem.resetEncoders();
     	
     	
+    	
     	addSequential(new CameraDown());
     	addSequential(new PlatformDown());
     	//addSequential (new WaitFor(.5));

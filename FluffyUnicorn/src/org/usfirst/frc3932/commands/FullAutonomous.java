@@ -9,6 +9,7 @@ public class FullAutonomous extends CommandGroup {
 	public FullAutonomous(Command obstacle, Command position){
 	//	Robot.driveSystem.resetEncoders();
 		addSequential(new ShooterOff());
+		
 		addSequential(new ResetAngle());
 		addSequential (obstacle);
 		addSequential(position);

@@ -65,12 +65,12 @@ public class DriveFromPosition2 extends CommandGroup {
     	//addSequential(new DriveStraight(-3,.3));
     	//addSequential (new WaitFor(1));
     	//addSequential(new DriveFromDefenses(FEET, ANGLE));
-    	addSequential(new DetectTarget());
-    	addSequential (new WaitFor(.1));
+    	//addSequential(new DetectTarget());
+    	//addSequential (new WaitFor(.1));
     	
-    	addSequential (new MoveToTarget());
+    	//addSequential (new MoveToTarget());
     	
-    	addSequential (new WaitFor(.5));
+    	//addSequential (new WaitFor(.5));
     	
     //	addSequential (GotTheTarget);
     	System.out.println("Encoder Positions"+ RobotMap.driveSystemLeftFront.getEncPosition() + " " + RobotMap.driveSystemRightFront.getEncPosition());

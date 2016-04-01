@@ -48,12 +48,12 @@ public class MoveToTarget extends Command {
 		//GotTheTarget.execute();
 		this.setTimeout(m_timeout);
 		System.out.println("MoveToTarget Initialized YAW:" + Robot.ahrs.getYaw() + "Distance:" + Robot.camera.driveDistance);
-		Robot.driveSystem.resetEncoders();
+		//Robot.driveSystem.resetEncoders();
 		SmartDashboard.putNumber("RoboRealmCamera", Robot.camera.driveDistance);
 		//	t = new TurnTo(Robot.ahrs.getYaw(),5);
-		if (Robot.camera.driveDistance <14 && Robot.camera.driveDistance > 0)
+		if (Robot.camera.driveDistance <13 && Robot.camera.driveDistance > 2)
 		{
-			Move = new DriveStraight(Robot.camera.driveDistance -12 - 1.5 , .5);  // The Adjust on value is 1 foot latter improve.
+			Move = new DriveStraight(Robot.camera.driveDistance -12.8, .5);  // The Adjust on value is 1 foot latter improve.
 			//	System.out.println("MoveToTarget Distance:" + Robot.camera.driveDistance
 			//	t= new TurnTo(Robot.ahrs.getYaw()+ GotTheTarget.angle -4, 5);
 			Move.initialize();

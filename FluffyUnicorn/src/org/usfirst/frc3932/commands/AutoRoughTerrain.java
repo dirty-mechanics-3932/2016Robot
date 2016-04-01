@@ -36,7 +36,7 @@ public class AutoRoughTerrain extends CommandGroup {
     	//addSequential(new WaitFor(1));
     	addSequential (new DriveStraight(4,.6));
     	//addSequential(new TurnTo(5, 1));
-    	addSequential(new DriveStraight(7,.3));
+    	addSequential(new DriveStraight(7,.5));
     	//addSequential(new TurnTo(-5,1));
    
         // e.g. addSequential(new Command1());
