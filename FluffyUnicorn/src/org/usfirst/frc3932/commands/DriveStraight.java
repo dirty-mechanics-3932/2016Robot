@@ -100,14 +100,22 @@ public class DriveStraight extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("End L:" + RobotMap.driveSystemLeftFront.getEncPosition() + " R:" + RobotMap.driveSystemRightFront.getEncPosition()
-    	+ " Yaw:" + Robot.ahrs.getYaw());
+    	System.out.println(buildDebugString());
     	Robot.driveSystem.resetEncoders();
     	
      controller.disable();
     // controller.reset();
     //	Robot.driveSystem.resetEncoders();
     }
+
+	private String buildDebugString() {
+		return "End L:" + RobotMap.driveSystemLeftFront.getEncPosition() 
+			+ " R:" + RobotMap.driveSystemRightFront.getEncPosition()
+			+ " Pitch:" + Robot.ahrs.getPitch()
+			+ " Yaw:" + Robot.ahrs.getYaw()
+			+ " Roll:" + Robot.ahrs.getRoll()
+			;
+	}
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run

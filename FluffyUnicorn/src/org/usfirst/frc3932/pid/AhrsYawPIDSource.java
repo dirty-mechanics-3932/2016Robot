@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
 public class AhrsYawPIDSource implements PIDSource {
+	RollAdapter rollAdapter = new RollAdapter();
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
@@ -22,7 +23,12 @@ public class AhrsYawPIDSource implements PIDSource {
 	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
-		return Robot.ahrs.getYaw();
+		float yaw = Robot.ahrs.getYaw();
+		float roll = Robot.ahrs.getRoll();
+		if (Robot.rollAdapterChoice) {
+			yaw = rollAdapter.adjustYaw(yaw, roll);
+		}
+		return yaw;
 	}
 
 }
