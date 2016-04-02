@@ -48,7 +48,7 @@ public class AutoMoat extends CommandGroup {
     	addParallel(new CameraUp());
     	addParallel(new PlatformUp());
     	//addSequential(new WaitFor(.5));
-    	addSequential (new DriveStraight(11.6,.6));
+    	addSequential (new DriveStraight(14.6,.6));
     	//addSequential(new TurnTo(5, 1));
 //    	addSequential (new DriveStraight(2.5,.7));
 //    	addSequential (new TurnTo(-5,1));

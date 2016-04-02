@@ -13,6 +13,8 @@ package org.usfirst.frc3932.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+
+import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.subsystems.*;
 
 /**
@@ -20,6 +22,10 @@ import org.usfirst.frc3932.subsystems.*;
  */
 public class TurnTo45Degrees extends Command {
 	TurnTo t;
+	
+	public TurnTo45Degrees() {
+		requires(Robot.driveSystem);
+	}
 	
 	public void initialize(){
 		t = new TurnTo(45);
