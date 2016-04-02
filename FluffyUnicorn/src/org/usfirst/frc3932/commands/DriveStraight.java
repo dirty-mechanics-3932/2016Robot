@@ -114,6 +114,7 @@ public class DriveStraight extends Command {
 			+ " Pitch:" + Robot.ahrs.getPitch()
 			+ " Yaw:" + Robot.ahrs.getYaw()
 			+ " Roll:" + Robot.ahrs.getRoll()
+			+ " Version:" + Robot.ahrs.getFirmwareVersion()
 			;
 	}
 

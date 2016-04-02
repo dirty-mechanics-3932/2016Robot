@@ -10,22 +10,18 @@ public class AhrsYawPIDSource implements PIDSource {
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		// TODO Auto-generated method stub
 		return PIDSourceType.kDisplacement;
 	}
 
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
 		float yaw = Robot.ahrs.getYaw();
 		float roll = Robot.ahrs.getRoll();
-		if (Robot.rollAdapterChoice) {
+		if (Robot.rollAdapterChoice == Boolean.TRUE) {
 			yaw = rollAdapter.adjustYaw(yaw, roll);
 		}
 		return yaw;
