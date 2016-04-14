@@ -42,9 +42,8 @@ public class AutoRampart extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	System.out.println("This is AutoRampart");
-    	Robot.driveSystem.resetEncoders();
-    	System.out.println("Starting Rampart");
+    	System.out.println("AutoRampart Created");
+    	//Robot.driveSystem.resetEncoders();
     	addParallel(new CameraUp());
     	addParallel(new PlatformUp());
     	addSequential(new WaitFor(.3));

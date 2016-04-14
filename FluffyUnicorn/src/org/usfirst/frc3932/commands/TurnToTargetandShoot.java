@@ -31,11 +31,13 @@ public class TurnToTargetandShoot extends CommandGroup {
         //	addSequential (GotTheTarget);
         	//System.out.println("Encoder Positions"+ RobotMap.driveSystemLeftFront.getEncPosition() + " " + RobotMap.driveSystemRightFront.getEncPosition());
         	//System.out.println("Angle Size" + angle + "Detected Angle" + GotTheTarget.angle);
-        	addSequential (new WaitFor(.3));
+    	addSequential (new WaitFor(.3));
     	addSequential(new TurnToTarget());
+    
         	//addSequential (new WaitFor(1));
         	//addSequential (new WaitFor(1));
-        	//addSequential(new MoveToTarget());
+        	addSequential(new MoveToTarget());
+        	addSequential (new WaitFor(.3));
         	addSequential(new ActivateCannon());
         	//addSequential (new WaitFor(1));
         	addSequential(new ShooterOff());

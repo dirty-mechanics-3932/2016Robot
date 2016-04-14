@@ -50,8 +50,8 @@ public class AutoLowBar extends CommandGroup {
     	addSequential(new DriveAutoToRampart());
     	addSequential(new DriveThroughLowBar());
     	*/
-    	System.out.println("This is LowBar");
-    	Robot.driveSystem.resetEncoders();
+    	System.out.println("AutoLowBar Created");
+    	//Robot.driveSystem.resetEncoders();
     	
     	
     	

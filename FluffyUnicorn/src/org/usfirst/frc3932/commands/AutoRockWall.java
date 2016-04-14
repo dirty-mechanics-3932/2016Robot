@@ -42,8 +42,8 @@ public class AutoRockWall extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	System.out.println("This is AutoRockWall");
-    	Robot.driveSystem.resetEncoders();
+    	System.out.println("AutoRockWall Created");
+    	//Robot.driveSystem.resetEncoders();
     	addParallel(new CameraUp());
     	addSequential(new PlatformUp());
     	//addSequential(new WaitFor(1));

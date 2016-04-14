@@ -53,7 +53,7 @@ public class MoveToTarget extends Command {
 		//	t = new TurnTo(Robot.ahrs.getYaw(),5);
 		if (Robot.camera.driveDistance <13 && Robot.camera.driveDistance > 2)
 		{
-			Move = new DriveStraight(Robot.camera.driveDistance -12.8, .5);  // The Adjust on value is 1 foot latter improve.
+			Move = new DriveStraight(Robot.camera.driveDistance -12, .5);  // The Adjust on value is 1 foot latter improve.
 			//	System.out.println("MoveToTarget Distance:" + Robot.camera.driveDistance
 			//	t= new TurnTo(Robot.ahrs.getYaw()+ GotTheTarget.angle -4, 5);
 			Move.initialize();
@@ -83,14 +83,13 @@ public class MoveToTarget extends Command {
 	protected void end() {
 		System.out.println("MoveToTarget is Finished");
 		Move.end();
-		//add by elias
-		Robot.driveSystem.resetEncoders();
+		
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		Move.interrupted();
-		Robot.driveSystem.resetEncoders();
+		
 	}
 }

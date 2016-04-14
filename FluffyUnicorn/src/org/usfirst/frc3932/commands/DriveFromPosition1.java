@@ -50,7 +50,7 @@ public class DriveFromPosition1 extends CommandGroup {
     //	addSequential(new DriveFromDefenses(FEET, ANGLE));
 //    	addSequential(new ActivateCannon());
     	//addSequential(new WaitFor(.5));
-    	addSequential(new TurnTo(4, 1));
+    	addSequential(new TurnTo(0, 1));  // Was set to 4 changing to 0 degree  Keith -- ????
     	addSequential (new CameraUp());
     	addSequential(new PlatformUp());
     	addSequential (new DriveStraight(7.5,.6));
@@ -58,7 +58,7 @@ public class DriveFromPosition1 extends CommandGroup {
     	//addSequential(new DriveStraight(feetFromDefenses, SPEED));
     	//addSequential (new WaitFor(1));
     	addSequential(new ShooterOut());
-    	addSequential(new TurnTo(45, 60));
+    	addSequential(new TurnTo(45, 5));  // Keith changed from 60 seconds to 5 seconds
     	//addSequential (new WaitFor(1));
     	//addSequential(new DriveFromDefenses(FEET, ANGLE));
     	

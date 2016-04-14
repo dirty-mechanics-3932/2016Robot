@@ -14,6 +14,8 @@ package org.usfirst.frc3932.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc3932.Robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 /**
  *
  */
@@ -38,7 +40,10 @@ public class ResetAngle extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.ahrs.reset();
-    	Robot.ahrs.reset();
+    	//Robot.ahrs.reset();
+    	AHRS.BoardYawAxis x = Robot.ahrs.getBoardYawAxis();
+    	System.out.println("ResetYawAngle isCalibrating:" + Robot.ahrs.isCalibrating() + " Angle:" + Robot.ahrs.getYaw());
+    	System.out.println("Yaw Direction:" + (x.up ? "Up" : "Down") + "Yaw Axis:" + x.board_axis.getValue());
     }
 
     // Called repeatedly when this Command is scheduled to run

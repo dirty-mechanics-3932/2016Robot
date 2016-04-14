@@ -74,7 +74,9 @@ public class DriveSystem extends Subsystem {
 		// Set the default command for a subsystem here.
 
 		setDefaultCommand(new DriveTeleop());
-	}
+		System.out.println("Start up Drive System");
+		tankDrive.setSafetyEnabled(false);
+		}
 
 	public void drive() {
 
@@ -125,8 +127,7 @@ public class DriveSystem extends Subsystem {
 
 					}
 				}		
-			System.out.println("initYaw : " + initYaw + " currentYaw : " + currentYaw + " factorYaw : " + factorYaw
-					+ " ratioYaw: " + ratioYaw + " left : " + left + " right : " + right);
+			System.out.printf("leftTrigger drive initYaw:%.2f currentYaw:%.2f left:%.2f right:%.2f\n", initYaw, currentYaw, left, right);
 		
 	}}
 
@@ -138,7 +139,7 @@ public class DriveSystem extends Subsystem {
 
 	public void drivePercent(double leftPercent, double rightPercent) {
 		driveLeftPercent(leftPercent);
-		driveRightPercent(rightPercent);
+		driveRightPercent(rightPercent);  // Changed to - for mini
 	}
 
 	public void driveRightPercent(double rightPercent) {
@@ -173,6 +174,5 @@ public class DriveSystem extends Subsystem {
 	public void resetEncoders() {
 		leftFront.setEncPosition(0);
 		rightFront.setEncPosition(0);
-
 	}
 }
