@@ -58,15 +58,15 @@ public class LIDAR implements PIDSource{
 	// Update distance variable
 	public void update() {
 		int d = 0;
-		i2c.write(LIDAR_CONFIG_REGISTER, 0x04); // Initiate measurement
+		boolean w1 = i2c.write(LIDAR_CONFIG_REGISTER, 0x04); // Initiate measurement
 		Timer.delay(0.04); // Delay for measurement to be taken
-		i2c.read(0x0f, 1, distance); // Read in measurement
+		boolean r1 = i2c.read(0x0f, 1, distance); // Read in measurement
 		Timer.delay(0.008); // Delay to prevent over polling
 		d += Integer.toUnsignedLong(distance[0] << 8);
-		i2c.read(0x10, 1, distance);
+		boolean r2 = i2c.read(0x10, 1, distance);
 		d += Byte.toUnsignedInt(distance[0]);
 		dist = d;
-	//	System.out.println("LIDAR Distance:" + dist);
+		// Robot.log("LIDAR Distance:" + dist + " w1:" + w1 + " r1:" +r1 +" r2:" + r2);
 	}
 	
 	// Timer task to keep distance updated

@@ -56,12 +56,13 @@ public class DriveFromPosition3 extends CommandGroup {
     	//addSequential (new WaitFor(1));
     	//addSequential(new DriveFromDefenses(FEET, ANGLE));
     	//addSequential (new WaitFor(.5));
+    	//Robot.log("Create Drive from Position 3");
     	addSequential(new ShooterOut());
     	addSequential(new DetectTarget());
     	addSequential (new WaitFor(.5));
     //	addSequential (GotTheTarget);
-    	//System.out.println("Encoder Positions"+ RobotMap.driveSystemLeftFront.getEncPosition() + " " + RobotMap.driveSystemRightFront.getEncPosition());
-    	//System.out.println("Angle Size" + angle + "Detected Angle" + GotTheTarget.angle);
+    	//Robot.log("Encoder Positions"+ RobotMap.driveSystemLeftFront.getEncPosition() + " " + RobotMap.driveSystemRightFront.getEncPosition());
+    	//Robot.log("Angle Size" + angle + "Detected Angle" + GotTheTarget.angle);
     	addSequential(new TurnToTarget());
     	//addSequential (new WaitFor(1));
     	//addSequential(new ShooterOut());

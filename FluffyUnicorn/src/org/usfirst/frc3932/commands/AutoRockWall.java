@@ -42,7 +42,7 @@ public class AutoRockWall extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	System.out.println("AutoRockWall Created");
+    	Robot.log("AutoRockWall Created");
     	//Robot.driveSystem.resetEncoders();
     	addParallel(new CameraUp());
     	addSequential(new PlatformUp());
@@ -52,8 +52,9 @@ public class AutoRockWall extends CommandGroup {
     	//addSequential(new TurnTo(10, 60));
     	//addSequential(new DriveStraight(5,.6));
     	addSequential (new WaitFor(.5));
-    	addSequential(new TurnTo(15,60));
+    	addSequential(new TurnTo(15,4));
     	addSequential (new DriveStraight(2,.3));
+    	addSequential (new TurnTo(0,.3));
    
     	
     	

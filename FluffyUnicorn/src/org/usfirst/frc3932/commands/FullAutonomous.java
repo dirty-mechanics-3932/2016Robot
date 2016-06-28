@@ -7,15 +7,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class FullAutonomous extends CommandGroup {
 	public FullAutonomous(Command obstacle, Command position){
-	//	Robot.driveSystem.resetEncoders();
 		addSequential(new ShooterOff());
-		
 		addSequential(new ResetAngle());
-		addSequential (obstacle);
-		addSequential(position);
-		//addSequential(obstacle);
-		//addSequential(new AutoShoot());
-		
-		
+		addSequential(new WaitFor(.070));
+		addSequential(obstacle);
+		addSequential(position);		
 	}
 }

@@ -90,7 +90,7 @@ public class TurnToOrig extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		m_errorcounter = 0;
-		System.out.println("Turnto initialized: degrees = " + m_degrees + " Timeout= " + m_timeout + " p:" + P + " i:"
+		Robot.log("Turnto initialized: degrees = " + m_degrees + " Timeout= " + m_timeout + " p:" + P + " i:"
 				+ I + " d:" + D + " f:" + F);
 		// Robot.driveSystem.resetEncoders();
 		controller.enable();
@@ -121,7 +121,7 @@ public class TurnToOrig extends Command {
 
 		double convTime = (new Date().getTime() - turnToInit.getTime());
 		SmartDashboard.putNumber("Time to Turn", convTime);
-		System.out.println("TurnTo onTarget:" + controller.onTarget() + " Timeout:" + isTimedOut() + " YAW:"
+		Robot.log("TurnTo onTarget:" + controller.onTarget() + " Timeout:" + isTimedOut() + " YAW:"
 				+ Robot.ahrs.getYaw() + " Error:" + round2(controller.getError()) + " AvgError:"
 				+ round2(controller.getAvgError()) + " ErrorCounter:" + m_errorcounter + " ConvergeTime:" + convTime);
 		boolean f1 = controller.onTarget() || (m_errorcounter >= MAX_ERROR) || convTime > m_timeout * 1000;
@@ -141,7 +141,7 @@ public class TurnToOrig extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		System.out.println("TurnTo finished degrees = " + m_degrees + " timeOut:" + m_timeout + " Yaw:"
+		Robot.log("TurnTo finished degrees = " + m_degrees + " timeOut:" + m_timeout + " Yaw:"
 				+ Robot.ahrs.getYaw() + " Total Autonomous Time:" + (new Date().getTime() - turnToCreate.getTime()));
 		controller.disable();
 	}

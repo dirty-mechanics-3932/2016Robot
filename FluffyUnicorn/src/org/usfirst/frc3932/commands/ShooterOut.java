@@ -38,7 +38,7 @@ public class ShooterOut extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("Shooter Out Initialized");
+    	Robot.log("Shooter Out Initialized");
     	Robot.shooterWheels.halfShoot();
     	//setTimeout(0.8);
     	setTimeout(1);
@@ -57,7 +57,7 @@ public class ShooterOut extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("Shooter out End");
+    	Robot.log("Shooter out End yaw:" + Robot.ahrs.getYaw());
     	Robot.shooterWheels.shoot();
     	
     }

@@ -31,7 +31,7 @@ public class DetectTarget extends Command {
 	NetworkTable table = null;
 
 	private static final double H_RES = 480;
-	private static final double FIELD_OF_VIEW = 67;
+	private static final double FIELD_OF_VIEW = 74;
 	// private static final double FIELD_OF_VIEW = 47.5;
 
 	double[] blob = null;
@@ -59,7 +59,7 @@ public class DetectTarget extends Command {
 	protected void initialize() {
 		angle = 0;
 		angleReady = false;
-		System.out.println("Detect Target Initialized");
+		Robot.log("Detect Target Initialized");
 		m_DetectTargetInit = new Date();
 	}
 
@@ -70,19 +70,21 @@ public class DetectTarget extends Command {
 		double[] x = table.getNumberArray("XRoboRealmBlob", defaultValue);
 		
 
-		System.out.println("bloblength" + x.length + " Yaw:" + Robot.ahrs.getYaw() +" time:" + (new Date().getTime() - m_DetectTargetInit.getTime()));
+		Robot.log("bloblength" + x.length + " Yaw:" + Robot.ahrs.getYaw() +" time:" + (new Date().getTime() - m_DetectTargetInit.getTime()));
 
 		if (x.length > 0) {
 			int arraysize = x.length;
-			System.out.println("X[0]:" + x[0]);
+			Robot.log("X[0]:" + x[0]);
 			// angle = (x[arraysize-1] - H_RES/2) * (FIELD_OF_VIEW/H_RES);
 			angle = (x[0] - H_RES / 2) * (FIELD_OF_VIEW / H_RES);
 			angleReady = true;
 			distance = table.getNumber("RoboRealmDistance", 0.0);
+			//double distance2 = table.getNumber("RoboRealmDistance", 0.0);
+			//distance = (distance1 + distance2)/2;
 			// SmartDashboard.putNumber("angle", angle);
 
 			SmartDashboard.putNumber("XRoboRealmBlob", x[0]);
-			System.out.println("Blob X:" + x[0]);
+			Robot.log("Blob X:" + x[0] + "Distance:" + distance);
 		}
 
 	}
@@ -90,14 +92,14 @@ public class DetectTarget extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		double convTime = (new Date().getTime() - m_DetectTargetInit.getTime());
-		return angleReady || convTime > 5000;
+		return angleReady || convTime > 1000;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
 		SmartDashboard.putNumber("x", angle);
 		double convTime = (new Date().getTime() - m_DetectTargetInit.getTime());
-		System.out.println("Target found:" + angle + " time:" + convTime);
+		Robot.log("Target found:" + angle + " time:" + convTime);
 		Robot.camera.turnByAngle = angle;
 		Robot.camera.driveDistance = distance;
 		SmartDashboard.putNumber("CameraAngle", angle);

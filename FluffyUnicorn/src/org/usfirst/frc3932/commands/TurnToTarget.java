@@ -48,10 +48,16 @@ public class TurnToTarget extends Command {
 		// GotTheTarget.initialize();
 		// GotTheTarget.execute();
 		this.setTimeout(m_timeout);
-		System.out.println("TurntoTarget Init YAW:" + Robot.ahrs.getYaw() + "Angle: " + Robot.camera.turnByAngle);
+		Robot.log("TurntoTarget Init YAW:" + Robot.ahrs.getYaw() + "Angle: " + Robot.camera.turnByAngle);
 		SmartDashboard.putNumber("RoboRealmCamera", Robot.camera.turnByAngle);
-		t = new TurnTo(Robot.ahrs.getYaw() + Robot.camera.turnByAngle - 2, 5);
+		
+		// To turn more left change 2.5 to 2.25
+		
+		t = new TurnTo( Robot.ahrs.getYaw() + Robot.camera.turnByAngle - 2.5, 5);
+		
+		
 		t.initialize();
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -64,13 +70,13 @@ public class TurnToTarget extends Command {
 		// Robot.driveSystem.resetEncoders();
 		boolean done = t.isFinished();
 
-		//System.out.println("turntotarget timeout:" + isTimedOut() + " m_timeout:" + m_timeout + " isFinished: " + done);
+		//Robot.log("turntotarget timeout:" + isTimedOut() + " m_timeout:" + m_timeout + " isFinished: " + done);
 		return done || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		System.out.println("TurntoTarget is Finished");
+		Robot.log("TurntoTarget is Finished");
 		t.end();
 	}
 

@@ -12,6 +12,7 @@
 package org.usfirst.frc3932.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+
 import org.usfirst.frc3932.subsystems.*;
 
 /**
@@ -55,14 +56,20 @@ public class DriveFromPosition5B extends CommandGroup {
     	//addSequential(new TurnTo(angle, 60));
     	//addSequential (new WaitFor(1));
     	//addSequential(new DriveFromDefenses(FEET, ANGLE));
+    	//Robot.log("Create Drive from Position 5B");
+    	addSequential(new DriveStraight(8.5,.6));
+    	addSequential(new TurnTo(-30, 5));
+    	addSequential(new DriveStraight(-3,.4));
     	addSequential(new ShooterOut());
-    	//addSequential(new TurnTo(5,.1));
+    	
     	addSequential(new DetectTarget());
-    	addSequential (new WaitFor(.5));
-    //	addSequential (GotTheTarget);
-    	//System.out.println("Encoder Positions"+ RobotMap.driveSystemLeftFront.getEncPosition() + " " + RobotMap.driveSystemRightFront.getEncPosition());
-    	//System.out.println("Angle Size" + angle + "Detected Angle" + GotTheTarget.angle);
+    	addSequential (new WaitFor(.2));
     	addSequential(new TurnToTarget());
+    	
+    	addSequential(new DetectTarget());
+    	addSequential (new WaitFor(.2));
+    	addSequential(new TurnToTarget());
+    	
     	//addSequential (new WaitFor(1));
     	addSequential(new ActivateCannon());
     	//addSequential (new WaitFor(1));

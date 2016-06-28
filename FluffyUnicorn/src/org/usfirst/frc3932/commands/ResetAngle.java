@@ -42,8 +42,8 @@ public class ResetAngle extends Command {
     	Robot.ahrs.reset();
     	//Robot.ahrs.reset();
     	AHRS.BoardYawAxis x = Robot.ahrs.getBoardYawAxis();
-    	System.out.println("ResetYawAngle isCalibrating:" + Robot.ahrs.isCalibrating() + " Angle:" + Robot.ahrs.getYaw());
-    	System.out.println("Yaw Direction:" + (x.up ? "Up" : "Down") + "Yaw Axis:" + x.board_axis.getValue());
+    	Robot.log("ResetYawAngle isCalibrating:" + Robot.ahrs.isCalibrating() + " Angle:" + Robot.ahrs.getYaw());
+    	Robot.log("Yaw Direction:" + (x.up ? "Up" : "Down") + "Yaw Axis:" + x.board_axis.getValue());
     }
 
     // Called repeatedly when this Command is scheduled to run

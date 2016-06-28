@@ -54,7 +54,7 @@ public class RoboRealmDistanceGet extends Command {
     	double d = table.getNumber("RoboRealmDistance", 0.0);
     	SmartDashboard.putNumber("Distance", d);
     	double blob[] = table.getNumberArray("XRoboRealmBlob",new double[0] );
-    	System.out.println("Blobs" + blob[0]);
+    	Robot.log("Blobs" + blob[0]);
     	
     	
     	if (d > 0){
