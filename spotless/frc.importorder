@@ -1,0 +1,8 @@
+#Organize Import Order
+#Wed Jul 06 16:44:04 EDT 2016
+5=
+4=\#org.junit.Assert
+3=com
+2=org
+1=javax
+0=java
