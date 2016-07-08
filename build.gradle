@@ -4,6 +4,15 @@ plugins {
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+eclipse.classpath.file {
+    beforeMerged { classpath ->
+        classpath.entries.removeAll { entry -> entry.kind == 'lib' || entry.kind == 'var' }
+    }
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -12,11 +21,24 @@ repositories {
     jcenter()
 }
 
+// Import Ant build and prefix all task names with 'ant-'.
+ant.importBuild('build.xml') { antTaskName ->
+    "ant-${antTaskName}".toString()
+}
+
+// Set group property for all Ant tasks.
+tasks.matching { task ->
+    task.name.startsWith('ant-')
+}*.group = 'Ant'
+
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
-    
+
+    compile files(ant.properties['wpilib.jar'])
+    compile files(ant.properties['networktables.jar'])
+
     compileOnly "org.projectlombok:lombok:1.16.8"
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
@@ -39,7 +61,30 @@ spotless {
         //    @Max(value = 9_999_999 L) // what Eclipse does
         //    @Max(value = 9_999_999L)  // what I wish Eclipse did
         custom 'Long literal fix', { it.replaceAll('([0-9_]+) [Ll]', '$1L') }
-        
+
         trimTrailingWhitespace()
     }
+    format 'misc', {
+        target '**/*.xml', '.gitignore', "*.properties", "*.gradle"
+        indentWithSpaces()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    // The default value of PLATFORM_NATIVE is recommended (can be WINDOWS, UNIX, or PLATFORM_NATIVE)
+    lineEndings 'PLATFORM_NATIVE'
 }
+
+jar {
+    manifest {
+        attributes("Main-Class": "edu.wpi.first.wpilibj.RobotBase",
+                   "Robot-Class": ant.properties['robot.class'],
+                   "Class-Path": ".")
+    }
+}
+
+// Aliases
+task('ant-jar', dependsOn: 'jar')
+task('ant-clean', dependsOn: 'clean')
+task deploy(dependsOn: ['clean', 'jar', 'ant-deploy'])
+task debugDeploy(dependsOn: ['jar', 'ant-debug-deploy'])
+task format(dependsOn: "spotlessApply")

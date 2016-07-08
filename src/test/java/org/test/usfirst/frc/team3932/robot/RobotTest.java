@@ -6,10 +6,10 @@ import org.usfirst.frc.team3932.robot.Robot;
 
 import static org.junit.Assert.*;
 
-public class ExampleTest {
+public class RobotTest {
     @Test
-    public void testExample() {
+    public void testSanity() {
         Robot classUnderTest = new Robot();
-        // assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
+        assertTrue(!classUnderTest.isDisabled() == classUnderTest.isEnabled());
     }
 }
