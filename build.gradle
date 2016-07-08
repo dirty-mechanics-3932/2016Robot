@@ -23,12 +23,12 @@ repositories {
 
 // Import Ant build and prefix all task names with 'ant-'.
 ant.importBuild('build.xml') { antTaskName ->
-    "ant-${antTaskName}".toString()
+    "ant_${antTaskName}".toString()
 }
 
 // Set group property for all Ant tasks.
 tasks.matching { task ->
-    task.name.startsWith('ant-')
+    task.name.startsWith('ant_')
 }*.group = 'Ant'
 
 // In this section you declare the dependencies for your production and test code
@@ -83,8 +83,9 @@ jar {
 }
 
 // Aliases
-task('ant-jar', dependsOn: 'jar')
-task('ant-clean', dependsOn: 'clean')
-task deploy(dependsOn: ['clean', 'jar', 'ant-deploy'])
-task debugDeploy(dependsOn: ['jar', 'ant-debug-deploy'])
-task format(dependsOn: "spotlessApply")
+ant_jar.dependsOn('jar')
+ant_clean.dependsOn('clean')
+ant_compile.dependsOn('compileJava')
+task deploy(dependsOn: ['clean', 'jar', 'ant_deploy'])
+task debugDeploy(dependsOn: ['jar', 'ant_debug-deploy'])
+task format(dependsOn: 'spotlessApply')

@@ -11,6 +11,13 @@
     </taskdef>
     <taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${classloadertask.jar}" />
     <classloader loader="system" classpath="${jsch.jar}" />
+    <!-- Empty targets implemented in gradle. These are only here to remove the error messages. -->
+    <target name="clean">
+    </target>
+    <target name="jar">
+    </target>
+    <target name="compile">
+    </target>
     <!-- Targets -->
     <target name="get-target-ip">
         <property name="ant.enable.asserts" value="true" />
