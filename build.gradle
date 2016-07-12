@@ -19,6 +19,9 @@ repositories {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    maven {
+        url "http://first.wpi.edu/FRC/roborio/maven/release"
+    }
 }
 
 // Import Ant build and prefix all task names with 'ant-'.
@@ -36,8 +39,9 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
 
-    compile files(ant.properties['wpilib.jar'])
-    compile files(ant.properties['networktables.jar'])
+    // The following dependencies were found at http://wpilib.screenstepslive.com/s/4485/m/wpilib_source/l/480976-maven-artifacts
+    compile 'edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT' // WPILibJ uberjar
+    compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:3.0.0-SNAPSHOT:desktop'   
 
     compileOnly "org.projectlombok:lombok:1.16.8"
 
@@ -46,7 +50,7 @@ dependencies {
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.+"
+    testCompile 'org.mockito:mockito-core:1.+'
 }
 
 spotless {
@@ -72,6 +76,13 @@ spotless {
     }
     // The default value of PLATFORM_NATIVE is recommended (can be WINDOWS, UNIX, or PLATFORM_NATIVE)
     lineEndings 'PLATFORM_NATIVE'
+}
+
+eclipse {
+    classpath {
+       downloadSources = true
+       downloadSources = true
+    }
 }
 
 jar {
