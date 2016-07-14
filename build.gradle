@@ -2,6 +2,10 @@ plugins {
   id "com.diffplug.gradle.spotless" version "1.3.3"
 }
 
+configurations {
+    sshAntTask
+}
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -51,7 +55,13 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.+'
+
+    sshAntTask 'org.apache.ant:ant-jsch:1.9.7'
 }
+
+ant.taskdef(name: 'sshexec',
+    classname: 'org.apache.tools.ant.taskdefs.optional.ssh.SSHExec',
+    classpath: configurations.sshAntTask.asPath)
 
 spotless {
     java {
@@ -97,6 +107,8 @@ jar {
 ant_jar.dependsOn('jar')
 ant_clean.dependsOn('clean')
 ant_compile.dependsOn('compileJava')
-task deploy(dependsOn: ['clean', 'jar', 'ant_deploy'])
-task debugDeploy(dependsOn: ['jar', 'ant_debug-deploy'])
-task format(dependsOn: 'spotlessApply')
+ant_deploy.dependsOn(['clean', 'jar'])
+ant_debugDeploy.dependsOn('jar')
+task deploy(dependsOn: 'ant_deploy', group: 'deploy')
+task debugDeploy(dependsOn: 'ant_debugDeploy', group: 'deploy')
+task format(dependsOn: 'spotlessApply', group: 'spotless')

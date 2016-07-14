@@ -70,7 +70,7 @@
         <sshexec host="${target}" username="${username}" password="${password}" trust="true" failonerror="false" command="${deploy.kill.command};" />
         <sshexec host="${target}" username="${username}" password="${password}" trust="true" command="sync" />
     </target>
-    <target name="debug-deploy" depends="jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
+    <target name="debugDeploy" depends="jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
         <echo>[athena-deploy] Copying code over.</echo>
         <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true" />
         <!-- The remoteDebugCommand file is used by /usr/local/frc/bin/frcRunRobot.sh on the roboRIO  -->
@@ -118,12 +118,12 @@
     </target>
     <target name="dependencies" depends="get-target-ip">
         <property name="ant.enable.asserts" value="true" />
-        <post to="http://${target}/nisysapi/server" logfile="sysProps.xml" verbose="false" encoding="UTF-16LE" append="false">
+        <post to="http://${target}/nisysapi/server" logfile="build/sysProps.xml" verbose="false" encoding="UTF-16LE" append="false">
             <prop name="Function" value="GetPropertiesOfItem" />
             <prop name="Plugins" value="nisyscfg" />
             <prop name="Items" value="system" />
         </post>
-        <loadfile srcFile="sysProps.xml" encoding="UTF-16LE" property="roboRIOSysValues" />
+        <loadfile srcFile="build/sysProps.xml" encoding="UTF-16LE" property="roboRIOSysValues" />
         <propertyregex property="roboRIOImage" input="${roboRIOSysValues}" regexp="FRC_roboRIO_2016_v([0-9]+)" select="\1" defaultValue="ImageRegExFail" />
         <propertyregex property="roboRIOImageYear" input="${roboRIOSysValues}" regexp="FRC_roboRIO_([0-9]+)_v" select="\1" defaultValue="ImageRegExFail" />
         <assert message="Image of roboRIO does not match plugin. ${line.separator}Allowed image year: ${roboRIOAllowedYear} version: ${roboRIOAllowedImages}. ${line.separator}Actual image year: ${roboRIOImageYear} version ${roboRIOImage}. ${line.separator}RoboRIO needs to be re-imaged or plugins updated.">
