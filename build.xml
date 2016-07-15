@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FRC Robot" default="deploy">
-    <property file="${user.home}/wpilib/wpilib.properties" />
+    <property file="wpilib.properties" />
     <property file="build.properties" />
-    <property file="${user.home}/wpilib/java/${version}/ant/build.properties" />
     <!-- Load Tasks -->
     <taskdef resource="net/sf/antcontrib/antlib.xml">
         <classpath>
             <pathelement location="${wpilib.ant.dir}/ant-contrib.jar" />
         </classpath>
     </taskdef>
-    <!-- Empty targets implemented in gradle. These are only here to remove the error messages. -->
+    <!-- Empty targets implemented in gradle. These are only here to remove error messages. -->
     <target name="clean">
     </target>
     <target name="jar">
@@ -19,7 +18,7 @@
     <!-- Targets -->
     <target name="get-target-ip">
         <property name="ant.enable.asserts" value="true" />
-        <assert name="team-number" exists="true" message="Team number not set. Go to Window-&gt;Preferences-&gt;WPILib Preferences to set it." />
+        <assert name="team-number" exists="true" message="Team number not set." />
         <property name="target" value="roboRIO-${team-number}-FRC.local" />
         <echo>Trying Target: ${target}</echo>
         <if>
@@ -53,15 +52,10 @@
             </else>
         </if>
     </target>
-    <!-- We're running a clean here to get around a known ant issue where it does not detected changed constant variables.
-     To get around this, we're recompiling the entire project, which is not an issue for most teams. If this is an issue
-     for you, you can remove the clean here, just be sure to do a full rebuild after you've changed any constants.
-     Reference: http://stackoverflow.com/questions/6430001/ant-doesnt-recompile-constants -->
-    <target name="deploy" depends="clean,jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
+    <target name="deploy" depends="jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
         <echo>[athena-deploy] Copying code over.</echo>
         <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true" />
-        <!-- Suppress the exit status so that if no netconsole was running then
-          it doesn't show up red on the output. -->
+        <!-- Suppress the exit status so that if no netconsole was running then it doesn't show up red on the output. -->
         <sshexec host="${target}" username="admin" password="${password}" trust="true" failonerror="false" command="killall -q netconsole-host || :" />
         <scp file="${wpilib.ant.dir}/robotCommand" todir="${username}@${target}:${command.dir}" password="${password}" trust="true" />
         <echo>[athena-deploy] Starting program.</echo>
