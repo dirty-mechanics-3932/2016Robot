@@ -94,7 +94,7 @@ jar {
 }
 
 shadowJar {
-    baseName = 'robot-deploy'
+    baseName = ant.properties['jar'] - '.jar'
     classifier = null
     version = null
     exclude 'docs/'
