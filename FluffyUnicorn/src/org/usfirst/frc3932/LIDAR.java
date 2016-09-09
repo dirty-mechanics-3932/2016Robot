@@ -66,7 +66,7 @@ public class LIDAR implements PIDSource{
 		boolean r2 = i2c.read(0x10, 1, distance);
 		d += Byte.toUnsignedInt(distance[0]);
 		dist = d;
-		// Robot.log("LIDAR Distance:" + dist + " w1:" + w1 + " r1:" +r1 +" r2:" + r2);
+	//Robot.log("LIDAR Distance:" + dist + " w1:" + w1 + " r1:" +r1 +" r2:" + r2);
 	}
 	
 	// Timer task to keep distance updated
