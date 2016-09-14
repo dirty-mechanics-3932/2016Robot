@@ -46,7 +46,6 @@ public class TurnTo extends Command {
 			{ 1, .06 }, { 0, 0 } };
 	private final double competitiveP[][] = { { 180, .4 }, { 20, .3 }, { 10, .25 }, { 5, .22 }, { 3, .20 }, { 2, .19 },
 			{ 1, .175 }, { .75, .170 }, { 0, .17 } };
-	
 	private final double compGoodBatteryP[][] = { { 180, .4 }, { 20, .3 }, { 10, .22 }, { 5, .18 }, { 3, .16 },
 			{ 2, .15 }, { 1, .15 }, { .75, .14 }, { 0, .14 } };
 	private double activeP[][] = compGoodBatteryP;
@@ -161,10 +160,6 @@ public class TurnTo extends Command {
 
 	protected double round4(double d) {
 		return Math.round(d * 10000) / 10000.0;
-	}
-	
-	public double[][] getCompetitiveP() {
-		return competitiveP;
 	}
 
 }

@@ -15,6 +15,7 @@ public class Vision {
 	public double solidity;
 	public double area;
 	public double angle;
+	public boolean found;
 	public int length;
 
 	public Vision() {
@@ -43,17 +44,26 @@ public class Vision {
 		if (length == 0) // return false if no objects found
 			return false;
 		int index = 0;
-		boolean found = false;
-		for (int i = 0; i < length; i++) {
-			if (solidityAr[i] > .3 && solidityAr[i] < .6) {
-				index = i;
-				found = true;
+		found = false;
+		int i = 0;
+		try {
+
+			for (i = 0; i < length; i++) {
+				if (solidityAr[i] > .3 && solidityAr[i] < .6 && areaAr[i] > 2000 && areaAr[i] < 6000) {
+					index = i;
+					found = true;
+				}
 			}
+			angle = (centerXAr[index] - H_RES / 2) / 10;
+			area = areaAr[index];
+			centerX = centerXAr[index];
+			solidity = solidityAr[index];
+		} catch (Exception e) {
+			Robot.logf("Vision getTarget Exception: i:%d solidityAr:%d centerAr:%d areaAr:%d%n", i, solidityAr.length,
+					centerXAr.length, areaAr.length);
+			System.err.println(e.getStackTrace());
+			return false;
 		}
-		angle = (centerXAr[index] - H_RES / 2) / 10;
-		area = areaAr[index];
-		centerX = centerXAr[index];
-		solidity = solidityAr[index];
 		return found;
 	}
 

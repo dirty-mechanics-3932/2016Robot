@@ -62,6 +62,11 @@ public class Robot extends IterativeRobot {
 
 	private DigitalInput config0;
 	private DigitalInput config1;
+	
+	
+	public static DigitalInput pin8;
+	public static DigitalInput pin9;
+	
 	private int count = 0;
 
 	// Data for Robot Configuration
@@ -160,6 +165,9 @@ public class Robot extends IterativeRobot {
 	private void setRobotType() {
 		config0 = new DigitalInput(5);
 		config1 = new DigitalInput(6);
+	    pin8 = new DigitalInput(8);
+		pin9 = new DigitalInput(9);
+		
 		int robotConfig = (config0.get() ? 1 : 0) + (config1.get() ? 2 : 0);
 		log("C0:" + config0.get() + " C1:" + config1.get());
 		// robotConfig 3 - Mini, default COMPETITION
@@ -262,7 +270,6 @@ public class Robot extends IterativeRobot {
 		// checkCompressor();
 		// runCamera();
 		updateStatus();
-		SmartDashboard.putNumber("Yaw LIDAR Teleop", ahrs.getYaw());
 
 	}
 
