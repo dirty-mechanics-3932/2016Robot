@@ -26,8 +26,6 @@ public class TurnToSRXPid extends Command {
 	double rightPosInitial;
 	double leftPosInitial;
 	double lastYawError;
-	
-	
 
 	Date m_init;
 	int ignoreDataCount;
@@ -60,13 +58,15 @@ public class TurnToSRXPid extends Command {
 		talonInit(RobotMap.driveSystemRightFront, SIDE.Right);
 		rightPosInitial = RobotMap.driveSystemRightFront.getPosition();
 		leftPosInitial = RobotMap.driveSystemLeftFront.getPosition();
-		
+
 		rightPosInitial = 0;
 		leftPosInitial = 0;
-		
+
 		Robot.logf("+++++ Init TurnToSRXPID Degrees: %.2f Timeout:%.2f Mode:%s Yaw:%.2f Rotations:%.2f  +++++%n",
 				m_degrees, m_timeout, RobotMap.driveSystemLeftFront.getControlMode().name(), startingYaw, rotations);
 		Robot.logf("RP:%.2f LP:%.2f Config: %s%n", rightPosInitial, leftPosInitial, conf.currentConfig());
+		Robot.logf("Pin8 Right:%s Pin9 Left:%s%n", (Robot.pin8.get() ? "True" : "False"),
+		   (Robot.pin9.get() ? "True" : "False"));
 		setRotations(RobotMap.driveSystemRightFront, rightPosInitial + rotations + m_distance * Robot.TICKS_PER_FOOT);
 		setRotations(RobotMap.driveSystemLeftFront, leftPosInitial + rotations - m_distance * Robot.TICKS_PER_FOOT);
 		coast = 0;
@@ -105,7 +105,7 @@ public class TurnToSRXPid extends Command {
 			return true;
 		lastYawError = yawError;
 		// Stop when error is in range
-		if (Math.abs((yawError)) < .25)
+		if (Math.abs((yawError)) < .25)  //.25 mini  9/14
 			return true;
 		if (coast > 20) // if coasting complete stop
 			return true;
@@ -150,11 +150,16 @@ public class TurnToSRXPid extends Command {
 		// Set Talon's for reverse sensing, needed to get the PID to converge
 		// See what it is the for big robots and re-wire Mini-3930 or Mini-8700
 		// 3930 Both Right and Left On confirmed by Keith 9/10/2016
-		if (side == SIDE.Left && Robot.pin9.get()) // Needed for Mini-3930
-		 	talon.reverseSensor(true);
-		if (side == SIDE.Right && Robot.pin8.get()) // Needed for Mini-8700
+		// 1337 Pin 8 High, Pin 9 Low
+		// 3930 Pin 8 High, Pin 9 High
+		// 3932 Pin 8 Low, Pin 9 Low
+
+		if ( side == SIDE.Left && Robot.pin9.get()) 
+			talon.reverseSensor(true);
+		if (side == SIDE.Right && Robot.pin8.get()) 
 			talon.reverseSensor(true);
 
+	
 		/* set the peak and nominal outputs, 12V means full */
 		talon.configNominalOutputVoltage(conf.minVoltage, -conf.minVoltage);
 		talon.configPeakOutputVoltage(+12f, -12f);
@@ -199,13 +204,13 @@ public class TurnToSRXPid extends Command {
 
 	public class Config {
 		// Competition Robot -- default values
-		public double pid[] = { 2.5, 0, 0 };
+		public double pid[] = { 1, 0, 30 };
 		public double f = 0;
 		public int iZone = 0;
 		public double rotateFactor = 35;
-		public double maxError = 5;
-		public double minVoltage = 4;
-		public boolean brakeMode = true;
+		public double maxError = 1.5;
+		public double minVoltage = 3;
+		public boolean brakeMode = false;
 		public double voltageRampRate = 0;
 
 		public Config() {

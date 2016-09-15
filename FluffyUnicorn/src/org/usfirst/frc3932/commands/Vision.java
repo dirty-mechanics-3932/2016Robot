@@ -40,6 +40,8 @@ public class Vision {
 		double[] solidityAr = table.getNumberArray("solidity", defaultValue);
 		double[] centerXAr = table.getNumberArray("centerX", defaultValue);
 		double[] areaAr = table.getNumberArray("area", defaultValue);
+		double[] widthAr = table.getNumberArray("width", defaultValue);
+		double[] heightAr = table.getNumberArray("height", defaultValue);
 		length = solidityAr.length;
 		if (length == 0) // return false if no objects found
 			return false;
@@ -49,7 +51,7 @@ public class Vision {
 		try {
 
 			for (i = 0; i < length; i++) {
-				if (solidityAr[i] > .3 && solidityAr[i] < .6 && areaAr[i] > 2000 && areaAr[i] < 6000) {
+				if (solidityAr[i] > .3 && solidityAr[i] < .6 && areaAr[i] > 2000 && areaAr[i] < 6000 && widthAr[i] > heightAr[i] ) {
 					index = i;
 					found = true;
 				}
