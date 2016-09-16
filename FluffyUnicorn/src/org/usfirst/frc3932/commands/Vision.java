@@ -15,6 +15,7 @@ public class Vision {
 	public double solidity;
 	public double area;
 	public double angle;
+	
 	public boolean found;
 	public int length;
 
@@ -46,12 +47,15 @@ public class Vision {
 		if (length == 0) // return false if no objects found
 			return false;
 		int index = 0;
+		if (centerXAr.length != length || areaAr.length != length || widthAr.length != length || heightAr.length != length)
+			return false;
 		found = false;
 		int i = 0;
 		try {
 
 			for (i = 0; i < length; i++) {
-				if (solidityAr[i] > .3 && solidityAr[i] < .6 && areaAr[i] > 2000 && areaAr[i] < 6000 && widthAr[i] > heightAr[i] ) {
+				if (solidityAr[i] > .3 && solidityAr[i] < .6 && areaAr[i] > 2000 && areaAr[i] < 6000
+						&& widthAr[i] > heightAr[i]) {
 					index = i;
 					found = true;
 				}
@@ -61,9 +65,8 @@ public class Vision {
 			centerX = centerXAr[index];
 			solidity = solidityAr[index];
 		} catch (Exception e) {
-			Robot.logf("Vision getTarget Exception: i:%d solidityAr:%d centerAr:%d areaAr:%d%n", i, solidityAr.length,
-					centerXAr.length, areaAr.length);
-			System.err.println(e.getStackTrace());
+			Robot.logf("Vision getTarget Err: i:%d solidityAr:%d centerAr:%d areaAr:%d widthAr:%d lengthAr:%d%n",
+					i, solidityAr.length, centerXAr.length, areaAr.length, widthAr.length, heightAr.length);
 			return false;
 		}
 		return found;

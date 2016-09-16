@@ -79,6 +79,14 @@ public class DriveSystem extends Subsystem {
 
 			initYaw = Robot.ahrs.getAngle();
 			isYawInitialized = true;
+			if (Math.abs(left) >.06 || Math.abs(right) > 0.06) {
+				Robot.logf(
+						"Drive Normal Yaw:%.2f LD:%.2f RD:%.2f " + "LP:%.0f RP:%.0f LS:%.0f RS:%.0f LC:%.2f RC:%.2f%n",
+						initYaw, left, right, RobotMap.driveSystemLeftFront.getPosition(),
+						RobotMap.driveSystemRightFront.getPosition(), RobotMap.driveSystemLeftFront.getSpeed(),
+						RobotMap.driveSystemRightFront.getSpeed(), RobotMap.driveSystemLeftFront.getOutputCurrent(),
+						RobotMap.driveSystemRightFront.getOutputCurrent());
+			}
 
 		}
 

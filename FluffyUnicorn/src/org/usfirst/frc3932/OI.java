@@ -10,7 +10,7 @@
 
 package org.usfirst.frc3932;
 
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 import org.usfirst.frc3932.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

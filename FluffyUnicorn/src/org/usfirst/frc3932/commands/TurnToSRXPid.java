@@ -21,7 +21,6 @@ public class TurnToSRXPid extends Command {
 	double m_distance = 0;
 	double startingYaw;
 	int coast = 0;
-	public Config conf;
 
 	double rightPosInitial;
 	double leftPosInitial;
@@ -49,30 +48,29 @@ public class TurnToSRXPid extends Command {
 	}
 
 	public void initialize() {
-		Robot.driveSystem.resetEncoders();
+		// Robot.driveSystem.resetEncoders();
 		m_init = new Date();
-		conf = new Config();
 		startingYaw = Robot.ahrs.getYaw();
-		double rotations = (m_degrees - startingYaw) * conf.rotateFactor;
+		double rotations = (m_degrees - startingYaw) * Robot.conf.rotateFactor;
 		talonInit(RobotMap.driveSystemLeftFront, SIDE.Left);
 		talonInit(RobotMap.driveSystemRightFront, SIDE.Right);
 		rightPosInitial = RobotMap.driveSystemRightFront.getPosition();
 		leftPosInitial = RobotMap.driveSystemLeftFront.getPosition();
 
-		rightPosInitial = 0;
-		leftPosInitial = 0;
+		// rightPosInitial = 0;
+		// leftPosInitial = 0;
 
 		Robot.logf("+++++ Init TurnToSRXPID Degrees: %.2f Timeout:%.2f Mode:%s Yaw:%.2f Rotations:%.2f  +++++%n",
 				m_degrees, m_timeout, RobotMap.driveSystemLeftFront.getControlMode().name(), startingYaw, rotations);
-		Robot.logf("RP:%.2f LP:%.2f Config: %s%n", rightPosInitial, leftPosInitial, conf.currentConfig());
-		Robot.logf("Pin8 Right:%s Pin9 Left:%s%n", (Robot.pin8.get() ? "True" : "False"),
-		   (Robot.pin9.get() ? "True" : "False"));
+		Robot.logf("RP:%.2f LP:%.2f Config: %s%n", rightPosInitial, leftPosInitial, Robot.conf.currentConfig());
+		Robot.logf("AHRS Version:%s Pin8 Right:%s Pin9 Left:%s%n", Robot.ahrs.getFirmwareVersion(),
+				(Robot.pin8.get() ? "True" : "False"), (Robot.pin9.get() ? "True" : "False"));
 		setRotations(RobotMap.driveSystemRightFront, rightPosInitial + rotations + m_distance * Robot.TICKS_PER_FOOT);
 		setRotations(RobotMap.driveSystemLeftFront, leftPosInitial + rotations - m_distance * Robot.TICKS_PER_FOOT);
 		coast = 0;
-		ignoreDataCount = 3; // Set to ignore the results for 3 passes
+		ignoreDataCount = 2; // Set to ignore the results for 2 passes
 		lastYawError = rotations;
-		if (conf.brakeMode) // Turn on break mode if parameter is set
+		if (Robot.conf.brakeMode) // Turn on break mode if parameter is set
 			Robot.setBrakeMode(true);
 	}
 
@@ -97,7 +95,7 @@ public class TurnToSRXPid extends Command {
 		if (convTime > m_timeout * 1000) // If timeout stop immediately
 			return true;
 		// If error is in range coast for a while
-		if (Math.abs(leftErr) < conf.maxError && Math.abs(rightErr) < conf.maxError) {
+		if (Math.abs(leftErr) < Robot.conf.maxError && Math.abs(rightErr) < Robot.conf.maxError) {
 			coast++;
 		}
 		// Pass thru zero stop
@@ -105,7 +103,7 @@ public class TurnToSRXPid extends Command {
 			return true;
 		lastYawError = yawError;
 		// Stop when error is in range
-		if (Math.abs((yawError)) < .25)  //.25 mini  9/14
+		if (Math.abs((yawError)) < .25) // .25 mini 9/14
 			return true;
 		if (coast > 20) // if coasting complete stop
 			return true;
@@ -135,7 +133,7 @@ public class TurnToSRXPid extends Command {
 		RobotMap.driveSystemLeftFront.changeControlMode(TalonControlMode.PercentVbus);
 		RobotMap.driveSystemRightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		RobotMap.driveSystemLeftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		if (conf.brakeMode)
+		if (Robot.conf.brakeMode)
 			Robot.setBrakeMode(false);
 	}
 
@@ -154,14 +152,13 @@ public class TurnToSRXPid extends Command {
 		// 3930 Pin 8 High, Pin 9 High
 		// 3932 Pin 8 Low, Pin 9 Low
 
-		if ( side == SIDE.Left && Robot.pin9.get()) 
+		if (side == SIDE.Left && Robot.pin9.get())
 			talon.reverseSensor(true);
-		if (side == SIDE.Right && Robot.pin8.get()) 
+		if (side == SIDE.Right && Robot.pin8.get())
 			talon.reverseSensor(true);
 
-	
 		/* set the peak and nominal outputs, 12V means full */
-		talon.configNominalOutputVoltage(conf.minVoltage, -conf.minVoltage);
+		talon.configNominalOutputVoltage(Robot.conf.minVoltage, -Robot.conf.minVoltage);
 		talon.configPeakOutputVoltage(+12f, -12f);
 
 		/*
@@ -173,12 +170,12 @@ public class TurnToSRXPid extends Command {
 
 		/* set closed loop gains in slot0 */
 		talon.setProfile(0);
-		talon.setP(conf.pid[0]);
-		talon.setI(conf.pid[1]);
-		talon.setD(conf.pid[2]);
-		talon.setF(conf.f);
-		talon.setIZone(conf.iZone);
-		talon.setVoltageRampRate(conf.voltageRampRate);
+		talon.setP(Robot.conf.pid[0]);
+		talon.setI(Robot.conf.pid[1]);
+		talon.setD(Robot.conf.pid[2]);
+		talon.setF(Robot.conf.f);
+		talon.setIZone(Robot.conf.iZone);
+		talon.setVoltageRampRate(Robot.conf.voltageRampRate);
 	}
 
 	public String miscData(CANTalon talon, SIDE side) { // Create Misc data for
@@ -196,43 +193,9 @@ public class TurnToSRXPid extends Command {
 	void adjustSetPoint(double yawError) {
 		double rightPos = RobotMap.driveSystemRightFront.getPosition();
 		double leftPos = RobotMap.driveSystemLeftFront.getPosition();
-		double deltaTicks = -yawError * conf.rotateFactor;
+		double deltaTicks = -yawError * Robot.conf.rotateFactor;
 		RobotMap.driveSystemRightFront.set(rightPos + deltaTicks);
 		RobotMap.driveSystemLeftFront.set(leftPos + deltaTicks);
 		Robot.logf("adjustSetPoint ticks:%.2f RP:%.0f LP:%.0f%n", deltaTicks, rightPos, leftPos);
-	}
-
-	public class Config {
-		// Competition Robot -- default values
-		public double pid[] = { 1, 0, 30 };
-		public double f = 0;
-		public int iZone = 0;
-		public double rotateFactor = 35;
-		public double maxError = 1.5;
-		public double minVoltage = 3;
-		public boolean brakeMode = false;
-		public double voltageRampRate = 0;
-
-		public Config() {
-			if (Robot.robotType == ROBOTTYPES.MINI) {
-				pid[0] = 6;
-				pid[1] = 0;
-				pid[2] = 60;
-				f = 0;
-				rotateFactor = 14.2; // Previous 14.8
-				maxError = 1.5;
-				minVoltage = 2;
-				brakeMode = false;
-				voltageRampRate = 0;
-			}
-		}
-
-		// Create a string that shows the configuration data
-		public String currentConfig() {
-			return String.format(
-					"P:%.2f I:%.2f D:%.2f F:%.2f rotF:%.2f maxErr:%.2f Min Volt:%.2f Brake:%s VRamp:%.2f Type:%s",
-					pid[0], pid[1], pid[2], f, rotateFactor, maxError, minVoltage, (brakeMode ? "True" : "False"),
-					voltageRampRate, Robot.robotType.name());
-		}
 	}
 }
