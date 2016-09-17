@@ -6,6 +6,7 @@ import org.usfirst.frc3932.Robot.ROBOTTYPES;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
@@ -19,6 +20,7 @@ public class TurnToSRXPid extends Command {
 	double m_degrees;
 	double m_timeout;
 	double m_distance = 0;
+	boolean m_targeting = false;
 	double startingYaw;
 	int coast = 0;
 
@@ -40,11 +42,23 @@ public class TurnToSRXPid extends Command {
 		m_distance = 0;
 	}
 
+	public TurnToSRXPid(double degrees, double timeout, boolean targeting) {
+		requires(Robot.driveSystem);
+		m_degrees = degrees;
+		m_timeout = timeout;
+		m_targeting = targeting;
+		m_distance = 0;
+	}
+
 	public TurnToSRXPid(double degrees, double timeout, double distance) {
 		requires(Robot.driveSystem);
 		m_degrees = degrees;
 		m_timeout = timeout;
 		m_distance = distance;
+	}
+
+	public TurnToSRXPid(double degrees) { // Overloaded for 5 second time out
+		this(degrees, 5);
 	}
 
 	public void initialize() {
@@ -56,7 +70,7 @@ public class TurnToSRXPid extends Command {
 		talonInit(RobotMap.driveSystemRightFront, SIDE.Right);
 		rightPosInitial = RobotMap.driveSystemRightFront.getPosition();
 		leftPosInitial = RobotMap.driveSystemLeftFront.getPosition();
-
+		Robot.navXPin9.set(true);
 		// rightPosInitial = 0;
 		// leftPosInitial = 0;
 
@@ -65,8 +79,11 @@ public class TurnToSRXPid extends Command {
 		Robot.logf("RP:%.2f LP:%.2f Config: %s%n", rightPosInitial, leftPosInitial, Robot.conf.currentConfig());
 		Robot.logf("AHRS Version:%s Pin8 Right:%s Pin9 Left:%s%n", Robot.ahrs.getFirmwareVersion(),
 				(Robot.pin8.get() ? "True" : "False"), (Robot.pin9.get() ? "True" : "False"));
-		setRotations(RobotMap.driveSystemRightFront, rightPosInitial + rotations + m_distance * Robot.TICKS_PER_FOOT);
-		setRotations(RobotMap.driveSystemLeftFront, leftPosInitial + rotations - m_distance * Robot.TICKS_PER_FOOT);
+		//if (!m_targeting) {
+			setRotations(RobotMap.driveSystemRightFront,
+					rightPosInitial + rotations + m_distance * Robot.TICKS_PER_FOOT);
+			setRotations(RobotMap.driveSystemLeftFront, leftPosInitial + rotations - m_distance * Robot.TICKS_PER_FOOT);
+		//}
 		coast = 0;
 		ignoreDataCount = 2; // Set to ignore the results for 2 passes
 		lastYawError = rotations;
@@ -135,6 +152,7 @@ public class TurnToSRXPid extends Command {
 		RobotMap.driveSystemLeftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		if (Robot.conf.brakeMode)
 			Robot.setBrakeMode(false);
+		Robot.navXPin9.set(false);
 	}
 
 	public void interrupted() {
@@ -147,7 +165,9 @@ public class TurnToSRXPid extends Command {
 
 		// Set Talon's for reverse sensing, needed to get the PID to converge
 		// See what it is the for big robots and re-wire Mini-3930 or Mini-8700
-		// 3930 Both Right and Left On confirmed by Keith 9/10/2016
+		// Pin 8 is for the Right Side and Pin 9 is for the Left Side
+		// If Right Side does not converge then invert Pin 8.
+		// If Left Side does not converge then invert Pin 9.
 		// 1337 Pin 8 High, Pin 9 Low
 		// 3930 Pin 8 High, Pin 9 High
 		// 3932 Pin 8 Low, Pin 9 Low
@@ -178,8 +198,8 @@ public class TurnToSRXPid extends Command {
 		talon.setVoltageRampRate(Robot.conf.voltageRampRate);
 	}
 
-	public String miscData(CANTalon talon, SIDE side) { // Create Misc data for
-														// a side
+	// Create Misc data for a side
+	public String miscData(CANTalon talon, SIDE side) {
 		return String.format("%s P:%.1f En:%d V:%.2f C:%.2f Err:%d", side.name(), talon.getPosition(),
 				talon.getEncPosition(), talon.getOutputVoltage(), talon.getOutputCurrent(), talon.getClosedLoopError());
 	}
@@ -190,7 +210,7 @@ public class TurnToSRXPid extends Command {
 	}
 
 	// Used to update the set points on the fly
-	void adjustSetPoint(double yawError) {
+	public void adjustSetPoint(double yawError) {
 		double rightPos = RobotMap.driveSystemRightFront.getPosition();
 		double leftPos = RobotMap.driveSystemLeftFront.getPosition();
 		double deltaTicks = -yawError * Robot.conf.rotateFactor;

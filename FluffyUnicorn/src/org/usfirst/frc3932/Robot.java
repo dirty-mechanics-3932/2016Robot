@@ -13,7 +13,7 @@ package org.usfirst.frc3932;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -64,20 +64,22 @@ public class Robot extends IterativeRobot {
 
 	private DigitalInput config0;
 	private DigitalInput config1;
-	
-	
+	public static DigitalOutput navXPin8;
+	public static DigitalOutput navXPin9;
+
 	public static DigitalInput pin8;
 	public static DigitalInput pin9;
 	public static Config conf;
-	
+
 	private int count = 0;
 
 	// Data for Robot Configuration
 	public enum ROBOTTYPES {
 		MINI, COMPETITION, SIBLING
 	}
+
 	public static ROBOTTYPES robotType = ROBOTTYPES.COMPETITION;
-	
+
 	public static final double TICKS_PER_FOOT = 1409d; // measured
 
 	//
@@ -94,8 +96,6 @@ public class Robot extends IterativeRobot {
 	private static SendableChooser obstacleChooser = new SendableChooser();
 	private static SendableChooser positionChooser = new SendableChooser();
 	private static SendableChooser rollAdapterChooser = new SendableChooser();
-
-
 
 	public Robot() {
 		obstacleChooser.addDefault("Auto_Moat:", Commands.AUTO_MOAT);
@@ -133,7 +133,6 @@ public class Robot extends IterativeRobot {
 		platform = new Platform();
 		camera = new Camera();
 		cannon = new Cannon();
-		conf = new Config();
 		onBoardCompressor = new OnBoardCompressor();
 		shooterWheels = new ShooterWheels();
 		powerDistributionBoard = new PowerDistributionBoard();
@@ -164,20 +163,25 @@ public class Robot extends IterativeRobot {
 		// NetworkTable.setClientMode();
 		// NetworkTable.setIPAddress("127.0.0.1");
 		setRobotType();
+		conf = new Config();
 	}
 
 	private void setRobotType() {
 		config0 = new DigitalInput(5);
 		config1 = new DigitalInput(6);
-			
-	    pin8 = new DigitalInput(8);
+
+		pin8 = new DigitalInput(8);
 		pin9 = new DigitalInput(9);
-			
+
+		navXPin8 = new DigitalOutput(22);
+		navXPin9 = new DigitalOutput(23);
+
 		int robotConfig = (config0.get() ? 1 : 0) + (config1.get() ? 2 : 0);
 		log("C0:" + config0.get() + " C1:" + config1.get());
 		// robotConfig 3 - Mini, default COMPETITION
 		robotType = ROBOTTYPES.COMPETITION;
-		if (robotConfig == 3)  robotType = ROBOTTYPES.MINI;
+		if (robotConfig == 3)
+			robotType = ROBOTTYPES.MINI;
 		log("********** Startup Robot Type:" + robotType + " **********");
 	}
 
@@ -535,7 +539,6 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
-	
 	public class Config {
 		// Competition Robot -- default values
 		public double pid[] = { 1, 0, 30 };
@@ -548,6 +551,7 @@ public class Robot extends IterativeRobot {
 		public double voltageRampRate = 0;
 
 		public Config() {
+			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
 			if (Robot.robotType == ROBOTTYPES.MINI) {
 				pid[0] = 6;
 				pid[1] = 0;
