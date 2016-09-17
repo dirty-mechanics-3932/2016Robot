@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team3932.robot.components.configs;
 
 import lombok.AllArgsConstructor;
@@ -7,4 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class JoystickConfig {
     private int channel;
+
+    public enum JoystickSide {
+        LEFT, RIGHT;
+    }
 }

@@ -1,8 +1,9 @@
+
 package org.usfirst.frc.team3932.robot.components.configs;
 
 import java.util.EnumMap;
-
-import org.usfirst.frc.team3932.robot.components.RobotSide;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Data
@@ -17,18 +19,34 @@ public class TalonConfig implements Cloneable {
 
     public TalonConfig clone() throws CloneNotSupportedException {
         TalonConfig copy = (TalonConfig) super.clone();
-        copy.pid = this.pid.clone();
+        if (this.PIDProfileZero != null)
+            copy.PIDProfileZero = this.PIDProfileZero.clone();
+        if (this.PIDProfileOne != null)
+            copy.PIDProfileOne = this.PIDProfileOne.clone();
         copy.controlFramePeriods = this.controlFramePeriods.clone();
         return copy;
     }
 
     private int channel;
-    private RobotSide side = RobotSide.UNKNOWN;
 
-    private TalonPIDConfig pid;
+    private TalonPIDConfig PIDProfileZero;
+    private TalonPIDConfig PIDProfileOne;
+
+    private boolean activeProfile;
+
+    public void setActiveProfile(int i) {
+        activeProfile = i == 1;
+    }
 
     /**
-     * Default is PercentVbus. Only Current, Position, and Speed (Velocity) modes are closed-loop.
+     * @return Either 1 or 0.
+     */
+    public int getActiveProfile() {
+        return activeProfile ? 1 : 0;
+    }
+
+    /**
+     * Default is PercentVbus. Only Current, Position, and Speed (Velocity) modes are closed-loop. Voltage Compensation Mode not implemented here.
      */
     private TalonControlMode controlMode = TalonControlMode.PercentVbus;
 
@@ -38,7 +56,7 @@ public class TalonConfig implements Cloneable {
 
     /**
      * Will make this Talon a slave by setting the {@link #controlMode} to {@link edu.wpi.first.wpilibj.CANTalon.TalonControlMode#Follower Follower}.
-     * 
+     *
      * @param id
      *            Channel of the master Talon.
      */
@@ -75,16 +93,18 @@ public class TalonConfig implements Cloneable {
     /**
      * Between -12 and +12.
      */
-    private int peakOutputVoltage;
+    private int maxOutputVoltageForward;
+    private int maxOutputVoltageReverse;
     /**
      * Between -12 and +12.
      */
-    private int nominalOutputVoltage;
+    private int nominalOutputVoltageForward;
+    private int nominalOutputVoltageReverse;
 
     /**
-     * True for break, false for coast.
+     * True for brake, false for coast.
      */
-    private boolean enableBreakMode;
+    private boolean enableBrakeMode;
 
     // Limit switches and soft limits are a feature of Talons, but are not implemented here.
     // Auto clearing of Position using Index Pin is supported but not implemented here.
@@ -94,17 +114,23 @@ public class TalonConfig implements Cloneable {
 
     /**
      * The period in ms to send the CAN control frame. Default is 10ms.
-     * 
+     *
      * The control frame provides the control mode, feedback sensor, target/set points or duty cycle, (voltage) ramp rate, and overrides and reversal settings.
      */
     private int CANUpdateInterval = 10;
 
     @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    @NonNull
     private EnumMap<StatusFrameRate, Integer> controlFramePeriods = new EnumMap<StatusFrameRate, Integer>(StatusFrameRate.class);
+
+    public Set<Entry<StatusFrameRate, Integer>> getControlFramePeriods() {
+        return controlFramePeriods.entrySet();
+    }
 
     /**
      * The General frame provides closed loop error, throttle, limit switch pins, fault bits, applied control mode.
-     * 
+     *
      * @param period
      *            Interval of frame in ms. Default 10ms.
      */
@@ -114,7 +140,7 @@ public class TalonConfig implements Cloneable {
 
     /**
      * The Feedback frame provides sensor position and velocity, motor current, sticky faults, brake neutral state, and motor control profile select.
-     * 
+     *
      * @param period
      *            Interval of frame in ms. Default 20ms.
      */
@@ -124,7 +150,7 @@ public class TalonConfig implements Cloneable {
 
     /**
      * The Quadrature Encoder frame provides encoder position and velocity, number of rising edges counted on the index pin, and quad a, b, and index pin states.
-     * 
+     *
      * @param period
      *            Interval of frame in ms. Default 100ms.
      */
@@ -134,7 +160,7 @@ public class TalonConfig implements Cloneable {
 
     /**
      * The Analog frame provides analog position and velocity, temperature, and battery voltage.
-     * 
+     *
      * @param period
      *            Interval of frame in ms. Default 100ms.
      */

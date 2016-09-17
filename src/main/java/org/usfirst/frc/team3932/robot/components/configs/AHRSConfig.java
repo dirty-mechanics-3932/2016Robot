@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team3932.robot.components.configs;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -12,7 +13,7 @@ public class AHRSConfig {
 
     /**
      * Sets {@link updateRateHz}.
-     * 
+     *
      * @param miliseconds
      *            Interal in ms to convert to Hertz.
      */

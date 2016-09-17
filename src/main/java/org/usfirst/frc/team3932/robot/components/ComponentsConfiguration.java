@@ -1,35 +1,37 @@
 
 package org.usfirst.frc.team3932.robot.components;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.usfirst.frc.team3932.robot.components.configs.AHRSConfig;
 import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig;
+import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig.JoystickSide;
 import org.usfirst.frc.team3932.robot.components.configs.TalonConfig;
 
 import lombok.Getter;
 import lombok.Setter;
 
 public class ComponentsConfiguration {
-    private List<JoystickConfig> joysticks = new LinkedList<>();
+    private final EnumMap<JoystickSide, JoystickConfig> joysticks = new EnumMap<>(JoystickSide.class);
 
-    public boolean addJoystick(JoystickConfig config) {
-        return joysticks.add(config);
+    public Set<Entry<JoystickSide, JoystickConfig>> getJoysticks() {
+        return joysticks.entrySet();
     }
 
-    public JoystickConfig[] getJoysticks() {
-        return joysticks.toArray(new JoystickConfig[joysticks.size()]);
+    public void addJoystick(JoystickSide side, JoystickConfig config) {
+        joysticks.put(side, config);
     }
 
-    private List<TalonConfig> talons = new LinkedList<>();
+    private final EnumMap<RobotSide, TalonConfig> talons = new EnumMap<>(RobotSide.class);
 
-    public boolean addTalon(TalonConfig config) {
-        return talons.add(config);
+    public Set<Entry<RobotSide, TalonConfig>> getTalons() {
+        return talons.entrySet();
     }
 
-    public TalonConfig[] getTalons() {
-        return talons.toArray(new TalonConfig[talons.size()]);
+    public void addTalon(RobotSide side, TalonConfig config) {
+        talons.put(side, config);
     }
 
     @Getter

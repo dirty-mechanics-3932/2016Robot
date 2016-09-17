@@ -1,11 +1,14 @@
+
 package org.usfirst.frc.team3932.robot.components;
 
 import org.usfirst.frc.team3932.robot.components.configs.AHRSConfig;
 import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig;
+import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig.JoystickSide;
 import org.usfirst.frc.team3932.robot.components.configs.TalonConfig;
+import org.usfirst.frc.team3932.robot.components.configs.TalonPIDConfig;
 
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.SPI;
 
 public class ComponentsFactory {
 
@@ -31,22 +34,25 @@ public class ComponentsFactory {
 
         TalonConfig talLeft = new TalonConfig();
         talLeft.setChannel(2);
-        talLeft.setEnableBreakMode(false);
+        talLeft.setEnableBrakeMode(false);
         talLeft.setEncoderTicksPerRevolution(360);
         talLeft.setCANUpdateInterval(20);
         talLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
         talLeft.setGeneralFrame(20);
         talLeft.setFeedbackFrame(10);
 
+        talLeft.setPIDProfileZero(new TalonPIDConfig());
+        talLeft.setPIDProfileOne(new TalonPIDConfig());
+
         TalonConfig talRight = talLeft.clone();
         talRight.setChannel(3);
 
         config.setAhrs(ahrsConfig);
-        config.addJoystick(joyLeft);
-        config.addJoystick(joyRight);
+        config.addJoystick(JoystickSide.LEFT, joyLeft);
+        config.addJoystick(JoystickSide.RIGHT, joyRight);
 
-        config.addTalon(talLeft);
-        config.addTalon(talRight);
+        config.addTalon(RobotSide.LEFT, talLeft);
+        config.addTalon(RobotSide.RIGHT, talRight);
     }
 
 }
