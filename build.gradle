@@ -23,6 +23,7 @@ repositories {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
     maven {
         url "http://first.wpi.edu/FRC/roborio/maven/release"
     }
@@ -44,6 +45,7 @@ tasks.matching { task ->
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     // compile 'org.slf4j:slf4j-api:1.7.21'
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
 
     // The following dependencies were found at http://wpilib.screenstepslive.com/s/4485/m/wpilib_source/l/480976-maven-artifacts
     compile 'edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT' // WPILibJ uberjar
@@ -81,7 +83,7 @@ spotless {
 eclipse {
     classpath {
        downloadSources = true
-       downloadSources = true
+       downloadJavadoc = true
     }
 }
 
@@ -113,11 +115,20 @@ task loadSSHExec {
     }
 }
 
+task deleteClasspath(type: Delete) {
+    delete '.classpath'
+}
+
+deleteClasspath.group = tasks['eclipse'].group
+deleteClasspath.description = 'Deletes eclispe .classpath'
+
 tasks.matching { task ->
     task.name.startsWith('ant_')
 }.each {
     it.dependsOn('loadSSHExec')
 }
+
+tasks['eclipse'].dependsOn('deleteClasspath')
 
 // Aliases
 ant_jar.dependsOn('shadowJar')
