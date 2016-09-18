@@ -100,10 +100,12 @@ public class DriveStraight extends Command {
 	protected boolean isFinished() {
 		double d = getDistance();
 		if (Math.abs(lastD - d) < .0001 || true) { // Log only if moved
-			Robot.logf("Drive L:%.0f R:%.0f LS:%.1f RS:%.1f Yaw:%.2f Distance:%.2f Time:%d Speed:%.2f %n",
+			Double lidarDistance = Robot.rangefinder.getDistance() / (12 * 2.54);
+			Robot.logf("Drive L:%.0f R:%.0f LS:%.1f RS:%.1f Yaw:%.2f Distance:%.2f Time:%d Speed:%.2f LID:%.2f Ar:%.2f %.2f%n",
 					RobotMap.driveSystemLeftFront.getPosition(), RobotMap.driveSystemRightFront.getPosition(),
 					RobotMap.driveSystemLeftFront.getSpeed(), RobotMap.driveSystemRightFront.getSpeed(),
-					Robot.ahrs.getYaw(), d, new Date().getTime() - DriveStraightInit.getTime(), m_speed);
+					Robot.ahrs.getYaw(), d, new Date().getTime() - DriveStraightInit.getTime(), m_speed, 
+					lidarDistance, Robot.vision.area, Robot.vision.height);
 		}
 		lastD = d;
 		return Math.abs(d) > Math.abs(m_feet);

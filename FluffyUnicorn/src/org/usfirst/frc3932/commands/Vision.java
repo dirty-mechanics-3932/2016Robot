@@ -1,5 +1,6 @@
 package org.usfirst.frc3932.commands;
 
+
 import org.usfirst.frc3932.Robot;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -9,6 +10,7 @@ public class Vision {
 	private NetworkTable table = null;
 
 	private static final double H_RES = 640;
+	private static final double Y_RES= 480;
 	private static final double FIELD_OF_VIEW = 74;
 	private String targetInfo;
 
@@ -16,6 +18,9 @@ public class Vision {
 	public double solidity;
 	public double area;
 	public double angle;
+	public double xDist;
+	public double height;
+	public double totalYAngle;
 
 	public boolean found;
 	public int length;
@@ -24,15 +29,19 @@ public class Vision {
 		table = NetworkTable.getTable("GRIP/myContoursReport");
 	}
 
+	// 
 	public void updateSmartDashboard() {
 		if (getTarget()) {
 			Robot.navXPin8.set(true);
 			SmartDashboard.putNumber("centerX", centerX);
 			SmartDashboard.putNumber("Target Angle", angle);
+			SmartDashboard.putNumber("xDist", xDist / 12d);
+			SmartDashboard.putNumber("Y Angle", totalYAngle);
 		} else {
 			Robot.navXPin8.set(false);
 			SmartDashboard.putNumber("centerX", 0);
 			SmartDashboard.putNumber("Target Angle", 9999);
+			SmartDashboard.putNumber("xDist", 9999);
 		}
 		SmartDashboard.putString("Target Info", targetInfo);
 		SmartDashboard.putNumber("Area", area);
@@ -46,6 +55,7 @@ public class Vision {
 		double[] defaultValue = new double[0];
 		double[] solidityAr = table.getNumberArray("solidity", defaultValue);
 		double[] centerXAr = table.getNumberArray("centerX", defaultValue);
+		double[] centerYAr = table.getNumberArray("centerY", defaultValue);
 		double[] areaAr = table.getNumberArray("area", defaultValue);
 		double[] widthAr = table.getNumberArray("width", defaultValue);
 		double[] heightAr = table.getNumberArray("height", defaultValue);
@@ -56,10 +66,10 @@ public class Vision {
 			return false;
 		}
 		int index = 0;
-		if (centerXAr.length != length || areaAr.length != length || widthAr.length != length
+		if (centerXAr.length != length || centerYAr.length != length || areaAr.length != length || widthAr.length != length
 				|| heightAr.length != length) {
-			Robot.logf("Vision getTarget Err: solidityAr:%d centerAr:%d areaAr:%d widthAr:%d lengthAr:%d%n",
-					solidityAr.length, centerXAr.length, areaAr.length, widthAr.length, heightAr.length);
+			Robot.logf("Vision getTarget Err: solidityAr:%d centerXAr:%d centerYAr:%d areaAr:%d widthAr:%d lengthAr:%d%n",
+					solidityAr.length, centerXAr.length, centerYAr.length, areaAr.length, widthAr.length, heightAr.length);
 			targetInfo = "Arrays not equal see log";
 			return false;
 		}
@@ -91,18 +101,58 @@ public class Vision {
 			angle = (centerXAr[index] - H_RES / 2) * FIELD_OF_VIEW / H_RES;
 			centerX = centerXAr[index];
 			solidity = solidityAr[index];
+			height = heightAr[index];
+			
 			if (found) {
 				targetInfo = "OK " + length + " objects";
+				totalYAngle = getMountAngle() + (((Y_RES - centerYAr[index]) - (Y_RES/2)) * (FIELD_OF_VIEW / Y_RES));
+				xDist = (Robot.conf.targetHeight - getMountHeight()) / Math.tan(Math.toRadians(totalYAngle));
 			}
 			// Robot.log("Vision Found index: " + index + " angle:" + angle + "
 			// found:" + found);
 		} catch (Exception e) {
 			Robot.logf("Vision getTarget Exception: i:%d solidityAr:%d centerAr:%d areaAr:%d widthAr:%d lengthAr:%d%n",
 					i, solidityAr.length, centerXAr.length, areaAr.length, widthAr.length, heightAr.length);
+			e.printStackTrace();
 			targetInfo = "Exception - See log";
 			return false;
 		}
 		return found;
 	}
+	
+/*	
+	public double getDist() {
+		double[] defaultValue = new double[0];
+		table = NetworkTable.getTable("GRIP/myContoursReport");
+		double[] solidityAr = table.getNumberArray("solidity", defaultValue);
+		double[] centerYAr = table.getNumberArray("centerY", defaultValue);
+		int objInd = getObjInd(solidityAr);
+		if (!(objInd == -1)) {
+			totalYAngle = getMountAngle() + (centerYAr[objInd] - (Y_RES / 2)* (FIELD_OF_VIEW/Y_RES));
+			xDist = (91 - getMountHeight()) / Math.tan(Math.toRadians(totalYAngle));
+		}
+		return xDist;
+	}
+	public int getObjInd(double[] solidityAr) {
+		int index = -1;
+		if (solidityAr.length > 0) {
+			for (int i = 0;i < solidityAr.length; i++) {
+				if (solidityAr[i] > .28 && solidityAr[i] < .6)
+					index = i;
+			}
+		}
+		return index;
+	}
+*/
+	
+	
+	private double getMountHeight() {
+		return Robot.conf.mountHeight;
+	}
+	private double getMountAngle() {
+		return Robot.conf.mountAngle;
+	}
+	
+	
 
 }

@@ -56,10 +56,10 @@ public class MoveToTargetYawPid extends Command {
 	private long elaspedTime;
 
 	private enum State {
-		IDLE, TARGETING, MOVING, FINETARGET
+		INITIAL, TARGETING, MOVING, FINETARGET
 	};
 
-	private State state = State.IDLE;
+	private State state = State.INITIAL;
 	private double magicDistance = 8;
 	private DriveStraight Move;
 
@@ -100,17 +100,20 @@ public class MoveToTargetYawPid extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
+		double xDist;
 		elaspedTime = new Date().getTime() - m_MoveToInit.getTime();
 		if (elaspedTime > m_Timeout * 1000)
 			return true;
 
 		lidar = Robot.rangefinder.getDistance() / (12 * 2.54);
+		xDist = vision.xDist;
 		yaw = Robot.ahrs.getYaw();
 		count++;
 		if (state == State.TARGETING) {
 			if (targeting()) {
 				state = State.MOVING;
 				driving.setup(lidar - magicDistance, .5);
+				//driving.setup((xDist / 12) - magicDistance, .5);
 				driving.initialize();
 			}
 		}
@@ -143,7 +146,7 @@ public class MoveToTargetYawPid extends Command {
 	protected boolean targeting() {
 		double output;
 		double angle;
-		if ((count % 30) == 0) {
+		if ((count % 30) == 0) { // Every 600 Millisecond re-target
 			if (!vision.getTarget()) {
 				Robot.logf("No target len:%d angle:%.2f solidity[0]:%.2f time:%d%n", vision.length, vision.angle,
 						vision.solidity, elaspedTime);

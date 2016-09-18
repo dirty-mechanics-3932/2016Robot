@@ -541,27 +541,33 @@ public class Robot extends IterativeRobot {
 
 	public class Config {
 		// Competition Robot -- default values
-		public double pid[] = { 1, 0, 30 };
-		public double f = 0;
+		public double pid[] = { 1d, 0d, 30d };
+		public double f = 0d;
 		public int iZone = 0;
-		public double rotateFactor = 35;
-		public double maxError = 1.5;
-		public double minVoltage = 3;
+		public double rotateFactor = 35d;
+		public double maxError = 1.5d;
+		public double minVoltage = 3d;
 		public boolean brakeMode = false;
-		public double voltageRampRate = 0;
+		public double voltageRampRate = 0d;
+		public double mountAngle = 30d;
+		public double mountHeight = 20d;
+		public double targetHeight = 91d;
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
 			if (Robot.robotType == ROBOTTYPES.MINI) {
-				pid[0] = 6;
-				pid[1] = 0;
-				pid[2] = 60;
-				f = 0;
-				rotateFactor = 14.2; // Previous 14.8
-				maxError = 1.5;
-				minVoltage = 2;
+				pid[0] = 6d;
+				pid[1] = 0d;
+				pid[2] = 60d;
+				f = 0d;
+				rotateFactor = 14.2d; // Previous 14.8
+				maxError = 1.5d;
+				minVoltage = 2d;
 				brakeMode = true;
-				voltageRampRate = 0;
+				voltageRampRate = 0d;
+				mountAngle = 30d;
+				mountHeight = 13.2d;
+				targetHeight = 37.5d;
 			}
 		}
 
