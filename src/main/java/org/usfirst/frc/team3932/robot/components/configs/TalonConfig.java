@@ -48,6 +48,7 @@ public class TalonConfig implements Cloneable {
     /**
      * Default is PercentVbus. Only Current, Position, and Speed (Velocity) modes are closed-loop. Voltage Compensation Mode not implemented here.
      */
+    @NonNull
     private TalonControlMode controlMode = TalonControlMode.PercentVbus;
 
     @Getter(AccessLevel.NONE)
@@ -87,7 +88,7 @@ public class TalonConfig implements Cloneable {
     /**
      * Default is QuadratureEncoder.
      */
-    private FeedbackDevice feedbackDevice;
+    private FeedbackDevice feedbackDevice = FeedbackDevice.QuadEncoder;
     private int encoderTicksPerRevolution;
 
     /**
@@ -113,7 +114,7 @@ public class TalonConfig implements Cloneable {
     // private double voltageCompensationRampRate;
 
     /**
-     * The period in ms to send the CAN control frame. Default is 10ms.
+     * The period in ms to send the CAN control frame. Default is 10ms. Between 1 and 95ms.
      *
      * The control frame provides the control mode, feedback sensor, target/set points or duty cycle, (voltage) ramp rate, and overrides and reversal settings.
      */

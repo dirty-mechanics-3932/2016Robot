@@ -20,8 +20,7 @@ public class ComponentsFactory {
             // Programming Error. This should never happen.
             // TODO: Implement correct error handling here.
         }
-        Components components = new Components(config);
-        return components;
+        return new Components(config);
     }
 
     private static void create(ComponentsConfiguration config) throws CloneNotSupportedException {

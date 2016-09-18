@@ -39,23 +39,31 @@ public final class Components {
             Entry<RobotSide, TalonConfig> entry = talonConfigs.next();
             TalonConfig talConf = entry.getValue();
             CANTalon tal = new CANTalon(talConf.getChannel(), talConf.getCANUpdateInterval());
-            tal.setVoltageRampRate(talConf.getVoltageRampRate());
+            if (talConf.getVoltageRampRate() != 0)
+                tal.setVoltageRampRate(talConf.getVoltageRampRate());
             tal.reverseOutput(talConf.getReverseCloseLoopOutput());
             tal.reverseSensor(talConf.getReverseCloseLoopSensor());
-            tal.setFeedbackDevice(talConf.getFeedbackDevice());
-            if (talConf.getFeedbackDevice() == FeedbackDevice.QuadEncoder)
+            if (talConf.getFeedbackDevice() != FeedbackDevice.QuadEncoder)
+                tal.setFeedbackDevice(talConf.getFeedbackDevice());
+            if (talConf.getEncoderTicksPerRevolution() != 0)
                 tal.configEncoderCodesPerRev(talConf.getEncoderTicksPerRevolution());
-            tal.configPeakOutputVoltage(talConf.getMaxOutputVoltageForward(), talConf.getMaxOutputVoltageReverse());
-            tal.configNominalOutputVoltage(talConf.getNominalOutputVoltageForward(), talConf.getNominalOutputVoltageReverse());
+            if (talConf.getMaxOutputVoltageForward() != 0 || talConf.getMaxOutputVoltageReverse() != 0)
+                tal.configPeakOutputVoltage(talConf.getMaxOutputVoltageForward(), talConf.getMaxOutputVoltageReverse());
+            if (talConf.getNominalOutputVoltageForward() != 0 || talConf.getNominalOutputVoltageReverse() != 0)
+                tal.configNominalOutputVoltage(talConf.getNominalOutputVoltageForward(), talConf.getNominalOutputVoltageReverse());
             tal.enableBrakeMode(talConf.getEnableBrakeMode());
 
             TalonPIDConfig zero = talConf.getPIDProfileZero();
-            tal.setPID(zero.getP(), zero.getI(), zero.getD(), zero.getF(), zero.getIntegrationZone(), zero.getAllowableCloseLoopError(), 0);
-            tal.setCloseLoopRampRate(zero.getCloseLoopRampRate());
+            if (zero != null) {
+                tal.setPID(zero.getP(), zero.getI(), zero.getD(), zero.getF(), zero.getIntegrationZone(), zero.getAllowableCloseLoopError(), 0);
+                tal.setCloseLoopRampRate(zero.getCloseLoopRampRate());
+            }
 
             TalonPIDConfig one = talConf.getPIDProfileZero();
-            tal.setPID(one.getP(), one.getI(), one.getD(), one.getF(), one.getIntegrationZone(), one.getAllowableCloseLoopError(), 0);
-            tal.setCloseLoopRampRate(one.getCloseLoopRampRate());
+            if (one != null) {
+                tal.setPID(one.getP(), one.getI(), one.getD(), one.getF(), one.getIntegrationZone(), one.getAllowableCloseLoopError(), 0);
+                tal.setCloseLoopRampRate(one.getCloseLoopRampRate());
+            }
 
             tal.setProfile(talConf.getActiveProfile());
 
@@ -65,14 +73,17 @@ public final class Components {
                 tal.setStatusFrameRateMs(frameEntry.getKey(), frameEntry.getValue());
             }
 
-            tal.setExpiration(talConf.getSafetyExpireationSeconds());
+            if (talConf.getSafetyExpireationSeconds() != 0)
+                tal.setExpiration(talConf.getSafetyExpireationSeconds());
             tal.setSafetyEnabled(talConf.getSafetyEnabled());
 
-            tal.changeControlMode(talConf.getControlMode());
-            if (talConf.getControlMode() == TalonControlMode.Follower && talConf.getMasterId() >= 0)
-                tal.set(talConf.getMasterId());
-            else
-                tal.set(0); // Calling set is required to change the control mode
+            if (talConf.getControlMode() != TalonControlMode.PercentVbus) {
+                tal.changeControlMode(talConf.getControlMode());
+                if (talConf.getControlMode() == TalonControlMode.Follower && talConf.getMasterId() > 0)
+                    tal.set(talConf.getMasterId());
+                else
+                    tal.set(0); // Calling set is required to change the control mode
+            }
 
             talons.put(entry.getKey(), tal);
         }
