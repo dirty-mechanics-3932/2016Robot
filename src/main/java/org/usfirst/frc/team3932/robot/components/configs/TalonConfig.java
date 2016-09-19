@@ -51,9 +51,24 @@ public class TalonConfig implements Cloneable {
     @NonNull
     private TalonControlMode controlMode = TalonControlMode.PercentVbus;
 
+    public void setControlMode(@NonNull TalonControlMode controlMode) {
+        this.controlMode = controlMode;
+        if (controlMode == TalonControlMode.Follower)
+            masterId = lastMasterId;
+        else {
+            lastMasterId = masterId;
+            masterId = -1;
+        }
+    }
+
+    /**
+     * The channel of the master Talon. -1 if {@link #controlMode} is not {@link edu.wpi.first.wpilibj.CANTalon.TalonControlMode#Follower Follower}.
+     */
+    @Setter(AccessLevel.NONE)
+    private int masterId = -1;
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private int masterId;
+    private transient int lastMasterId;
 
     /**
      * Will make this Talon a slave by setting the {@link #controlMode} to {@link edu.wpi.first.wpilibj.CANTalon.TalonControlMode#Follower Follower}.
@@ -64,13 +79,6 @@ public class TalonConfig implements Cloneable {
     public void setMasterId(int id) {
         controlMode = TalonControlMode.Follower;
         masterId = id;
-    }
-
-    /**
-     * @return The channel of the master Talon. -1 if {@link #controlMode} is not {@link edu.wpi.first.wpilibj.CANTalon.TalonControlMode#Follower Follower}.
-     */
-    public int getMasterId() {
-        return controlMode == TalonControlMode.Follower ? masterId : -1;
     }
 
     /**

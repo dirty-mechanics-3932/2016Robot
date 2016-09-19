@@ -57,6 +57,8 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.+'
+    testCompile group: 'uk.com.robust-it', name: 'cloning', version: '1.9.3'
+    testCompileOnly "org.projectlombok:lombok:1.16.10"
 
     sshAntTaskDef 'org.apache.ant:ant-jsch:1.9.7'
 }
@@ -121,14 +123,13 @@ task deleteClasspath(type: Delete) {
 
 deleteClasspath.group = tasks['eclipse'].group
 deleteClasspath.description = 'Deletes eclispe .classpath'
+tasks['eclipse'].dependsOn('deleteClasspath')
 
 tasks.matching { task ->
     task.name.startsWith('ant_')
 }.each {
     it.dependsOn('loadSSHExec')
 }
-
-tasks['eclipse'].dependsOn('deleteClasspath')
 
 // Aliases
 ant_jar.dependsOn('shadowJar')
