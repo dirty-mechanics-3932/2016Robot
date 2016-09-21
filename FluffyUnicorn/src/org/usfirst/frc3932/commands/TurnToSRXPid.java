@@ -27,6 +27,9 @@ public class TurnToSRXPid extends Command {
 	double rightPosInitial;
 	double leftPosInitial;
 	double lastYawError;
+	
+	boolean adjustA = false;
+	boolean adjustB = false;
 
 	Date m_init;
 	int ignoreDataCount;
@@ -62,7 +65,7 @@ public class TurnToSRXPid extends Command {
 	}
 
 	public void initialize() {
-		// Robot.driveSystem.resetEncoders();
+		Robot.driveSystem.resetEncoders();
 		m_init = new Date();
 		startingYaw = Robot.ahrs.getYaw();
 		double rotations = (m_degrees - startingYaw) * Robot.conf.rotateFactor;
@@ -70,20 +73,21 @@ public class TurnToSRXPid extends Command {
 		talonInit(RobotMap.driveSystemRightFront, SIDE.Right);
 		rightPosInitial = RobotMap.driveSystemRightFront.getPosition();
 		leftPosInitial = RobotMap.driveSystemLeftFront.getPosition();
-		Robot.navXPin9.set(true);
-		// rightPosInitial = 0;
-		// leftPosInitial = 0;
+		Robot.navXPin9TurningSRXPid.set(true);
+
+		rightPosInitial = 0;
+		leftPosInitial = 0;
 
 		Robot.logf("+++++ Init TurnToSRXPID Degrees: %.2f Timeout:%.2f Mode:%s Yaw:%.2f Rotations:%.2f  +++++%n",
 				m_degrees, m_timeout, RobotMap.driveSystemLeftFront.getControlMode().name(), startingYaw, rotations);
 		Robot.logf("RP:%.2f LP:%.2f Config: %s%n", rightPosInitial, leftPosInitial, Robot.conf.currentConfig());
 		Robot.logf("AHRS Version:%s Pin8 Right:%s Pin9 Left:%s%n", Robot.ahrs.getFirmwareVersion(),
 				(Robot.pin8.get() ? "True" : "False"), (Robot.pin9.get() ? "True" : "False"));
-		//if (!m_targeting) {
-			setRotations(RobotMap.driveSystemRightFront,
-					rightPosInitial + rotations + m_distance * Robot.TICKS_PER_FOOT);
-			setRotations(RobotMap.driveSystemLeftFront, leftPosInitial + rotations - m_distance * Robot.TICKS_PER_FOOT);
-		//}
+		// if (!m_targeting) {
+		setRotations(RobotMap.driveSystemRightFront,
+				rightPosInitial + rotations + m_distance * Robot.conf.ticksPerFoot);
+		setRotations(RobotMap.driveSystemLeftFront, leftPosInitial + rotations - m_distance * Robot.conf.ticksPerFoot);
+		// }
 		coast = 0;
 		ignoreDataCount = 2; // Set to ignore the results for 2 passes
 		lastYawError = rotations;
@@ -94,6 +98,9 @@ public class TurnToSRXPid extends Command {
 	public void execute() {
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.first.wpilibj.command.Command#isFinished()
+	 */
 	public boolean isFinished() {
 		// Look to error in the PID's to see if we are done
 		int rightErr = RobotMap.driveSystemRightFront.getClosedLoopError();
@@ -111,28 +118,69 @@ public class TurnToSRXPid extends Command {
 		}
 		if (convTime > m_timeout * 1000) // If timeout stop immediately
 			return true;
-		// If error is in range coast for a while
-		if (Math.abs(leftErr) < Robot.conf.maxError && Math.abs(rightErr) < Robot.conf.maxError) {
-			coast++;
-		}
-		// Pass thru zero stop
-		if (lastYawError * yawError < 0)
-			return true;
-		lastYawError = yawError;
-		// Stop when error is in range
-		if (Math.abs((yawError)) < .25) // .25 mini 9/14
-			return true;
-		if (coast > 20) // if coasting complete stop
-			return true;
-		// If coasting i.e. PID has converged, re-adjust the setPoints based
-		// upon yaw error
-		if (coast > 2) {
-			if (Math.abs((yawError)) < .25)
+		if (Robot.robotType == ROBOTTYPES.MINI) {
+			// If error is in range coast for a while
+			if (Math.abs(leftErr) < Robot.conf.maxError && Math.abs(rightErr) < Robot.conf.maxError) {
+				coast++;
+			}
+			// Pass thru zero stop
+			if (lastYawError * yawError < 0)
+				return true;
+			lastYawError = yawError;
+			// Stop when error is in range
+			if (Math.abs((yawError)) < .25) // .25 mini 9/14
+				return true;
+			if (coast > 20) // if coasting complete stop
+				return true;
+			// If coasting i.e. PID has converged, re-adjust the setPoints based
+			// upon yaw error
+			if (coast > 2) {
+				if (Math.abs((yawError)) < .25)
+					return false;
+				adjustSetPoint(-yawError);
+				ignoreDataCount = 3;
+				coast = 0;
+			}
+		} else {
+			if (coast > 0) {
+				coast--;
+				if (coast == 0)
+					return true;
 				return false;
-			adjustSetPoint(-yawError);
-			ignoreDataCount = 3;
-			coast = 0;
+			}
+			if (Math.abs(yawError) < 1.5) {
+				return true;
+			}
+			// Pass thru zero stop
+//			if (lastYawError * yawError < 0) {
+//				RobotMap.driveSystemRightFront.changeControlMode(TalonControlMode.PercentVbus);
+//				RobotMap.driveSystemLeftFront.changeControlMode(TalonControlMode.PercentVbus);
+//				RobotMap.driveSystemRightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+//				RobotMap.driveSystemLeftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+//				if (coast == 0)
+//					coast = 5;
+//				return false;
+//			}
+			if (Math.abs(yawError) < 6 && !adjustA) {
+				//adjustSetPoint(-yawError);
+				adjustA = true;
+			}
+			if (Math.abs(yawError) < 3 && !adjustB) {
+				//adjustSetPoint(-yawError);
+				adjustB = true;
+			}
+			lastYawError = yawError;
+//			if (Math.abs(rightErr) < 3 && Math.abs(leftErr) < 3) {
+//				RobotMap.driveSystemRightFront.changeControlMode(TalonControlMode.PercentVbus);
+//				RobotMap.driveSystemLeftFront.changeControlMode(TalonControlMode.PercentVbus);
+//				RobotMap.driveSystemRightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+//				RobotMap.driveSystemLeftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+//				if (coast == 0)
+//					coast = 5;
+//				return false;
+//			}
 		}
+
 		return false;
 	}
 
@@ -150,9 +198,10 @@ public class TurnToSRXPid extends Command {
 		RobotMap.driveSystemLeftFront.changeControlMode(TalonControlMode.PercentVbus);
 		RobotMap.driveSystemRightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		RobotMap.driveSystemLeftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		Robot.driveSystem.drivePercent(0, 0);
 		if (Robot.conf.brakeMode)
 			Robot.setBrakeMode(false);
-		Robot.navXPin9.set(false);
+		Robot.navXPin9TurningSRXPid.set(false);
 	}
 
 	public void interrupted() {

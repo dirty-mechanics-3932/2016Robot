@@ -62,7 +62,7 @@ public class WaitFor extends Command {
 	protected boolean isFinished() {
 		double l1 = RobotMap.driveSystemLeftFront.getPosition();
 		double r1 = RobotMap.driveSystemRightFront.getPosition();
-		double distance = (Math.abs(l0 - l1) + Math.abs(r0 - r1)) / (2 * Robot.TICKS_PER_FOOT);
+		double distance = (Math.abs(l0 - l1) + Math.abs(r0 - r1)) / (2 * Robot.conf.ticksPerFoot);
 		if (lastDistance != distance) {
 			Robot.log("WaitFor time:" + m_time + " Yaw:" + Robot.ahrs.getYaw() + " L:" + l1 + " R:" + r1
 					+ " Coast:" + String.format("%.2f", distance));
@@ -75,7 +75,7 @@ public class WaitFor extends Command {
 	protected void end() {
 		double l1 = RobotMap.driveSystemLeftFront.getPosition();
 		double r1 = RobotMap.driveSystemRightFront.getPosition();
-		double distance = (Math.abs(l0 - l1) + Math.abs(r0 - r1)) / (2 * Robot.TICKS_PER_FOOT);
+		double distance = (Math.abs(l0 - l1) + Math.abs(r0 - r1)) / (2 * Robot.conf.ticksPerFoot);
 		Robot.log("---------- WaitFor Finished time:" + m_time + " Yaw:" + Robot.ahrs.getYaw() + " L:" + l1 + " R:" + r1
 				+ " Coast Distance:" + String.format("%.2f", distance) + " Total Autonomous Time:"
 				+ (new Date().getTime() - WaitForCreate.getTime()));

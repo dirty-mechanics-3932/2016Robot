@@ -46,11 +46,11 @@ public class AutoMoat extends CommandGroup {
 		addParallel(new PlatformUp());
 		if (Robot.robotType == ROBOTTYPES.MINI) {  // Mini
 			addSequential(new DriveStraight(2, .6));
-			addSequential(new TurnToSRXPid(45, 2));
+			addSequential(Robot.TurnToBest(45, 2));
 			addSequential(new DriveStraight(1, .6));
-			addSequential(new TurnToSRXPid(-45, 2));
+			addSequential(Robot.TurnToBest(-45, 2));
 			addSequential(new DriveStraight(1, .6));
-			addSequential(new TurnToSRXPid(0, 2));
+			addSequential(Robot.TurnToBest(0, 2));
 			addSequential(new DriveStraight(1, .6));
 		} else {  // Competition Robot
 			addSequential(new DriveStraight(14.6, .6));

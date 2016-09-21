@@ -19,6 +19,7 @@ import java.util.Date;
 
 import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.RobotMap;
+import org.usfirst.frc3932.Robot.ROBOTTYPES;
 import org.usfirst.frc3932.pid.AhrsYawPIDSource;
 import org.usfirst.frc3932.pid.DriveSystemReversePIDOutput;
 import org.usfirst.frc3932.pid.DriveSystemStraightPIDOutput;
@@ -83,6 +84,8 @@ public class DriveStraight extends Command {
 		Robot.log("++++++++++ DriveStraight init yaw:" + Robot.ahrs.getYaw() + " speed:" + m_speed + " distance:"
 				+ m_feet + " L:" + a0 + " R:" + b0 + " Lidar:" + lidarDistance);
 		controller.enable();
+		if (Robot.conf.brakeMode) // Turn on break mode if parameter is set
+			Robot.setBrakeMode(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -93,19 +96,25 @@ public class DriveStraight extends Command {
 		double a1 = RobotMap.driveSystemLeftFront.getPosition();
 		double b1 = RobotMap.driveSystemRightFront.getPosition();
 		// Get the delta distance traveled
-		return (Math.abs(a0 - a1) + Math.abs(b0 - b1)) / (2 * Robot.TICKS_PER_FOOT);
+		// return (Math.abs(a0 - a1) + Math.abs(b0 - b1)) / (2 *
+		// Robot.conf.ticksPerFoot);
+		return (Math.abs(b0 - b1)) / (Robot.conf.ticksPerFoot);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		double d = getDistance();
 		if (Math.abs(lastD - d) < .0001 || true) { // Log only if moved
-			Double lidarDistance = Robot.rangefinder.getDistance() / (12 * 2.54);
-			Robot.logf("Drive L:%.0f R:%.0f LS:%.1f RS:%.1f Yaw:%.2f Distance:%.2f Time:%d Speed:%.2f LID:%.2f Ar:%.2f %.2f%n",
+			Robot.logf(
+					"Drive LP:%.0f RP:%.0f LS:%.1f RS:%.1f LC:%.2f RC:%.2f Yaw:%.2f Distance:%.2f Time:%d Speed:%.2f%n",
 					RobotMap.driveSystemLeftFront.getPosition(), RobotMap.driveSystemRightFront.getPosition(),
 					RobotMap.driveSystemLeftFront.getSpeed(), RobotMap.driveSystemRightFront.getSpeed(),
-					Robot.ahrs.getYaw(), d, new Date().getTime() - DriveStraightInit.getTime(), m_speed, 
-					lidarDistance, Robot.vision.area, Robot.vision.height);
+					RobotMap.driveSystemLeftFront.getOutputCurrent(), RobotMap.driveSystemRightFront.getOutputCurrent(),
+					Robot.ahrs.getYaw(), d, new Date().getTime() - DriveStraightInit.getTime(), m_speed);
+			if (Robot.conf.deepDebug) {
+				Double lidarDistance = Robot.rangefinder.getDistance() / (12 * 2.54);
+				Robot.logf("Lidar:%.2f Area:%.2f %.2f%n", lidarDistance, Robot.vision.area, Robot.vision.height);
+			}
 		}
 		lastD = d;
 		return Math.abs(d) > Math.abs(m_feet);
@@ -113,11 +122,15 @@ public class DriveStraight extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.log("---------- Drive Straight End L:" + RobotMap.driveSystemLeftFront.getPosition() + " R:"
-				+ RobotMap.driveSystemRightFront.getPosition() + " Pitch:" + Robot.ahrs.getPitch() + " Yaw:"
-				+ Robot.ahrs.getYaw() + " Roll:" + Robot.ahrs.getRoll() + " Version:" + Robot.ahrs.getFirmwareVersion()
-				+ " time:" + (new Date().getTime() - DriveStraightInit.getTime()));
+		double a1 = RobotMap.driveSystemLeftFront.getPosition();
+		double b1 = RobotMap.driveSystemRightFront.getPosition();
+		Robot.log("---------- Drive Straight End L:" + a1 + " R:" + b1 + " DL:" + (a1 - a0) + " DR:" + (b1 - b0)
+				+ " Pitch:" + Robot.ahrs.getPitch() + " Yaw:" + Robot.ahrs.getYaw() + " Roll:" + Robot.ahrs.getRoll()
+				+ " Version:" + Robot.ahrs.getFirmwareVersion() + " time:"
+				+ (new Date().getTime() - DriveStraightInit.getTime()));
 		controller.disable();
+		if (Robot.conf.brakeMode) // Turn on break mode if parameter is set
+			Robot.setBrakeMode(true);
 		Robot.driveSystem.drivePercent(0, 0);
 	}
 

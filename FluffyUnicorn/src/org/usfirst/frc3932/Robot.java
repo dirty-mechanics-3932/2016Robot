@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -64,8 +65,8 @@ public class Robot extends IterativeRobot {
 
 	private DigitalInput config0;
 	private DigitalInput config1;
-	public static DigitalOutput navXPin8;
-	public static DigitalOutput navXPin9;
+	public static DigitalOutput navXPin8TargetFound;
+	public static DigitalOutput navXPin9TurningSRXPid;
 
 	public static DigitalInput pin8;
 	public static DigitalInput pin9;
@@ -78,9 +79,8 @@ public class Robot extends IterativeRobot {
 		MINI, COMPETITION, SIBLING
 	}
 
+	// Set ROBOTTYPES default to Competition
 	public static ROBOTTYPES robotType = ROBOTTYPES.COMPETITION;
-
-	public static final double TICKS_PER_FOOT = 1409d; // measured
 
 	//
 	public static CameraConfig[] cameras = {
@@ -173,8 +173,8 @@ public class Robot extends IterativeRobot {
 		pin8 = new DigitalInput(8);
 		pin9 = new DigitalInput(9);
 
-		navXPin8 = new DigitalOutput(22);
-		navXPin9 = new DigitalOutput(23);
+		navXPin8TargetFound = new DigitalOutput(22);
+		navXPin9TurningSRXPid = new DigitalOutput(23);
 
 		int robotConfig = (config0.get() ? 1 : 0) + (config1.get() ? 2 : 0);
 		log("C0:" + config0.get() + " C1:" + config1.get());
@@ -539,19 +539,33 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
+	protected double round2(double d) {
+		return Math.round(d * 100) / 100;
+	}
+
+	public static Command TurnToBest(double degrees, double timeout) {
+		// return new TurnToZach(degrees, timeout); // Method a) Zachs original
+		return new TurnToOrig(degrees, timeout); // Method b) Yaw PID
+		// return new TurnTo(degrees, timeout); // Method c) Yaw with KAGPID
+		// return new TurnToSRXPid(degrees, timeout); // Method d) SRX PID
+
+	}
+
 	public class Config {
 		// Competition Robot -- default values
-		public double pid[] = { 1d, 0d, 30d };
-		public double f = 0d;
+		public double pid[] = { 1d, 0d, 0 };
+		public double f = 0;
 		public int iZone = 0;
-		public double rotateFactor = 35d;
+		public double rotateFactor = 40d;
 		public double maxError = 1.5d;
 		public double minVoltage = 3d;
-		public boolean brakeMode = false;
+		public boolean brakeMode = true;
 		public double voltageRampRate = 0d;
 		public double mountAngle = 30d;
 		public double mountHeight = 20d;
 		public double targetHeight = 91d;
+		public boolean deepDebug = false;
+		public double ticksPerFoot = 1409d; // measured
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
@@ -568,6 +582,10 @@ public class Robot extends IterativeRobot {
 				mountAngle = 30d;
 				mountHeight = 13.2d;
 				targetHeight = 37.5d;
+				ticksPerFoot = 986d;
+			} 
+			if (Robot.robotType == ROBOTTYPES.COMPETITION) {
+				ticksPerFoot = 1409d;
 			}
 		}
 
