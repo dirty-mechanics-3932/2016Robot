@@ -13,6 +13,7 @@ package org.usfirst.frc3932.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 import org.usfirst.frc3932.Robot;
+import org.usfirst.frc3932.Robot.ROBOTTYPES;
 import org.usfirst.frc3932.subsystems.*;
 
 /**
@@ -43,7 +44,7 @@ public class AutoLowBar extends CommandGroup {
 
 		// Robot.driveSystem.resetEncoders();
 
-		if (Robot.robotType == 3) {
+		if (Robot.robotType == ROBOTTYPES.MINI) {
 			Robot.log("AutoLowBar Created for Mini");
 			addSequential(new DriveStraight(1, .6));
 			addSequential(new WaitFor(1));

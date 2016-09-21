@@ -8,5 +8,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/navx_frc.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/hamcrest-all-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="/Users/rossis/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibJavaFinal/0.1.0-SNAPSHOT/d96fae64813e67572426102e6615d3d5526f7dfe/wpilibJavaFinal-0.1.0-SNAPSHOT.jar" sourcepath="/Users/rossis/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibJavaFinal/0.1.0-SNAPSHOT/ccb5b72347e4ecf32469ecf6177720290397aa21/wpilibJavaFinal-0.1.0-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

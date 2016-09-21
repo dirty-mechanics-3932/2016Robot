@@ -20,14 +20,14 @@ public class TurnToTest {
 
 	@Test
 	public void testGetOutput() throws Exception {
-		double[] pAt180 = TurnTo.COMPETITION_P[0];
+		double[] pAt180 = turnTo.getCompetitiveP()[0];
 		assertEquals(toDouble(turnTo.getOutput(181d)), toDouble(pAt180[1]));
 		assertEquals(toDouble(turnTo.getOutput(180d)), toDouble(pAt180[1]));
 		assertEquals(toDouble(turnTo.getOutput(179d)), toDouble(pAt180[1]));
 		assertEquals(toDouble(turnTo.getOutput(21d)), toDouble(pAt180[1]));
-		double[] pAt20 = TurnTo.COMPETITION_P[1];
+		double[] pAt20 = turnTo.getCompetitiveP()[1];
 		assertEquals(toDouble(turnTo.getOutput(20d)), toDouble(pAt20[1]));
-		assertEquals(toDouble(turnTo.getOutput(0d)), toDouble(-0d));
+		assertEquals(toDouble(turnTo.getOutput(0d)), toDouble(-0.14d));
 	}
 	
 	Double toDouble(double d) {

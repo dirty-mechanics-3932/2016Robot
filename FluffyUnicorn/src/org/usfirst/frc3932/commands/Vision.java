@@ -1,6 +1,8 @@
 package org.usfirst.frc3932.commands;
 
 import org.usfirst.frc3932.Robot;
+import org.usfirst.frc3932.Robot.ROBOTTYPES;
+
 import java.lang.Math;
 import java.util.HashMap;
 
@@ -18,8 +20,9 @@ public class Vision {
 	private static final double H_RES = 640;
 	private static final double Y_RES = 480;
 	private static final double FIELD_OF_VIEW = 74;
-	private static final HashMap<Integer, Double> mountAngle = new HashMap<Integer, Double>(); // mount info should be in seperate class, this is temp
-	private static final HashMap<Integer, Double> mountHeight = new HashMap<Integer, Double>();
+	private static final HashMap<Robot.ROBOTTYPES, Double> mountAngle = new HashMap<Robot.ROBOTTYPES, Double>(); // mount info should be in seperate class, this is temp
+	private static final HashMap<Robot.ROBOTTYPES, Double> mountHeight = new HashMap<Robot.ROBOTTYPES, Double>();
+	
 	private static double xDist;
 	private static double totalYAngle;
 
@@ -36,16 +39,16 @@ public class Vision {
 		SmartDashboard.putNumber("xDist", hasXDist ? xDist : 0);
 		SmartDashboard.putNumber("totalYAngle", hasXDist ? totalYAngle : 0);
 	}
-	public double getMountAngle(int robotType) {
-		mountAngle.put(0, (double) 0); //comp cam angle
-		mountAngle.put(1, (double) 0); //daughter cam angle
-		mountAngle.put(3, (double) 0);  //mini cam angle
+	public double getMountAngle(ROBOTTYPES robotType) {
+		mountAngle.put(Robot.ROBOTTYPES.COMPETITION, (double) 0); //comp cam height
+		mountAngle.put(Robot.ROBOTTYPES.SIBLING, (double) 0); //daughter cam height
+		mountAngle.put(Robot.ROBOTTYPES.MINI, (double) 0); 
 		return mountAngle.get(robotType);
 	}
-	public double getMountHeight(int robotType) {
-		mountHeight.put(0, (double) 0); //comp cam height
-		mountHeight.put(1, (double) 0); //daughter cam height
-		mountHeight.put(3, (double) 0);  //mini cam height
+	public double getMountHeight(Robot.ROBOTTYPES robotType) {
+		mountHeight.put(Robot.ROBOTTYPES.COMPETITION, (double) 0); //comp cam height
+		mountHeight.put(Robot.ROBOTTYPES.SIBLING, (double) 0); //daughter cam height
+		mountHeight.put(Robot.ROBOTTYPES.MINI,(double) 0);  //mini cam height
 		return mountHeight.get(robotType);
 	}
 

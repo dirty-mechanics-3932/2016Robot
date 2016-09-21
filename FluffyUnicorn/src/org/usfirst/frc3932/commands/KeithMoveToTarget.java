@@ -17,6 +17,7 @@ import java.util.Date;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc3932.Robot;
+import org.usfirst.frc3932.Robot.ROBOTTYPES;
 import org.usfirst.frc3932.Robot.RunningAverage;
 
 /**
@@ -82,7 +83,7 @@ public class KeithMoveToTarget extends Command {
 	protected void initialize() {
 		m_MoveToInit = new Date();
 		Robot.log("++++++++++ Keith MoveToTarget Started");
-		if (Robot.robotType == 3)
+		if (Robot.robotType == ROBOTTYPES.MINI)
 			activeP = miniP;
 		Robot.setBrakeMode(true);
 		avgError = new Robot.RunningAverage(Samples);
