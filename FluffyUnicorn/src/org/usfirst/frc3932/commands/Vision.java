@@ -11,6 +11,7 @@ public class Vision {
 	private static final double H_RES = 640;
 	private static final double Y_RES = 480;
 	private static final double FIELD_OF_VIEW = 74;
+	private Robot.RunningAverage averageArea = new Robot.RunningAverage(10);
 	private String targetInfo;
 
 	public double centerX;
@@ -19,6 +20,7 @@ public class Vision {
 	public double angle;
 	public double xDist;
 	public double height;
+	public double width;
 	public double totalYAngle;
 
 	public boolean found;
@@ -28,7 +30,6 @@ public class Vision {
 		table = NetworkTable.getTable("GRIP/myContoursReport");
 	}
 
-	//
 	public void updateSmartDashboard() {
 		if (getTarget()) {
 			Robot.navXPin8TargetFound.set(true);
@@ -70,7 +71,7 @@ public class Vision {
 		if (centerXAr.length != length || centerYAr.length != length || areaAr.length != length
 				|| widthAr.length != length || heightAr.length != length) {
 			Robot.logf(
-					"Vision getTarget Err: solidityAr:%d centerXAr:%d centerYAr:%d areaAr:%d widthAr:%d lengthAr:%d%n",
+					"Vision getTarget Error Array Sizes do not match: solidityAr:%d centerXAr:%d centerYAr:%d areaAr:%d widthAr:%d lengthAr:%d%n",
 					solidityAr.length, centerXAr.length, centerYAr.length, areaAr.length, widthAr.length,
 					heightAr.length);
 			targetInfo = "Arrays not equal see log";
@@ -81,7 +82,7 @@ public class Vision {
 		try {
 			for (i = 0; i < length; i++) {
 				if (solidityAr[i] > .3 && solidityAr[i] < .6) {
-					if (areaAr[i] > 1000 && areaAr[i] < 8000) {
+					if (areaAr[i] > Robot.conf.areaMin && areaAr[i] < Robot.conf.areaMax) {
 						if (widthAr[i] > heightAr[i]) {
 							index = i;
 							found = true;
@@ -96,15 +97,17 @@ public class Vision {
 				}
 			}
 			area = areaAr[index];
-			if (lastArea == area) {
+			//Robot.logf("area problem %.2f avg: %.2f%n", area, averageArea.getAverage());
+			if (Math.abs(averageArea.getAverage() - area) <= .05) {
 				targetInfo = "Coms Missing";
 				return false;
 			}
-			lastArea = area;
+			averageArea.putNew(area);
 			angle = (centerXAr[index] - H_RES / 2) * FIELD_OF_VIEW / H_RES;
 			centerX = centerXAr[index];
 			solidity = solidityAr[index];
 			height = heightAr[index];
+			width = widthAr[index];
 
 			if (found) {
 				targetInfo = "OK " + length + " objects";

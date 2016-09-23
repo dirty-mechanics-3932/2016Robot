@@ -182,7 +182,10 @@ public class Robot extends IterativeRobot {
 		robotType = ROBOTTYPES.COMPETITION;
 		if (robotConfig == 3)
 			robotType = ROBOTTYPES.MINI;
-		log("********** Startup Robot Type:" + robotType + " **********");
+		if (robotConfig == 2)
+			robotType = ROBOTTYPES.SIBLING;
+		log("********** Startup Robot Type:" + robotType + " naxV Ver:" + Robot.ahrs.getFirmwareVersion()
+				+ " **********");
 	}
 
 	/**
@@ -283,7 +286,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void updateStatus() {
-		if (count % 10 == 0) { // Update Dash board every 10 cycles (200Ms)
+		if (count % 5 == 0) { // Update Dash board every 5 cycles (100Ms)
 			SmartDashboard.putNumber("LIDAR Distance (cm)", rangefinder.getDistance());
 			SmartDashboard.putNumber("Lidar Distance feet", rangefinder.getDistance() / (12 * 2.54));
 			SmartDashboard.putNumber("Yaw", ahrs.getYaw());
@@ -331,6 +334,10 @@ public class Robot extends IterativeRobot {
 	public static void setBrakeMode(boolean mode) {
 		RobotMap.driveSystemLeftFront.enableBrakeMode(mode);
 		RobotMap.driveSystemRightFront.enableBrakeMode(mode);
+
+		RobotMap.driveSystemLeftRear.enableBrakeMode(mode);
+		RobotMap.driveSystemRightRear.enableBrakeMode(mode);
+
 		log("!!!!!!!!!!!! setBrakeMode:" + mode);
 	}
 
@@ -546,8 +553,8 @@ public class Robot extends IterativeRobot {
 	public static Command TurnToBest(double degrees, double timeout) {
 		// return new TurnToZach(degrees, timeout); // Method a) Zachs original
 		return new TurnToOrig(degrees, timeout); // Method b) Yaw PID
-		// return new TurnTo(degrees, timeout); // Method c) Yaw with KAGPID
-		// return new TurnToSRXPid(degrees, timeout); // Method d) SRX PID
+		//return new TurnTo(degrees, timeout); // Method c) Yaw with KAGPID
+		//return new TurnToSRXPid(degrees, timeout); // Method d) SRX PID
 
 	}
 
@@ -566,6 +573,8 @@ public class Robot extends IterativeRobot {
 		public double targetHeight = 91d;
 		public boolean deepDebug = false;
 		public double ticksPerFoot = 1409d; // measured
+		public double areaMin = 400d;
+		public double areaMax = 2500d;
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
@@ -582,10 +591,12 @@ public class Robot extends IterativeRobot {
 				mountAngle = 30d;
 				mountHeight = 13.2d;
 				targetHeight = 37.5d;
-				ticksPerFoot = 986d;
-			} 
+				ticksPerFoot = 1290d;
+				areaMin = 1000;
+				areaMax = 8000;
+			}
 			if (Robot.robotType == ROBOTTYPES.COMPETITION) {
-				ticksPerFoot = 1409d;
+				ticksPerFoot = 1690d;
 			}
 		}
 

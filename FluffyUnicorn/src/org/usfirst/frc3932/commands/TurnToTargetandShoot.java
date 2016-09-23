@@ -28,36 +28,38 @@ public class TurnToTargetandShoot extends CommandGroup {
 		// addSequential(new WaitFor(.5));
 		// addSequential(new ShooterOut());
 
-		addSequential(new DetectTarget());
-		addSequential(new WaitFor(.1));
-		addSequential(new TurnToTarget());
-		
-		addSequential(new WaitFor(.2)); // Let Lidar Stabilize
-		
-		addSequential(new ShooterOut());
-
-		addSequential(new DetectTarget());
-		addSequential(new WaitFor(.25));
-		addSequential(new MoveToTarget());
-
-		addSequential(new DetectTarget());
-		addSequential(new WaitFor(.25));
-		addSequential(new TurnToTarget());
-		
-		
-		
-		addSequential(new DetectTarget());
-		addSequential(new WaitFor(.25));
-		addSequential(new MoveToTarget());
-
-
-		addSequential(new DetectTarget());
-		addSequential(new WaitFor(.25));
-		addSequential(new TurnToTarget());
-	
+//		addSequential(new DetectTarget());
+//		addSequential(new WaitFor(.1));
+//		addSequential(new TurnToTarget());
+//		
+//		addSequential(new WaitFor(.2)); // Let Lidar Stabilize
+//		
+//		addSequential(new ShooterOut());
+//
+//		addSequential(new DetectTarget());
+//		addSequential(new WaitFor(.25));
+//		addSequential(new MoveToTarget());
+//
+//		addSequential(new DetectTarget());
+//		addSequential(new WaitFor(.25));
+//		addSequential(new TurnToTarget());
+//		
+//		
+//		
+//		addSequential(new DetectTarget());
+//		addSequential(new WaitFor(.25));
+//		addSequential(new MoveToTarget());
+//
+//
+//		addSequential(new DetectTarget());
+//		addSequential(new WaitFor(.25));
+//		addSequential(new TurnToTarget());
+//	
 		
 		//addSequential(new ShooterOut());
-		addSequential(new WaitFor(.3));
+		
+		addSequential(new ShooterOut());		
+		addSequential(new MoveToTargetYawPid(10));
 		addSequential(new ActivateCannon());
 		addSequential(new WaitFor(.2));
 		addSequential(new ShooterOff());
