@@ -32,6 +32,9 @@ public class DetectTarget extends Command {
 
 	private static final double H_RES = 480;
 	private static final double FIELD_OF_VIEW = 74;
+	
+	
+	private boolean melborne = true;
 	// private static final double FIELD_OF_VIEW = 47.5;
 
 	double[] blob = null;
@@ -57,6 +60,7 @@ public class DetectTarget extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		if (melborne) return;
 		angle = 0;
 		angleReady = false;
 		Robot.log("Detect Target Initialized");
@@ -65,6 +69,7 @@ public class DetectTarget extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		if(melborne) return;
 		table = NetworkTable.getTable("SmartDashboard");
 		double[] defaultValue = new double[0];
 		double[] x = table.getNumberArray("XRoboRealmBlob", defaultValue);
@@ -91,12 +96,17 @@ public class DetectTarget extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
+		if(melborne) {
+			Robot.logf("Detect Target Melborn%n");
+			return true;
+		}
 		double convTime = (new Date().getTime() - m_DetectTargetInit.getTime());
 		return angleReady || convTime > 1000;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		if(melborne) return;
 		SmartDashboard.putNumber("x", angle);
 		double convTime = (new Date().getTime() - m_DetectTargetInit.getTime());
 		Robot.log("Target found:" + angle + " time:" + convTime);
@@ -113,5 +123,6 @@ public class DetectTarget extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

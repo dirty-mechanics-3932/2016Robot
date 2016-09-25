@@ -47,19 +47,33 @@ public class DriveFromPosition1 extends CommandGroup {
 		if (Robot.robotType == ROBOTTYPES.MINI) {
 			// Do nothing for Mini
 		} else {
+//			addSequential(new CameraUp());
+//			addSequential(new PlatformUp());
+//			addSequential(new DriveStraight(9.5, .75));
+//			addSequential(Robot.TurnToBest(55, 2.5));
+//			addSequential(new ShooterOut());
+//			addSequential(new DetectTarget());
+//			addSequential(new WaitFor(.25));
+//			addSequential(new MoveToTarget());
+//			addSequential(new DetectTarget());
+//			addSequential(new TurnToTarget());
+//			addSequential(new WaitFor(.3));
+//			addSequential(new ActivateCannon());
+//			addSequential(new ShooterOff());
+//			
+			
+			
 			addSequential(new CameraUp());
 			addSequential(new PlatformUp());
 			addSequential(new DriveStraight(9.5, .75));
-			addSequential(new TurnTo(55, 2.5));
+			addSequential(Robot.TurnToBest(55, 2.5));
+		
+			addSequential(new MoveToTargetYawPid(5));
 			addSequential(new ShooterOut());
-			addSequential(new DetectTarget());
-			addSequential(new WaitFor(.25));
-			addSequential(new MoveToTarget());
-			addSequential(new DetectTarget());
-			addSequential(new TurnToTarget());
-			addSequential(new WaitFor(.3));
+			addSequential(new WaitFor(Robot.shootSpinup));
 			addSequential(new ActivateCannon());
 			addSequential(new ShooterOff());
+			
 		}
 	}
 }

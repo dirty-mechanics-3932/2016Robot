@@ -99,14 +99,12 @@ public class MoveToTargetYawPid extends Command {
 		// Verify Lidar is working
 		lidar = Robot.rangefinder.getDistance() / (12 * 2.54);
 		if (lidar < 3 || lidar > 30) {
-			Robot.logf("%n***** MoveToTarget Will not target *****%n");
-			Robot.logf("***** Error:  Lidar Out of range:%.2f ****** %n%n", lidar);
+			Robot.logf("%n***** MoveToTarget Will not target Lidar:%.2f *****%n", lidar);
 			return true;
 		}
 		// Verify that Vision is working
 		if (vision.angle > 35 || vision.angle < -35) {
-			Robot.logf("%n***** MoveToTarget Will not target *****%n");
-			Robot.logf("***** Error:  Vision Angle Out of range:%.2f ****** %n%n", vision.angle);
+			Robot.logf("%n***** MoveToTarget Will not target Vision:%.2f *****%n", vision.angle);
 			return true;
 		}
 		yaw = Robot.ahrs.getYaw();
@@ -117,7 +115,7 @@ public class MoveToTargetYawPid extends Command {
 				if (Math.abs(lidar - magicDistance) < .5) {
 					Robot.logf("Robot is at the correct distanace %.2f Complete action complete%n",lidar);
 					state = State.FINALCOAST;
-					waitUntilCount = count + 50;  // Delay one second  since motors need spin up 
+					waitUntilCount = count + 20;  // Delay  since motors need spin up 
 					return false;
 				}
 				state = State.MOVING;

@@ -47,14 +47,14 @@ public class AutoRockWall extends CommandGroup {
     	addParallel(new CameraUp());
     	addSequential(new PlatformUp());
     	//addSequential(new WaitFor(1));
-    	addSequential (new TurnTo(0,.3));
+    	addSequential (Robot.TurnToBest(0,2));
     	addSequential (new DriveStraight(9,.6));
     	//addSequential(new TurnTo(10, 60));
     	//addSequential(new DriveStraight(5,.6));
     	addSequential (new WaitFor(.5));
-    	addSequential(new TurnTo(15,4));
+    	addSequential(Robot.TurnToBest(15,4));
     	addSequential (new DriveStraight(2,.3));
-    	addSequential (new TurnTo(0,.3));
+    	addSequential (Robot.TurnToBest(0,2));
    
     	
     	

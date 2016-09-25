@@ -96,6 +96,7 @@ public class Robot extends IterativeRobot {
 	private static SendableChooser obstacleChooser = new SendableChooser();
 	private static SendableChooser positionChooser = new SendableChooser();
 	private static SendableChooser rollAdapterChooser = new SendableChooser();
+	public static double shootSpinup = 2.5d;
 
 	public Robot() {
 		obstacleChooser.addDefault("Auto_Moat:", Commands.AUTO_MOAT);
@@ -239,6 +240,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		//updateStatus(); //Added at Melborne ?????? Will it work
 	}
 
 	@Override
@@ -290,7 +292,7 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putNumber("LIDAR Distance (cm)", rangefinder.getDistance());
 			SmartDashboard.putNumber("Lidar Distance feet", rangefinder.getDistance() / (12 * 2.54));
 			SmartDashboard.putNumber("Yaw", ahrs.getYaw());
-			vision.updateSmartDashboard();
+			if(vision !=null) vision.updateSmartDashboard();
 		}
 		count++;
 
@@ -553,8 +555,8 @@ public class Robot extends IterativeRobot {
 	public static Command TurnToBest(double degrees, double timeout) {
 		// return new TurnToZach(degrees, timeout); // Method a) Zachs original
 		return new TurnToOrig(degrees, timeout); // Method b) Yaw PID
-		//return new TurnTo(degrees, timeout); // Method c) Yaw with KAGPID
-		//return new TurnToSRXPid(degrees, timeout); // Method d) SRX PID
+		// return new TurnTo(degrees, timeout); // Method c) Yaw with KAGPID
+		// return new TurnToSRXPid(degrees, timeout); // Method d) SRX PID
 
 	}
 
@@ -594,8 +596,7 @@ public class Robot extends IterativeRobot {
 				ticksPerFoot = 1290d;
 				areaMin = 1000;
 				areaMax = 8000;
-			}
-			if (Robot.robotType == ROBOTTYPES.COMPETITION) {
+			} else {
 				ticksPerFoot = 1690d;
 			}
 		}

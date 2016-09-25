@@ -48,13 +48,13 @@ public class AutoLowBar extends CommandGroup {
 			Robot.log("AutoLowBar Created for Mini");
 			addSequential(new DriveStraight(1, .6));
 			addSequential(new WaitFor(1));
-			addSequential(new TurnTo(5, 2));
-			addSequential(new TurnTo(0, 2));
+			addSequential(Robot.TurnToBest(5, 2));
+			addSequential(Robot.TurnToBest(0, 2));
 			addSequential(new WaitFor(1));
 			addSequential(new DriveStraight(.5, .6));
 			addSequential(new WaitFor(1));
-			addSequential(new TurnTo(45, 2));
-			addSequential(new TurnTo(0, 2));
+			addSequential(Robot.TurnToBest(45, 2));
+			addSequential(Robot.TurnToBest(0, 2));
 			addSequential(new WaitFor(1));
 			addSequential(new DriveStraight(.5, .6));
 			addSequential(new WaitFor(1));
