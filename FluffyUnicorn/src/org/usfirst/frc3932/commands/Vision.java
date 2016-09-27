@@ -36,8 +36,8 @@ public class Vision {
 			SmartDashboard.putNumber("centerX", centerX);
 			SmartDashboard.putNumber("Target Angle", angle);
 			SmartDashboard.putNumber("xDist", xDist / 12d);
-			SmartDashboard.putNumber("areaDist", 38400d / area);
-			SmartDashboard.putNumber("heightDist", 788d / height);
+			SmartDashboard.putNumber("areaDist", 12871d / area);
+			SmartDashboard.putNumber("heightDist", 421d / height);
 			SmartDashboard.putNumber("Y Angle", totalYAngle);
 		} else {
 			Robot.navXPin8TargetFound.set(false);

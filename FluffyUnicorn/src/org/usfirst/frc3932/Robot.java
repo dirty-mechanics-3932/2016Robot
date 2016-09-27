@@ -42,9 +42,6 @@ import edu.wpi.first.wpilibj.I2C;
  */
 public class Robot extends IterativeRobot {
 
-	private static final double MIN_VOLTAGE = 10.6;
-	// add public static final double TOOCLOSE = ??
-
 	Command autonomousCommand;
 
 	public static OI oi;
@@ -63,10 +60,13 @@ public class Robot extends IterativeRobot {
 	public static AHRS ahrs;
 	public static Boolean rollAdapterChoice = Boolean.FALSE;
 
+	public static Date taskInitTime = new Date();
+
 	private DigitalInput config0;
 	private DigitalInput config1;
 	public static DigitalOutput navXPin8TargetFound;
 	public static DigitalOutput navXPin9TurningSRXPid;
+	public static DigitalOutput navXPin5ShooterActive;
 
 	public static DigitalInput pin8;
 	public static DigitalInput pin9;
@@ -95,7 +95,8 @@ public class Robot extends IterativeRobot {
 	public static LIDAR rangefinder;
 	private static SendableChooser obstacleChooser = new SendableChooser();
 	private static SendableChooser positionChooser = new SendableChooser();
-	private static SendableChooser rollAdapterChooser = new SendableChooser();
+	// private static SendableChooser rollAdapterChooser = new
+	// SendableChooser();
 	public static double shootSpinup = 2.5d;
 
 	public Robot() {
@@ -117,9 +118,9 @@ public class Robot extends IterativeRobot {
 		positionChooser.addObject("Positions 5B", Commands.DRIVE_FROM_POSITION_5B);
 		SmartDashboard.putData("Auto-Position", positionChooser);
 
-		rollAdapterChooser.addObject("On", Boolean.TRUE);
-		rollAdapterChooser.addObject("Off", Boolean.FALSE);
-		SmartDashboard.putData("Roll Adapter", rollAdapterChooser);
+		// rollAdapterChooser.addObject("On", Boolean.TRUE);
+		// rollAdapterChooser.addObject("Off", Boolean.FALSE);
+		// SmartDashboard.putData("Roll Adapter", rollAdapterChooser);
 	}
 
 	/**
@@ -160,22 +161,27 @@ public class Robot extends IterativeRobot {
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null
 		// pointers. Bad news. Don't move it.
-		oi = new OI();
+
 		// NetworkTable.setClientMode();
 		// NetworkTable.setIPAddress("127.0.0.1");
 		setRobotType();
 		conf = new Config();
+		oi = new OI(); // OI should be last as it will allow created commands to
+						// have configuration data
 	}
 
 	private void setRobotType() {
 		config0 = new DigitalInput(5);
 		config1 = new DigitalInput(6);
 
+		// Pins 8 and 9 are used to determine how the encoders work for each of
+		// the robots
 		pin8 = new DigitalInput(8);
 		pin9 = new DigitalInput(9);
 
 		navXPin8TargetFound = new DigitalOutput(22);
 		navXPin9TurningSRXPid = new DigitalOutput(23);
+		navXPin5ShooterActive = new DigitalOutput(19);
 
 		int robotConfig = (config0.get() ? 1 : 0) + (config1.get() ? 2 : 0);
 		log("C0:" + config0.get() + " C1:" + config1.get());
@@ -185,8 +191,7 @@ public class Robot extends IterativeRobot {
 			robotType = ROBOTTYPES.MINI;
 		if (robotConfig == 2)
 			robotType = ROBOTTYPES.SIBLING;
-		log("********** Startup Robot Type:" + robotType + " naxV Ver:" + Robot.ahrs.getFirmwareVersion()
-				+ " **********");
+		log("***** Startup Robot Type:" + robotType + " naxV Ver:" + Robot.ahrs.getFirmwareVersion() + " *****");
 	}
 
 	/**
@@ -213,6 +218,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		// schedule the autonomous command (example)
+		taskInitTime = new Date();
 		ahrs.reset();
 		Commands obstacle = (Commands) obstacleChooser.getSelected();
 		Command obstacleCommand = CommandFactory.getCommand(obstacle);
@@ -220,10 +226,7 @@ public class Robot extends IterativeRobot {
 		Commands position = (Commands) positionChooser.getSelected();
 		Command positionCommand = CommandFactory.getCommand(position);
 
-		log("********** Autonomous Init obstacle:" + obstacle.toString() + " position:" + position.toString()
-				+ " **********");
-
-		rollAdapterChoice = (Boolean) rollAdapterChooser.getSelected();
+		log("***** Autonomous Init obstacle:" + obstacle.toString() + " position:" + position.toString() + " *****");
 
 		if (obstacle == Commands.DO_NOTHING) {
 			autonomousCommand = obstacleCommand;
@@ -240,7 +243,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		//updateStatus(); //Added at Melborne ?????? Will it work
+		updateStatus(); // Added at Melborne since Vision was not working
+						// autonomous mode
 	}
 
 	@Override
@@ -251,7 +255,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-
+		taskInitTime = new Date();
 		Robot.platform.tiltDown();
 		Robot.camera.TiltUp();
 
@@ -288,11 +292,24 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void updateStatus() {
-		if (count % 5 == 0) { // Update Dash board every 5 cycles (100Ms)
+		if (count % 10 == 0) { // Update Dash board every 10 cycles (200Ms)
 			SmartDashboard.putNumber("LIDAR Distance (cm)", rangefinder.getDistance());
 			SmartDashboard.putNumber("Lidar Distance feet", rangefinder.getDistance() / (12 * 2.54));
 			SmartDashboard.putNumber("Yaw", ahrs.getYaw());
-			if(vision !=null) vision.updateSmartDashboard();
+
+			if (conf.shooterPresent) {
+
+				SmartDashboard.putNumber("ShootLeft En:", RobotMap.shooterWheelsLeftWheel.getPosition());
+				SmartDashboard.putNumber("ShootLeft Sp:", RobotMap.shooterWheelsLeftWheel.getSpeed());
+
+				// SmartDashboard.putNumber("ShootRight En:",
+				// RobotMap.shooterWheelsRightWheel.getPosition());
+				// SmartDashboard.putNumber("ShootRight Sp:",
+				// RobotMap.shooterWheelsRightWheel.getSpeed());
+			}
+
+			if (vision != null)
+				vision.updateSmartDashboard();
 		}
 		count++;
 
@@ -340,11 +357,11 @@ public class Robot extends IterativeRobot {
 		RobotMap.driveSystemLeftRear.enableBrakeMode(mode);
 		RobotMap.driveSystemRightRear.enableBrakeMode(mode);
 
-		log("!!!!!!!!!!!! setBrakeMode:" + mode);
+		log("!!!!! setBrakeMode:" + mode);
 	}
 
 	public static void log(String s) {
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss-S ");
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss-SSS ");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		Date date = new Date();
 		System.out.println(dateFormat.format(date) + s);
@@ -553,6 +570,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public static Command TurnToBest(double degrees, double timeout) {
+		// Support for a number of different turning algorithms potentially each
+		// robot could be different
 		// return new TurnToZach(degrees, timeout); // Method a) Zachs original
 		return new TurnToOrig(degrees, timeout); // Method b) Yaw PID
 		// return new TurnTo(degrees, timeout); // Method c) Yaw with KAGPID
@@ -560,6 +579,7 @@ public class Robot extends IterativeRobot {
 
 	}
 
+	// Class to allow different data for each robot type.
 	public class Config {
 		// Competition Robot -- default values
 		public double pid[] = { 1d, 0d, 0 };
@@ -574,30 +594,35 @@ public class Robot extends IterativeRobot {
 		public double mountHeight = 20d;
 		public double targetHeight = 91d;
 		public boolean deepDebug = false;
-		public double ticksPerFoot = 1409d; // measured
+		public double ticksPerFoot = 1690d; // was 1409d for St. Louis and Palm
+											// Beach
 		public double areaMin = 400d;
 		public double areaMax = 2500d;
+
+		public boolean shooterPresent = true;
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
 			if (Robot.robotType == ROBOTTYPES.MINI) {
 				pid[0] = 6d;
 				pid[1] = 0d;
-				pid[2] = 60d;
+				pid[2] = 0d;
 				f = 0d;
 				rotateFactor = 14.2d; // Previous 14.8
-				maxError = 1.5d;
+				maxError = .5d;
 				minVoltage = 2d;
 				brakeMode = true;
 				voltageRampRate = 0d;
-				mountAngle = 30d;
-				mountHeight = 13.2d;
-				targetHeight = 37.5d;
+				mountAngle = 25d;
+				mountHeight = 15.5d;
+				targetHeight = 89d;
 				ticksPerFoot = 1290d;
 				areaMin = 1000;
-				areaMax = 8000;
+				areaMax = 9800;
+				shooterPresent = false;
 			} else {
 				ticksPerFoot = 1690d;
+				shooterPresent = true;
 			}
 		}
 

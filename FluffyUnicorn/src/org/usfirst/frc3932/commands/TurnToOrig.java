@@ -104,7 +104,7 @@ public class TurnToOrig extends Command {
 			I = .001;
 			D = 0;
 			F = 0;
-			maxOutput = .7;
+			maxOutput = .8;
 			maxErrorCount = 5;
 			maxError = .5;
 			brakeMode = true;
@@ -114,7 +114,7 @@ public class TurnToOrig extends Command {
 			I = 0;
 			D = 0.006;
 			F = 0;
-			maxOutput = .8; // Was 9/19/16 = 0.3;
+			maxOutput = .6; // Was 9/19/16 = 0.3;
 			maxErrorCount = 2;
 			maxError = .5;
 			brakeMode = true;
@@ -128,9 +128,32 @@ public class TurnToOrig extends Command {
 		F = prefs.getDouble("F", F);
 		maxOutput = prefs.getDouble("maxO", maxOutput);
 		double deltaYaw = Math.abs(m_degrees - Robot.ahrs.getYaw());
+		
+		if (Robot.robotType == ROBOTTYPES.MINI && goodPid) {
+			if (deltaYaw < 3) {
+				maxOutput = .6;
+				P = .07;
+				I = 0;
+				D = 0.04;
+			} else if (deltaYaw < 5) {
+				maxOutput = .6;
+				P = .06;
+				I = 0;
+				D = .025;
+			} else if (deltaYaw < 10) {
+				maxOutput = .6;
+				P = .05;
+				I = 0;
+				D = .015;
+			} else {
+				maxOutput = .4;
+				P = .025;
+				I = 0;
+				D = 0;
+			}
+		}
 
 		if (Robot.robotType == ROBOTTYPES.COMPETITION && goodPid) {
-
 			if (deltaYaw < 2) {
 				maxOutput = .6;
 				P = .15;
@@ -170,10 +193,10 @@ public class TurnToOrig extends Command {
 		controller = new PIDController(P, I, D, F, new AhrsYawPIDSource(), new DriveSystemRotatePIDOutput());
 		controller.setInputRange(-180, 180);
 		controller.setContinuous(true);
-		controller.setAbsoluteTolerance(1);
-		// controller.setToleranceBuffer(1); // Was 10
+		controller.setAbsoluteTolerance(.5);
+		//controller.setToleranceBuffer(5); // Was 10
 		controller.setOutputRange(-maxOutput, maxOutput);
-		Robot.logf("+++++ Turnto degrees:%.2f + timeOut:%.2f p:%.2f i:%.2f d:%.2f f:%.2f maxO:%.2f%n", m_degrees,
+		Robot.logf("+++++ Turnto degrees:%.2f timeOut:%.2f p:%.2f i:%.2f d:%.2f f:%.2f maxO:%.2f%n", m_degrees,
 				m_timeout, P, I, D, F, maxOutput);
 		controller.enable();
 		controller.setSetpoint(m_degrees);
@@ -206,18 +229,14 @@ public class TurnToOrig extends Command {
 				RobotMap.driveSystemRightFront.getOutputVoltage(), convTime);
 		boolean f1 = controller.onTarget();
 		boolean f2 = ((errorCounter >= maxErrorCount));
-		boolean f3 = controller.onTarget();
-		boolean f4 = Math.abs(err) < maxError;
-		boolean f5 = count > 20;
-		if (f1)
+		boolean f3 = Math.abs(err) < maxError;
+		if (f1) {
 			count++;
-		boolean fmaster = f1;
-		// if (fmaster)
-		// return true;
-		if (fmaster) {
-			if (count > 2)
+			if (count > 5)
 				return true;
 		}
+		if (f2)
+			return true;
 		// controller.disable();
 		// count++;
 		// } else {
@@ -229,16 +248,18 @@ public class TurnToOrig extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.log("------ TurnTo finished degrees = " + m_degrees + " timeOut:" + m_timeout + " Yaw:"
-				+ Robot.ahrs.getYaw() + " Total Autonomous Time:" + (new Date().getTime() - turnToCreate.getTime()));
+		Robot.logf("----- TurnTo finished degrees:%.2f timeOut:%.2f Yaw:%.2f Task Time:%.2f%n", m_degrees, m_timeout,
+				Robot.ahrs.getYaw(), (new Date().getTime() - turnToCreate.getTime()) / 1000d);
 		double convTime = (new Date().getTime() - turnToInit.getTime());
 
 		Robot.driveSystem.drivePercent(0, 0);
+
 		if (brakeMode)
 			Robot.setBrakeMode(true);
 
 		SmartDashboard.putNumber("Time to Turn", convTime);
 		controller.disable();
+		controller.free();
 	}
 
 	// Called when another command which requires one or more of the same

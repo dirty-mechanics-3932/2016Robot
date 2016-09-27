@@ -39,6 +39,7 @@ public class ShooterSlowOut extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.shooterWheels.halfShoot();
+    	Robot.navXPin5ShooterActive.set(true);
     }
 
     // Called repeatedly when this Command is scheduled to run

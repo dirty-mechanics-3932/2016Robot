@@ -41,18 +41,22 @@ public class AutoMoat extends CommandGroup {
 		// e.g. if Command1 requires chassis, and Command2 requires arm,
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
-		Robot.log("AutoMoat Created");
 		addParallel(new CameraUp());
 		addParallel(new PlatformUp());
-		if (Robot.robotType == ROBOTTYPES.MINI) {  // Mini
+		if (Robot.robotType == ROBOTTYPES.MINI) { // Mini
 			addSequential(new DriveStraight(2, .6));
 			addSequential(Robot.TurnToBest(45, 2));
 			addSequential(new DriveStraight(1, .6));
 			addSequential(Robot.TurnToBest(-45, 2));
 			addSequential(new DriveStraight(1, .6));
 			addSequential(Robot.TurnToBest(0, 2));
-			addSequential(new DriveStraight(1, .6));
-		} else {  // Competition Robot
+			addSequential(new DriveStraight(-2, .6));
+			addSequential(new MoveToTargetYawPid(5));
+			addSequential(new ShooterOut());
+			addSequential(new WaitFor(Robot.shootSpinup));
+			addSequential(new ActivateCannon());
+			addSequential(new ShooterOff());
+		} else { // Competition Robot
 			addSequential(new DriveStraight(14.6, .6));
 			addSequential(Robot.TurnToBest(0, 2));
 		}

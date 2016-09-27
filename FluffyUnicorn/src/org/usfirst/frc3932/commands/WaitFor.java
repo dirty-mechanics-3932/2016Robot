@@ -50,8 +50,7 @@ public class WaitFor extends Command {
 		this.setTimeout(m_time);
 		l0 = RobotMap.driveSystemLeftFront.getPosition();
 		r0 = RobotMap.driveSystemRightFront.getPosition();
-		Robot.log("++++++++++ WaitFor Initialize time:" + m_time + " Yaw:" + Robot.ahrs.getYaw() + " L:" + l0 + " R:"
-				+ r0);
+		Robot.logf("+++++ WaitFor Initialize time:%.0f Yaw:%.2f L:%.0f R:%.0f%n", m_time, Robot.ahrs.getYaw(), l0, r0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -64,8 +63,8 @@ public class WaitFor extends Command {
 		double r1 = RobotMap.driveSystemRightFront.getPosition();
 		double distance = (Math.abs(l0 - l1) + Math.abs(r0 - r1)) / (2 * Robot.conf.ticksPerFoot);
 		if (lastDistance != distance) {
-			Robot.log("WaitFor time:" + m_time + " Yaw:" + Robot.ahrs.getYaw() + " L:" + l1 + " R:" + r1
-					+ " Coast:" + String.format("%.2f", distance));
+			Robot.logf("WaitFor time:%.0f Yaw:%.2f L:%.0f R:%.0f Coast:%.2f%n", m_time, Robot.ahrs.getYaw(), l1, r1,
+					distance);
 		}
 		lastDistance = distance;
 		return isTimedOut();
@@ -76,9 +75,8 @@ public class WaitFor extends Command {
 		double l1 = RobotMap.driveSystemLeftFront.getPosition();
 		double r1 = RobotMap.driveSystemRightFront.getPosition();
 		double distance = (Math.abs(l0 - l1) + Math.abs(r0 - r1)) / (2 * Robot.conf.ticksPerFoot);
-		Robot.log("---------- WaitFor Finished time:" + m_time + " Yaw:" + Robot.ahrs.getYaw() + " L:" + l1 + " R:" + r1
-				+ " Coast Distance:" + String.format("%.2f", distance) + " Total Autonomous Time:"
-				+ (new Date().getTime() - WaitForCreate.getTime()));
+		Robot.logf("----- WaitFor Finished time:%.2f Yaw:%.2f L:%.0f R:%.0f Coast:%.2f Total Time:%.2f%n", m_time,
+				Robot.ahrs.getYaw(), l1, r1, distance, (new Date().getTime() - Robot.taskInitTime.getTime()) / 1000d);
 	}
 
 	// Called when another command which requires one or more of the same

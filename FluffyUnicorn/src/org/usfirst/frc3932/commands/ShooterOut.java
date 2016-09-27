@@ -40,6 +40,7 @@ public class ShooterOut extends Command {
     protected void initialize() {
     	Robot.log("Shooter Out Initialized");
     	Robot.shooterWheels.halfShoot();
+    	Robot.navXPin5ShooterActive.set(true);
     	//setTimeout(0.8);
     	setTimeout(1);
     }
