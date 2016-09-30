@@ -36,8 +36,6 @@ public class TurnToOrig extends Command {
 
 	private PIDController controller;
 
-	private boolean notUsingI = true;
-
 	Preferences prefs;
 
 	// oscillation period .44 -- Dave's p=.045,i=.007,d=0,f=1.3 for West Palm
@@ -128,9 +126,14 @@ public class TurnToOrig extends Command {
 		F = prefs.getDouble("F", F);
 		maxOutput = prefs.getDouble("maxO", maxOutput);
 		double deltaYaw = Math.abs(m_degrees - Robot.ahrs.getYaw());
-		
+
 		if (Robot.robotType == ROBOTTYPES.MINI && goodPid) {
-			if (deltaYaw < 3) {
+			if (deltaYaw < 1) {
+				maxOutput = .8;
+				P = .1;
+				I = 0;
+				D = 0.06;
+			} else if (deltaYaw < 3) {
 				maxOutput = .6;
 				P = .07;
 				I = 0;
@@ -194,10 +197,10 @@ public class TurnToOrig extends Command {
 		controller.setInputRange(-180, 180);
 		controller.setContinuous(true);
 		controller.setAbsoluteTolerance(.5);
-		//controller.setToleranceBuffer(5); // Was 10
+		// controller.setToleranceBuffer(5); // Was 10
 		controller.setOutputRange(-maxOutput, maxOutput);
-		Robot.logf("+++++ Turnto degrees:%.2f timeOut:%.2f p:%.2f i:%.2f d:%.2f f:%.2f maxO:%.2f%n", m_degrees,
-				m_timeout, P, I, D, F, maxOutput);
+		Robot.logf("+++++ Turnto degrees:%.2f timeOut:%.2f deltaYaw:%.2f p:%.3f i:%.3f d:%.3f f:%.3f maxO:%.3f%n",
+				m_degrees, m_timeout, deltaYaw, P, I, D, F, maxOutput);
 		controller.enable();
 		controller.setSetpoint(m_degrees);
 		turnToInit = new Date();
@@ -221,21 +224,20 @@ public class TurnToOrig extends Command {
 		double convTime = (new Date().getTime() - turnToInit.getTime());
 		if (convTime > m_timeout * 1000)
 			return true;
-		Robot.logf(
-				"TurnTo onTarget:%s YAW:%.2f Err:%.2f AvgErr:%.2f errCnt:%d onTgCnt:%d lc:%.2f rc:%.2f lv:%.2f rv:%.2f Conv:%.0f%n",
+		Robot.logf("TurnTo onTarget:%s YAW:%.2f Err:%.2f AvgErr:%.2f errCnt:%d onTgCnt:%d left %s right %s Conv:%.0f%n",
 				controller.onTarget() ? "True" : "False", Robot.ahrs.getYaw(), err, controller.getAvgError(), count,
-				errorCounter, RobotMap.driveSystemRightFront.getOutputCurrent(),
-				RobotMap.driveSystemLeftFront.getOutputCurrent(), RobotMap.driveSystemLeftFront.getOutputVoltage(),
-				RobotMap.driveSystemRightFront.getOutputVoltage(), convTime);
+				errorCounter, Robot.motorData(RobotMap.driveSystemLeftFront),
+				Robot.motorData(RobotMap.driveSystemRightFront), convTime);
 		boolean f1 = controller.onTarget();
 		boolean f2 = ((errorCounter >= maxErrorCount));
 		boolean f3 = Math.abs(err) < maxError;
+		boolean f4 = (RobotMap.driveSystemLeftFront.getSpeed() == 0.0d) && (RobotMap.driveSystemRightFront.getSpeed() == 0.0d);
 		if (f1) {
 			count++;
 			if (count > 5)
 				return true;
 		}
-		if (f2)
+		if (f2 || (f4 && convTime > 100))
 			return true;
 		// controller.disable();
 		// count++;
@@ -260,6 +262,7 @@ public class TurnToOrig extends Command {
 		SmartDashboard.putNumber("Time to Turn", convTime);
 		controller.disable();
 		controller.free();
+		controller = null;
 	}
 
 	// Called when another command which requires one or more of the same

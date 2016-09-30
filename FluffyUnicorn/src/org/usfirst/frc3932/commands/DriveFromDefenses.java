@@ -59,14 +59,14 @@ public class DriveFromDefenses extends CommandGroup {
     	//addSequential (new WaitFor(1));
     	//addSequential(new DriveFromDefenses(FEET, ANGLE));
     	addSequential (new WaitFor(.5));
-    	addSequential(new DetectTarget());
+    	//addSequential(new DetectTarget());
     //	addSequential (GotTheTarget);
     	//Robot.log("Encoder Positions"+ RobotMap.driveSystemLeftFront.getEncPosition() + " " + RobotMap.driveSystemRightFront.getEncPosition());
     	//Robot.log("Angle Size" + angle + "Detected Angle" + GotTheTarget.angle);
-    	addSequential(new TurnToTarget());
+    	addSequential(new TurnToTarget(5.0));
     	//addSequential (new WaitFor(1));
     	addSequential(new ShooterOut());
-    	//addSequential (new WaitFor(1));
+    	addSequential (new WaitFor(Robot.shootSpinup));
     	addSequential(new ActivateCannon());
     	//addSequential (new WaitFor(1));
     	addSequential(new ShooterOff());

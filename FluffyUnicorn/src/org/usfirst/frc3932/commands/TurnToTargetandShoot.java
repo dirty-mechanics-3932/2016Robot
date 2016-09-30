@@ -59,7 +59,8 @@ public class TurnToTargetandShoot extends CommandGroup {
 		//addSequential(new ShooterOut());
 		
 		addSequential(new ShooterOut());		
-		addSequential(new MoveToTargetYawPid(10));
+		addSequential(new MoveToTargetYawPid(5));
+		addSequential(new WaitFor(Robot.shootSpinup, true));
 		addSequential(new ActivateCannon());
 		addSequential(new WaitFor(.2));
 		addSequential(new ShooterOff());

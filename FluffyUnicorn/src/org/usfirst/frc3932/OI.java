@@ -158,7 +158,7 @@ public class OI {
 		SmartDashboard.putData("DriveFromPosition5B", new DriveFromPosition5B());
 		SmartDashboard.putData("ResetAngle", new ResetAngle());
 		SmartDashboard.putData("DetectTarget", new DetectTarget());
-		SmartDashboard.putData("TurnToTarget", new TurnToTarget());
+		SmartDashboard.putData("TurnToTarget", new TurnToTarget(5.0));
 		SmartDashboard.putData("LIDARDrive", new LIDARDrive());
 		SmartDashboard.putData("RoboRealmDistanceGet", new RoboRealmDistanceGet());
 		SmartDashboard.putData("RoboRealmDistanceDrive", new RoboRealmDistanceDrive());
@@ -189,7 +189,7 @@ public class OI {
 		SmartDashboard.putData("TurnTo -90", Robot.TurnToBest(-90, 5));
 		SmartDashboard.putData("TurnToTargetandShoot", new TurnToTargetandShoot());
 		SmartDashboard.putData("MoveToTargetYawPid", new MoveToTargetYawPid(10));
-		SmartDashboard.putData("MoveToTargetSRXPid", new MoveToTargetSRXPid(5));
+		//SmartDashboard.putData("MoveToTargetSRXPid", new MoveToTargetSRXPid(5));
 		SmartDashboard.putData("Move 1 Foot", new DriveStraight(1, .5));
 		SmartDashboard.putData("Move 3 Feet", new DriveStraight(3, .5));
 		SmartDashboard.putData("Move -1 Foot", new DriveStraight(-1, .5));

@@ -54,7 +54,7 @@ public class DriveFromPosition5B extends CommandGroup {
     	addSequential(new MoveToTargetYawPid(5));
     	
     	addSequential(new ShooterOut());
-    	addSequential (new WaitFor(Robot.shootSpinup));
+    	addSequential (new WaitFor(Robot.shootSpinup, true));
     	addSequential(new ActivateCannon());
     	addSequential(new ShooterOff());
 

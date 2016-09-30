@@ -62,7 +62,7 @@ public class TurnToSmall extends Command {
 		wait = 0;
 		turnToInit = new Date();
 		timeOut = Math.abs((int) (m_degrees * 16));
-		double turnSpeed = 0.25d;
+		double turnSpeed = 0.3d;
 		timeOut = 1;
 		l0 = RobotMap.driveSystemLeftFront.getPosition();
 		r0 = RobotMap.driveSystemRightFront.getPosition();
@@ -70,9 +70,9 @@ public class TurnToSmall extends Command {
 		Robot.logf("+++++ TurnToSmall init deg:%.2f yaw:%.2f speed:%.2f timeOut:%d%n", m_degrees, yaw0, turnSpeed,
 				timeOut);
 		if (m_degrees > 0)
-			Robot.driveSystem.drivePercent(0, turnSpeed);
+			Robot.driveSystem.drivePercent(-turnSpeed, turnSpeed);
 		else
-			Robot.driveSystem.drivePercent(turnSpeed, 0);
+			Robot.driveSystem.drivePercent(turnSpeed, -turnSpeed);
 		Robot.setBrakeMode(true);
 	}
 
@@ -83,9 +83,9 @@ public class TurnToSmall extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		count++;
-		Robot.logf("TurnToSmall count:%d wait:%d yaw:%.2f %s %s%n", count, wait, Robot.ahrs.getYaw(),
-				miscData(RobotMap.driveSystemLeftFront, SIDE.Left),
-				miscData(RobotMap.driveSystemRightFront, SIDE.Right));
+		Robot.logf("TurnToSmall count:%d wait:%d yaw:%.2f left %s right %s%n", count, wait, Robot.ahrs.getYaw(),
+				Robot.motorData(RobotMap.driveSystemLeftFront),
+				Robot.motorData(RobotMap.driveSystemRightFront));
 		if (count >= timeOut) {
 			if (wait == 0) {
 				Robot.driveSystem.drivePercent(0, 0);
@@ -115,11 +115,5 @@ public class TurnToSmall extends Command {
 		end();
 	}
 
-	// Create Misc data for a side
-	public String miscData(CANTalon talon, SIDE side) {
-		return String.format("%s P:%.0f En:%d Sp:%.2f V:%.2f C:%.2f Err:%d", side.name(), talon.getPosition(),
-				talon.getEncPosition(), talon.getSpeed(), talon.getOutputVoltage(), talon.getOutputCurrent(),
-				talon.getClosedLoopError());
-	}
 
 }

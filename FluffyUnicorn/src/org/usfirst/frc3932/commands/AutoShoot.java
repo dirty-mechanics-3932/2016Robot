@@ -11,6 +11,8 @@
 package org.usfirst.frc3932.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+
+import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.subsystems.*;
 
 /**
@@ -47,7 +49,7 @@ public class AutoShoot extends CommandGroup {
 
 		addSequential(new MoveToTargetYawPid(5));
 		addSequential(new ShooterOut());
-		addSequential(new WaitFor(2.5));
+		addSequential(new WaitFor(Robot.shootSpinup, true));
 		addSequential(new ActivateCannon());
 		addSequential(new ShooterOff());
 

@@ -11,7 +11,7 @@
 package org.usfirst.frc3932;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.SPI;
@@ -71,6 +71,9 @@ public class Robot extends IterativeRobot {
 	public static DigitalInput pin8;
 	public static DigitalInput pin9;
 	public static Config conf;
+	
+	// shootTime is set by MoveToTarget and used by WaitFor to determine how much time is need to let the motors spin up
+	public static double shootTime =  0;
 
 	private int count = 0;
 
@@ -97,7 +100,7 @@ public class Robot extends IterativeRobot {
 	private static SendableChooser positionChooser = new SendableChooser();
 	// private static SendableChooser rollAdapterChooser = new
 	// SendableChooser();
-	public static double shootSpinup = 2.5d;
+	public static double shootSpinup = 4.5d;
 
 	public Robot() {
 		obstacleChooser.addDefault("Auto_Moat:", Commands.AUTO_MOAT);
@@ -633,5 +636,37 @@ public class Robot extends IterativeRobot {
 					pid[0], pid[1], pid[2], f, rotateFactor, maxError, minVoltage, (brakeMode ? "True" : "False"),
 					voltageRampRate, Robot.robotType.name());
 		}
+		// Create Misc data for a side
+
+	}
+
+	public static String motorData(CANTalon talon) {
+		return String.format("P:%.0f En:%d Sp:%.2f V:%.2f C:%.2f Err:%d", talon.getPosition(), talon.getEncPosition(),
+				talon.getSpeed(), talon.getOutputVoltage(), talon.getOutputCurrent(), talon.getClosedLoopError());
+	}
+
+	public static String motorsP() {
+		return String.format("lp:%.0f rp:%.0f", RobotMap.driveSystemLeftFront.getPosition(),
+				RobotMap.driveSystemRightFront.getPosition());
+	}
+
+	public static String motorsC() {
+		return String.format("lp:%.0f rp:%.0f", RobotMap.driveSystemLeftFront.getOutputCurrent(),
+				RobotMap.driveSystemRightFront.getOutputCurrent());
+	}
+
+	public static String motorsV() {
+		return String.format("lv:%.0f rv:%.0f", RobotMap.driveSystemLeftFront.getOutputVoltage(),
+				RobotMap.driveSystemRightFront.getOutputVoltage());
+	}
+	
+	public static String motorsEn() {
+		return String.format("len:%.0f ren:%.0f", RobotMap.driveSystemLeftFront.getEncPosition(),
+				RobotMap.driveSystemRightFront.getEncPosition());
+	}
+	
+	public static String motorsEr() {
+		return String.format("ler:%.0f rer:%.0f", RobotMap.driveSystemLeftFront.getClosedLoopError(),
+				RobotMap.driveSystemRightFront.getClosedLoopError());
 	}
 }
