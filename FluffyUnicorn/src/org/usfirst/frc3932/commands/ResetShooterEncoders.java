@@ -38,11 +38,15 @@ public class ResetShooterEncoders extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		if(Robot.conf.shooterPresent) {
 		Robot.logf("Reset Shooter Encoders had been left:%.0f right:%.0f%n",
 				RobotMap.shooterWheelsLeftWheel.getEncPosition(), RobotMap.shooterWheelsRightWheel.getEncPosition());
 		// Reset encoders so we can see deltas better
 		RobotMap.shooterWheelsLeftWheel.setEncPosition(0);
 		RobotMap.shooterWheelsRightWheel.setEncPosition(0);
+		} else {
+			Robot.logf("No Shooters%n");
+		}
 
 	}
 

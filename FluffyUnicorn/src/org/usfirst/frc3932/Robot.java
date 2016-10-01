@@ -71,9 +71,10 @@ public class Robot extends IterativeRobot {
 	public static DigitalInput pin8;
 	public static DigitalInput pin9;
 	public static Config conf;
-	
-	// shootTime is set by MoveToTarget and used by WaitFor to determine how much time is need to let the motors spin up
-	public static double shootTime =  0;
+
+	// shootTime is set by MoveToTarget and used by WaitFor to determine how
+	// much time is need to let the motors spin up
+	public static double shootTime = 0;
 
 	private int count = 0;
 
@@ -171,6 +172,7 @@ public class Robot extends IterativeRobot {
 		conf = new Config();
 		oi = new OI(); // OI should be last as it will allow created commands to
 						// have configuration data
+		SmartDashboard.putString("Target Result", "Waiting");
 	}
 
 	private void setRobotType() {
@@ -602,7 +604,7 @@ public class Robot extends IterativeRobot {
 		public double areaMin = 400d;
 		public double areaMax = 2500d;
 
-		public boolean shooterPresent = true;
+		public boolean shooterPresent = false;
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
@@ -624,6 +626,7 @@ public class Robot extends IterativeRobot {
 				areaMax = 9800;
 				shooterPresent = false;
 			} else {
+				// Items for competition robots
 				ticksPerFoot = 1690d;
 				shooterPresent = true;
 			}
@@ -645,27 +648,32 @@ public class Robot extends IterativeRobot {
 				talon.getSpeed(), talon.getOutputVoltage(), talon.getOutputCurrent(), talon.getClosedLoopError());
 	}
 
-	public static String motorsP() {
+	public static String motorDataAll() {
+		return "Left:" + motorData(RobotMap.driveSystemLeftFront) + " Right:"
+				+ motorData(RobotMap.driveSystemRightFront);
+	}
+
+	public static String motorsPosition() {
 		return String.format("lp:%.0f rp:%.0f", RobotMap.driveSystemLeftFront.getPosition(),
 				RobotMap.driveSystemRightFront.getPosition());
 	}
 
-	public static String motorsC() {
+	public static String motorsCurrent() {
 		return String.format("lp:%.0f rp:%.0f", RobotMap.driveSystemLeftFront.getOutputCurrent(),
 				RobotMap.driveSystemRightFront.getOutputCurrent());
 	}
 
-	public static String motorsV() {
+	public static String motorsVoltage() {
 		return String.format("lv:%.0f rv:%.0f", RobotMap.driveSystemLeftFront.getOutputVoltage(),
 				RobotMap.driveSystemRightFront.getOutputVoltage());
 	}
-	
-	public static String motorsEn() {
+
+	public static String motorsEncoder() {
 		return String.format("len:%.0f ren:%.0f", RobotMap.driveSystemLeftFront.getEncPosition(),
 				RobotMap.driveSystemRightFront.getEncPosition());
 	}
-	
-	public static String motorsEr() {
+
+	public static String motorsErorr() {
 		return String.format("ler:%.0f rer:%.0f", RobotMap.driveSystemLeftFront.getClosedLoopError(),
 				RobotMap.driveSystemRightFront.getClosedLoopError());
 	}
