@@ -101,7 +101,7 @@ public class Robot extends IterativeRobot {
 	private static SendableChooser positionChooser = new SendableChooser();
 	// private static SendableChooser rollAdapterChooser = new
 	// SendableChooser();
-	public static double shootSpinup = 4.5d;
+	public static double shootSpinup = 3.0d;
 
 	public Robot() {
 		obstacleChooser.addDefault("Auto_Moat:", Commands.AUTO_MOAT);
@@ -603,6 +603,7 @@ public class Robot extends IterativeRobot {
 											// Beach
 		public double areaMin = 400d;
 		public double areaMax = 2500d;
+		public double magicDistance = 9.5d;
 
 		public boolean shooterPresent = false;
 
@@ -625,8 +626,14 @@ public class Robot extends IterativeRobot {
 				areaMin = 1000;
 				areaMax = 9800;
 				shooterPresent = false;
+				magicDistance = 6d;
 			} else {
 				// Items for competition robots
+				if (Robot.robotType == ROBOTTYPES.COMPETITION) {
+					magicDistance = 9.5;
+				} else {
+					magicDistance = 9.5;
+				}
 				ticksPerFoot = 1690d;
 				shooterPresent = true;
 			}

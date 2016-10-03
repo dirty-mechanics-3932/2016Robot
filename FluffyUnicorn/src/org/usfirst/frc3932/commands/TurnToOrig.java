@@ -158,17 +158,17 @@ public class TurnToOrig extends Command {
 
 		if (Robot.robotType == ROBOTTYPES.COMPETITION && goodPid) {
 			if (deltaYaw < 2) {
-				maxOutput = .6;
+				maxOutput = .5;
 				P = .15;
 				I = 0;
 				D = 0;
 			} else if (deltaYaw < 5) {
-				maxOutput = .6;
-				P = .11;
+				maxOutput = .5;
+				P = .09; //.11
 				I = 0;
-				D = 0;
+				D = 0.025;
 			} else {
-				maxOutput = .6;
+				maxOutput = .4;
 				P = .06;
 				I = 0;
 				D = .05;

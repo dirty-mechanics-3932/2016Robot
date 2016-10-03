@@ -68,8 +68,8 @@ public class DriveFromPosition5 extends CommandGroup {
     	addSequential (Robot.TurnToBest(0,1.5));
     	addSequential (new DriveStraight(5.66,.6));
     	addSequential (Robot.TurnToBest(-60,2));
-    	addSequential(new MoveToTargetYawPid(5));
     	addSequential(new ShooterOut());
+    	addSequential(new MoveToTargetYawPid(5));
     	addSequential(new WaitFor(Robot.shootSpinup, true));
     	addSequential(new ActivateCannon());
     	addSequential(new ShooterOff());
