@@ -42,7 +42,7 @@ public class ShooterOut extends Command {
     	Robot.shooterWheels.halfShoot();
     	Robot.navXPin5ShooterActive.set(true);
     	//setTimeout(0.8);
-    	setTimeout(1);
+    	setTimeout(.8);
     }
 
     // Called repeatedly when this Command is scheduled to run

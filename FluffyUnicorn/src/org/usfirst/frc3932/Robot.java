@@ -75,6 +75,8 @@ public class Robot extends IterativeRobot {
 	// shootTime is set by MoveToTarget and used by WaitFor to determine how
 	// much time is need to let the motors spin up
 	public static double shootTime = 0;
+	
+	public static double visionAngle = 0;
 
 	private int count = 0;
 
@@ -599,10 +601,7 @@ public class Robot extends IterativeRobot {
 		public double mountHeight = 20d;
 		public double targetHeight = 91d;
 		public boolean deepDebug = false;
-		public double ticksPerFoot = 1690d; // was 1409d for St. Louis and Palm
-											// Beach
-		public double areaMin = 400d;
-		public double areaMax = 2500d;
+		public double ticksPerFoot = 1690d; // was 1409d for St. Louis and Palm											// Beach
 		public double magicDistance = 9.5d;
 
 		public boolean shooterPresent = false;
@@ -623,8 +622,6 @@ public class Robot extends IterativeRobot {
 				mountHeight = 15.5d;
 				targetHeight = 89d;
 				ticksPerFoot = 1290d;
-				areaMin = 1000;
-				areaMax = 9800;
 				shooterPresent = false;
 				magicDistance = 6d;
 			} else {

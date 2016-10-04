@@ -49,7 +49,7 @@ public class DriveFromPosition1 extends CommandGroup {
 		} else {
 			addSequential(new CameraUp());
 			addSequential(new PlatformUp());
-			addSequential(new DriveStraight(9.5, .75));
+			addSequential(new DriveStraight(6.0, .75)); // Was 9.5
 			addSequential(Robot.TurnToBest(55, 2.5));
 			addSequential(new ShooterOut());
 			addSequential(new MoveToTargetYawPid(5));

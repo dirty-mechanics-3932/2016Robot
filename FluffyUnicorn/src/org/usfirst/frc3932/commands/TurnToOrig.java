@@ -224,8 +224,8 @@ public class TurnToOrig extends Command {
 		double convTime = (new Date().getTime() - turnToInit.getTime());
 		if (convTime > m_timeout * 1000)
 			return true;
-		Robot.logf("TurnTo onTarget:%s YAW:%.2f Err:%.2f AvgErr:%.2f errCnt:%d onTgCnt:%d left %s right %s Conv:%.0f%n",
-				controller.onTarget() ? "True" : "False", Robot.ahrs.getYaw(), err, controller.getAvgError(), count,
+		Robot.logf("TurnTo onTarget:%s YAW:%.2f Err:%.2f AvgErr:%.2f vision:%.2f errCnt:%d onTgCnt:%d left %s right %s Conv:%.0f%n",
+				controller.onTarget() ? "True" : "False", Robot.ahrs.getYaw(), err, controller.getAvgError(), Robot.visionAngle, count,
 				errorCounter, Robot.motorData(RobotMap.driveSystemLeftFront),
 				Robot.motorData(RobotMap.driveSystemRightFront), convTime);
 		boolean f1 = controller.onTarget();

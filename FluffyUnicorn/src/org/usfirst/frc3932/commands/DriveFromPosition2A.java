@@ -57,7 +57,7 @@ public class DriveFromPosition2A extends CommandGroup {
 		addSequential(Robot.TurnToBest(62, 4.0));
 		// Move to target with no forward / backward movement
 		addSequential(new MoveToTargetYawPid(5.0, true));
-		addSequential(new WaitFor(.4));
+		//addSequential(new WaitFor(.4));
 		addSequential(new LowShot());
 	}
 }
