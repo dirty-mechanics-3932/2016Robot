@@ -79,14 +79,18 @@ public class DriveSystem extends Subsystem {
 
 			initYaw = Robot.ahrs.getAngle();
 			isYawInitialized = true;
-//			if (Math.abs(left) >.06 || Math.abs(right) > 0.06) {
-//				Robot.logf(
-//						"Drive Normal Yaw:%.2f LD:%.2f RD:%.2f " + "LP:%.0f RP:%.0f LS:%.0f RS:%.0f LC:%.2f RC:%.2f%n",
-//						initYaw, left, right, RobotMap.driveSystemLeftFront.getPosition(),
-//						RobotMap.driveSystemRightFront.getPosition(), RobotMap.driveSystemLeftFront.getSpeed(),
-//						RobotMap.driveSystemRightFront.getSpeed(), RobotMap.driveSystemLeftFront.getOutputCurrent(),
-//						RobotMap.driveSystemRightFront.getOutputCurrent());
-//			}
+			// if (Math.abs(left) >.06 || Math.abs(right) > 0.06) {
+			// Robot.logf(
+			// "Drive Normal Yaw:%.2f LD:%.2f RD:%.2f " + "LP:%.0f RP:%.0f
+			// LS:%.0f RS:%.0f LC:%.2f RC:%.2f%n",
+			// initYaw, left, right,
+			// RobotMap.driveSystemLeftFront.getPosition(),
+			// RobotMap.driveSystemRightFront.getPosition(),
+			// RobotMap.driveSystemLeftFront.getSpeed(),
+			// RobotMap.driveSystemRightFront.getSpeed(),
+			// RobotMap.driveSystemLeftFront.getOutputCurrent(),
+			// RobotMap.driveSystemRightFront.getOutputCurrent());
+			// }
 
 		}
 
@@ -125,13 +129,9 @@ public class DriveSystem extends Subsystem {
 					}
 				}
 
-				Robot.logf(
-						"leftTrig initYaw:%.2f Yaw:%.2f LD:%.2f RD:%.2f "
-								+ "LP:%.0f RP:%.0f LS:%.0f RS:%.0f LV:%.2f RV:%.2f%n",
-						initYaw, currentYaw, left, right, RobotMap.driveSystemLeftFront.getPosition(),
-						RobotMap.driveSystemRightFront.getPosition(), RobotMap.driveSystemLeftFront.getSpeed(),
-						RobotMap.driveSystemRightFront.getSpeed(), RobotMap.driveSystemLeftFront.getBusVoltage(),
-						RobotMap.driveSystemRightFront.getBusVoltage());
+				Robot.logf("leftTrig initYaw:%.2f Yaw:%.2f LJ:%.2f RJ:%.2f %s %s %s %s%n", initYaw, currentYaw, left,
+						right, Robot.motorsPosition(), Robot.motorsSpeed(), Robot.motorsVoltage(),
+						Robot.motorsCurrent());
 			}
 		}
 
@@ -166,8 +166,8 @@ public class DriveSystem extends Subsystem {
 		scale = SLOW_SCALE;
 	}
 
-	public void resetEncoders() { // Reset encoders take a few Milliseconds to
-									// complete could be as long as 100 MS
+	// Reset encoders take a few Milliseconds to complete could be 100 MS
+	public void resetEncoders() {
 		leftFront.setEncPosition(0);
 		rightFront.setEncPosition(0);
 	}

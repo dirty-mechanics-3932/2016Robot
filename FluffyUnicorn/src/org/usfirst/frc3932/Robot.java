@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 	// shootTime is set by MoveToTarget and used by WaitFor to determine how
 	// much time is need to let the motors spin up
 	public static double shootTime = 0;
-	
+
 	public static double visionAngle = 0;
 
 	private int count = 0;
@@ -250,8 +250,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		updateStatus(); // Added at Melborne since Vision was not working
-						// autonomous mode
+		// Added at Melborne since Vision wasn't working autonomous mode
+		updateStatus(); 
 	}
 
 	@Override
@@ -260,6 +260,7 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		log("+++++ Start Teleop  ++++++");
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		taskInitTime = new Date();
@@ -306,11 +307,14 @@ public class Robot extends IterativeRobot {
 
 			if (conf.shooterPresent) {
 
+				SmartDashboard.putNumber("ShootRight En:", RobotMap.shooterWheelsRightWheel.getPosition());
+				SmartDashboard.putNumber("ShootRight Sp:", RobotMap.shooterWheelsRightWheel.getSpeed());
+				
 				SmartDashboard.putNumber("ShootLeft En:", RobotMap.shooterWheelsLeftWheel.getPosition());
 				SmartDashboard.putNumber("ShootLeft Sp:", RobotMap.shooterWheelsLeftWheel.getSpeed());
 
 				// SmartDashboard.putNumber("ShootRight En:",
-				// RobotMap.shooterWheelsRightWheel.getPosition());
+				// RobotMap.shooterWheelsRightWheel.getPositiont());
 				// SmartDashboard.putNumber("ShootRight Sp:",
 				// RobotMap.shooterWheelsRightWheel.getSpeed());
 			}
@@ -601,10 +605,11 @@ public class Robot extends IterativeRobot {
 		public double mountHeight = 20d;
 		public double targetHeight = 91d;
 		public boolean deepDebug = false;
-		public double ticksPerFoot = 1690d; // was 1409d for St. Louis and Palm											// Beach
+		public double ticksPerFoot = 1690d; // was 1409d for St. Louis and Palm
+											// // Beach
 		public double magicDistance = 9.5d;
 
-		public boolean shooterPresent = false;
+		public boolean shooterPresent = true;
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
@@ -648,7 +653,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public static String motorData(CANTalon talon) {
-		return String.format("P:%.0f En:%d Sp:%.2f V:%.2f C:%.2f Err:%d", talon.getPosition(), talon.getEncPosition(),
+		return String.format("P:%.0f En:%d Sp:%.0f V:%.2f C:%.2f Err:%d", talon.getPosition(), talon.getEncPosition(),
 				talon.getSpeed(), talon.getOutputVoltage(), talon.getOutputCurrent(), talon.getClosedLoopError());
 	}
 
@@ -657,18 +662,23 @@ public class Robot extends IterativeRobot {
 				+ motorData(RobotMap.driveSystemRightFront);
 	}
 
+	public static String motorsSpeed() {
+		return String.format("ls:%.0f rs:%.0f", RobotMap.driveSystemLeftFront.getSpeed(),
+				RobotMap.driveSystemRightFront.getSpeed());
+	}
+
 	public static String motorsPosition() {
 		return String.format("lp:%.0f rp:%.0f", RobotMap.driveSystemLeftFront.getPosition(),
 				RobotMap.driveSystemRightFront.getPosition());
 	}
 
 	public static String motorsCurrent() {
-		return String.format("lp:%.0f rp:%.0f", RobotMap.driveSystemLeftFront.getOutputCurrent(),
+		return String.format("lc:%.2f rc:%.2f", RobotMap.driveSystemLeftFront.getOutputCurrent(),
 				RobotMap.driveSystemRightFront.getOutputCurrent());
 	}
 
 	public static String motorsVoltage() {
-		return String.format("lv:%.0f rv:%.0f", RobotMap.driveSystemLeftFront.getOutputVoltage(),
+		return String.format("lv:%.2f rv:%.2f", RobotMap.driveSystemLeftFront.getOutputVoltage(),
 				RobotMap.driveSystemRightFront.getOutputVoltage());
 	}
 

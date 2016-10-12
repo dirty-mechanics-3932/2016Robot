@@ -7,11 +7,11 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class TurnToTest {
-	TurnTo turnTo;
+	TurnToOrig turnTo;
 
 	@Before
 	public void setUp() throws Exception {
-		turnTo = spy(new TurnTo(90));
+		turnTo = spy(new TurnToOrig(90));
 	}
 
 	@After

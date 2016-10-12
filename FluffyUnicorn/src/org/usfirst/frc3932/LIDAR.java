@@ -2,6 +2,8 @@ package org.usfirst.frc3932;
 
 import edu.wpi.first.wpilibj.I2C;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.util.TimerTask;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
@@ -72,6 +74,7 @@ public class LIDAR implements PIDSource {
 		d += Byte.toUnsignedInt(distance[0]);
 		dist = d;
 		// Robot.log("LIDAR Dist:" + dist + " w1:" + w1 + " r1:" +r1 +" r2:" + r2);
+		SmartDashboard.putNumber("Lidar Distance feet", dist / (12 * 2.54));
 	}
 
 	// Timer task to keep distance updated

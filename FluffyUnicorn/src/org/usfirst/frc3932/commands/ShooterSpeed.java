@@ -37,13 +37,13 @@ public class ShooterSpeed extends Command {
 	Preferences prefs;
 
 	private CANTalon leftWheel = RobotMap.shooterWheelsLeftWheel;
-	// private CANTalon rightWheel = RobotMap.shooterWheelsRightWheel;
+	private CANTalon rightWheel = RobotMap.shooterWheelsRightWheel;
 	private Double m_speed;
 	private Double m_timeout;
-	public double P = .1097d;
-	public double I = 0;
-	public double D = 0;
-	public double F = .22d;
+	public double P = .1097d; // was .1097 should have been .22
+	public double I = 0; // was 0
+	public double D = 0; // was 0
+	public double F = .22d; // was .22 should have been .1097
 	private long initTime;
 
 	public ShooterSpeed(double speed, double timeout) {
@@ -64,8 +64,8 @@ public class ShooterSpeed extends Command {
 	protected void initialize() {
 		prefs = Preferences.getInstance();
 		m_speed = prefs.getDouble("Speed", m_speed);
+		talonInit(rightWheel, SIDE.Right, m_speed);
 		talonInit(leftWheel, SIDE.Left, m_speed);
-		// talonInit(rightWheel, SIDE.Right, m_speed);
 		initTime = new Date().getTime();
 		Robot.logf("Start Shooter Motor speed:%.2f timeout:%.2f%n", m_speed, m_timeout);
 	}
@@ -76,8 +76,8 @@ public class ShooterSpeed extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		//setSpeed(leftWheel);
-		Robot.logf("Shooter %s%n", miscData(leftWheel, SIDE.Left));
+		// setSpeed(leftWheel);
+		Robot.logf("Shooter %s %s %n", miscData(rightWheel, SIDE.Right), miscData(leftWheel, SIDE.Left));
 		double convTime = (new Date().getTime() - initTime);
 		if (convTime > m_timeout * 1000)
 			return true;
@@ -86,9 +86,8 @@ public class ShooterSpeed extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
+		talonStop(rightWheel);
 		talonStop(leftWheel);
-		
-		// talonStop(rightWheel);
 	}
 
 	// Called when another command which requires one or more of the same
@@ -98,6 +97,16 @@ public class ShooterSpeed extends Command {
 	}
 
 	public void talonInit(CANTalon talon, SIDE side, double speed) {
+
+		prefs = Preferences.getInstance();
+		P = prefs.getDouble("P", P);
+		I = prefs.getDouble("I", I);
+		D = prefs.getDouble("D", D);
+		F = prefs.getDouble("F", F);
+		// maxOutput = prefs.getDouble("maxO", maxOutput);
+
+		Robot.logf("Shooter Init P:%.4f I:%.4f D:%.4f F:%.4f%n", P, I, D, F);
+
 		// choose the sensor and sensor direction
 		talon.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		/* set the peak and nominal outputs, 12V means full */
@@ -113,13 +122,17 @@ public class ShooterSpeed extends Command {
 
 		/* set closed loop gains in slot0 */
 		talon.setProfile(0);
+		talon.setVoltageRampRate(32);
+		
 		talon.setP(P);
 		talon.setI(I);
 		talon.setD(D);
 		talon.setF(F);
 		talon.changeControlMode(TalonControlMode.Speed);
 		talon.set(speed);
+		talon.setIZone(100);
 		talon.enableBrakeMode(true);
+
 	}
 
 	public void talonStop(CANTalon talon) {

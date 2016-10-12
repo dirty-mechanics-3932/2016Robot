@@ -181,7 +181,7 @@ public class OI {
 		SmartDashboard.putData("Move 3 Feet", new DriveStraight(3, .5));
 		SmartDashboard.putData("Move -1 Foot", new DriveStraight(-1, .5));
 		SmartDashboard.putData("Move -3 Feet", new DriveStraight(-3, .5));
-		SmartDashboard.putData("Shooter Speed PID", new ShooterSpeed(1000, 5));
+		SmartDashboard.putData("Shooter Speed PID", new ShooterSpeed(3000, 10));
 		SmartDashboard.putData("Reset Shooter Encoders", new ResetShooterEncoders());
 
 		SmartDashboard.putData("TurnTo SRX Pid 0", new TurnToSmall(0, 2));
