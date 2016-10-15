@@ -28,9 +28,9 @@ public class Vision {
 	private static final double H_RES = 640;
 	private static final double Y_RES = 480;
 	private static final double FIELD_OF_VIEW = 74;  //62 seems to also work??
-	private static double minArea = 1000;
+	private static double minArea = 800;  // Was 1000 10/12
 	private static double maxArea = 9800;
-	private static double minSolidity = .3d;
+	private static double minSolidity = .27d; //Was .3 10/12
 	private static double maxSolidity = .6d;
 	
 	private Robot.RunningAverage averageArea = new Robot.RunningAverage(10);

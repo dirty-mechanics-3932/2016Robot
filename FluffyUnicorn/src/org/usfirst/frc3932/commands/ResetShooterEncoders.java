@@ -43,7 +43,8 @@ public class ResetShooterEncoders extends Command {
 				RobotMap.shooterWheelsLeftWheel.getEncPosition(), RobotMap.shooterWheelsRightWheel.getEncPosition());
 		// Reset encoders so we can see deltas better
 		RobotMap.shooterWheelsLeftWheel.setEncPosition(0);
-		RobotMap.shooterWheelsRightWheel.setEncPosition(0);
+		if(Robot.robotType != Robot.ROBOTTYPES.MINI)
+		    RobotMap.shooterWheelsRightWheel.setEncPosition(0);
 		} else {
 			Robot.logf("No Shooters%n");
 		}
