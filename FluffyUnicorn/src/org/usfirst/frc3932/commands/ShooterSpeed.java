@@ -67,9 +67,9 @@ public class ShooterSpeed extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		prefs = Preferences.getInstance();
-		m_speed = prefs.getDouble("Speed", m_speed);
 
 		if (!goodPid) {
+			m_speed = prefs.getDouble("Speed", m_speed);
 			P = prefs.getDouble("P", P);
 			I = prefs.getDouble("I", I);
 			D = prefs.getDouble("D", D);
@@ -133,11 +133,13 @@ public class ShooterSpeed extends Command {
 	}
 	
 	public boolean speedOk(double tolerance) {
-		double leftDelta = Math.abs(leftWheel.getSpeed() - m_speed);
+		double leftDelta = Math.abs(Math.abs(leftWheel.getSpeed()) - m_speed);
 		double rightDelta = leftDelta; // Set for mini with only one wheel
 		if(Robot.robotType != Robot.ROBOTTYPES.MINI)
-			rightDelta= Math.abs(rightWheel.getSpeed() - m_speed);
-		Robot.logf("shooter speedOk leftD:%.0f rightD:%.0f %n", leftDelta, rightDelta);
+			rightDelta= Math.abs(Math.abs(rightWheel.getSpeed()) - m_speed);
+		Robot.logf("shooter.speedOk leftD:%.0f rightD:%.0f count:%d %n", leftDelta, rightDelta, count);
+		if(count < 20) 
+			return false;
 		return (rightDelta < tolerance) && (leftDelta < tolerance);
 	}
 
@@ -197,7 +199,7 @@ public class ShooterSpeed extends Command {
 
 		/* set closed loop gains in slot0 */
 		// talon.setProfile(0);
-		talon.setVoltageRampRate(16);
+		talon.setVoltageRampRate(32);
 		talon.setAllowableClosedLoopErr(0);
 		talon.setP(P);
 		talon.setI(I);

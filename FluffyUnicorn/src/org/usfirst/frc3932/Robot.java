@@ -122,6 +122,7 @@ public class Robot extends IterativeRobot {
 		positionChooser.addObject("Position 5", Commands.DRIVE_FROM_POSITION_5);
 		positionChooser.addObject("Position 5A", Commands.DRIVE_FROM_POSITION_5A);
 		positionChooser.addObject("Positions 5B", Commands.DRIVE_FROM_POSITION_5B);
+		positionChooser.addObject("Move Forward", Commands.MOVE_FORWARD);
 		SmartDashboard.putData("Auto-Position", positionChooser);
 
 		// rollAdapterChooser.addObject("On", Boolean.TRUE);
@@ -238,8 +239,12 @@ public class Robot extends IterativeRobot {
 		if (obstacle == Commands.DO_NOTHING) {
 			autonomousCommand = obstacleCommand;
 		} else {
+			
+			if(position == Commands.MOVE_FORWARD)
+				obstacleCommand = null;
 			autonomousCommand = new FullAutonomous(obstacleCommand, positionCommand);
 		}
+		
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -624,7 +629,7 @@ public class Robot extends IterativeRobot {
 		public double magicDistance = 9.5d;
 
 		public boolean shooterPresent = true;
-		public boolean targetAndShoot = true;
+		public boolean targetAndShoot = false;
 
 		public Config() {
 			Robot.logf("Init Configuration for Robotype:" + Robot.robotType.name());
@@ -647,9 +652,9 @@ public class Robot extends IterativeRobot {
 			} else {
 				// Items for competition robots
 				if (Robot.robotType == ROBOTTYPES.COMPETITION) {
-					magicDistance = 9.5;
+					magicDistance = 8.5;
 				} else {
-					magicDistance = 9.5;
+					magicDistance = 8.5;
 				}
 				ticksPerFoot = 1690d;
 				shooterPresent = true;

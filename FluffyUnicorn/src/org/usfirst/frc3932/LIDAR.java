@@ -65,6 +65,7 @@ public class LIDAR implements PIDSource {
 	}
 
 	public void stop() {
+		Robot.log("????????????? Lidar stop got called - ouch");
 		updater.cancel();
 		updater = new java.util.Timer();
 	}
