@@ -6,11 +6,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class FullAutonomous extends CommandGroup {
-	public FullAutonomous(Command obstacle, Command position){
+	public FullAutonomous(Command obstacle, Command position) {
 		addSequential(new ShooterOff());
 		addSequential(new ResetAngle());
 		addSequential(new WaitFor(.070));
-		addSequential(obstacle);
-		addSequential(position);		
+		if (obstacle != null)
+			addSequential(obstacle);
+		if (position != null)
+			addSequential(position);
+
 	}
 }

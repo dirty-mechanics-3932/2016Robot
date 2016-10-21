@@ -10,12 +10,14 @@
 
 package org.usfirst.frc3932;
 
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 import org.usfirst.frc3932.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc3932.subsystems.*;
 
@@ -25,15 +27,15 @@ import org.usfirst.frc3932.subsystems.*;
  */
 public class OI {
 	//// CREATING BUTTONS
-	// One type of button is a joystick button which is any button on a
-	//// joystick.
-	// You create one by telling it which joystick it's on and which button
+	// One type of button is a Joystick button which is any button on a
+	//// Joystick.
+	// You create one by telling it which Joystick it's on and which button
 	// number it is.
 	// Joystick stick = new Joystick(port);
 	// Button button = new JoystickButton(stick, buttonNumber);
 
 	// There are a few additional built in buttons you can use. Additionally,
-	// by subclassing Button you can create custom triggers and bind those to
+	// by sub classing Button you can create custom triggers and bind those to
 	// commands the same as any other Button.
 
 	//// TRIGGERING COMMANDS WITH BUTTONS
@@ -64,6 +66,7 @@ public class OI {
 	public JoystickButton lineUpButton;
 	public JoystickButton lowShotButton;
 	public JoystickButton btnTurnToTargetandShoot;
+	public JoystickButton btnTurnToTargetOnly;
 	public Joystick driverRight;
 	public JoystickButton shootOut;
 	public JoystickButton shootFeed;
@@ -96,6 +99,10 @@ public class OI {
 
 		btnTurnToTargetandShoot = new JoystickButton(driverRight, 3);
 		btnTurnToTargetandShoot.whenPressed(new TurnToTargetandShoot());
+
+		btnTurnToTargetOnly = new JoystickButton(driverRight, 5);
+		btnTurnToTargetOnly.whenPressed(new MoveToTargetYawPid(5, false));
+
 		lowShotButton = new JoystickButton(driverRight, 4);
 		lowShotButton.whenPressed(new LowShot());
 		lineUpButton = new JoystickButton(driverRight, 2);
@@ -106,8 +113,8 @@ public class OI {
 
 		setEqualToRightJav = new JoystickButton(driverLeft, 1);
 		setEqualToRightJav.whenReleased(new returnToNormal());
-		lIDARDriveButton = new JoystickButton(driverLeft, 2);
-		lIDARDriveButton.whenPressed(new LIDARDrive());
+		//lIDARDriveButton = new JoystickButton(driverLeft, 2);
+		//lIDARDriveButton.whenPressed(new LIDARDrive());
 		cameraLightButton = new JoystickButton(driverLeft, 6);
 		cameraLightButton.whenPressed(new CameraLightToggle());
 		driveFastButton = new JoystickButton(driverLeft, 4);
@@ -150,39 +157,40 @@ public class OI {
 		SmartDashboard.putData("DriveFromPosition5A", new DriveFromPosition5A());
 		SmartDashboard.putData("DriveFromPosition5B", new DriveFromPosition5B());
 		SmartDashboard.putData("ResetAngle", new ResetAngle());
-		SmartDashboard.putData("DetectTarget", new DetectTarget());
-		SmartDashboard.putData("TurnToTarget", new TurnToTarget());
-		SmartDashboard.putData("LIDARDrive", new LIDARDrive());
-		SmartDashboard.putData("RoboRealmDistanceGet", new RoboRealmDistanceGet());
-		SmartDashboard.putData("RoboRealmDistanceDrive", new RoboRealmDistanceDrive());
+		// Move with no forward or backward movement
+		SmartDashboard.putData("TurnToTarget", new MoveToTargetYawPid(5.0, true));
 		SmartDashboard.putData("LowShot", new LowShot());
-		SmartDashboard.putData("RoboRealmEncoderDrive", new RoboRealmEncoderDrive());
 		SmartDashboard.putData("AutoShoot", new AutoShoot());
 		SmartDashboard.putData("AutoRampart", new AutoRampart());
 		SmartDashboard.putData("AutoRoughTerrain", new AutoRoughTerrain());
 		SmartDashboard.putData("AutoRockWall", new AutoRockWall());
-		SmartDashboard.putData("MoveToTarget", new MoveToTarget());
-		SmartDashboard.putData("TurnTo0Degrees", new TurnTo(0, 2));
-		SmartDashboard.putData("TurnTo5Degrees", new TurnTo(5, 2));
-		SmartDashboard.putData("TurnTo10Degrees", new TurnTo(10, 2));
-		SmartDashboard.putData("TurnTo15Degrees", new TurnTo(15, 2));
-		SmartDashboard.putData("TurnTo30Degrees", new TurnTo(30, 4));
-		SmartDashboard.putData("TurnTo45Degrees", new TurnTo(45, 4));
-		SmartDashboard.putData("TurnTo90Degrees", new TurnTo(90, 5));
-		SmartDashboard.putData("TurnToSRXPid 1", new TurnToSRXPid(1, 2));
-		SmartDashboard.putData("TurnToSRXPid -1", new TurnToSRXPid(-1, 2));
-		SmartDashboard.putData("TurnToSRXPid 3", new TurnToSRXPid(3, 2));
-		SmartDashboard.putData("TurnToSRXPid -3", new TurnToSRXPid(-3, 2));
-		SmartDashboard.putData("TurnToSRXPid 10", new TurnToSRXPid(10, 2));
-		SmartDashboard.putData("TurnToSRXPid -10", new TurnToSRXPid(-10, 2));
-		SmartDashboard.putData("TurnToSRXPid 45", new TurnToSRXPid(45, 2));
-		SmartDashboard.putData("TurnToSRXPid -45", new TurnToSRXPid(-45, 2));
-		SmartDashboard.putData("TurnToSRXPid 90", new TurnToSRXPid(90, 2));
-		SmartDashboard.putData("TurnToSRXPid -90", new TurnToSRXPid(-90, 2));
-		SmartDashboard.putData("TurnToSRXPid 180", new TurnToSRXPid(180, 2));
-		SmartDashboard.putData("TurnToSRXPid -180", new TurnToSRXPid(-180, 2));
+		SmartDashboard.putData("TurnTo 0", Robot.TurnToBest(0, 3));
+		SmartDashboard.putData("TurnTo 1", Robot.TurnToBest(1, 3));
+		SmartDashboard.putData("TurnTo -1", Robot.TurnToBest(-1, 3));
+		SmartDashboard.putData("TurnTo 3", Robot.TurnToBest(3, 3));
+		SmartDashboard.putData("TurnTo -3", Robot.TurnToBest(-3, 3));
+		SmartDashboard.putData("TurnTo 10", Robot.TurnToBest(10, 3));
+		SmartDashboard.putData("TurnTo -10", Robot.TurnToBest(-10, 3));
+		SmartDashboard.putData("TurnTo 45", Robot.TurnToBest(45, 5));
+		SmartDashboard.putData("TurnTo -45", Robot.TurnToBest(-45, 5));
+		SmartDashboard.putData("TurnTo 90", Robot.TurnToBest(90, 5));
+		SmartDashboard.putData("TurnTo -90", Robot.TurnToBest(-90, 5));
 		SmartDashboard.putData("TurnToTargetandShoot", new TurnToTargetandShoot());
-		SmartDashboard.putData("KeithMoveToTarget", new KeithMoveToTarget(10));
+		SmartDashboard.putData("MoveToTargetYawPid", new MoveToTargetYawPid(10));
+		SmartDashboard.putData("Move 1 Foot", new DriveStraight(1, .5));
+		SmartDashboard.putData("Move 3 Feet", new DriveStraight(3, .5));
+		SmartDashboard.putData("Move -1 Foot", new DriveStraight(-1, .5));
+		SmartDashboard.putData("Move -3 Feet", new DriveStraight(-3, .5));
+		SmartDashboard.putData("Shooter Speed PID", new ShooterSpeed(3000, 10));
+		SmartDashboard.putData("Reset Shooter Encoders", new ResetShooterEncoders());
+
+		SmartDashboard.putData("TurnTo SRX Pid 0", new TurnToSmall(0, 2));
+		SmartDashboard.putData("TurnTo SRX Pid .5", new TurnToSmall(.5, 2));
+		SmartDashboard.putData("TurnTo SRX Pid -.5", new TurnToSmall(-.5, 2));
+		SmartDashboard.putData("TurnTo SRX Pid 1", new TurnToSmall(1, 2));
+		SmartDashboard.putData("TurnTo SRX Pid -1", new TurnToSmall(-1, 2));
+		
+		SmartDashboard.putData("Target and Shoot Test", new TargetAndShoot());
 
 		// END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=CONSTRUCTORS
 
@@ -241,6 +249,5 @@ public class OI {
 	public Joystick getOperatorJoystick() {
 		return operatorJoystick;
 	}
-
 	// END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=FUNCTIONS
 }

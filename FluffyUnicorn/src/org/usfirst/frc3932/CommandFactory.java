@@ -6,6 +6,7 @@ import org.usfirst.frc3932.commands.AutoRampart;
 import org.usfirst.frc3932.commands.AutoRockWall;
 import org.usfirst.frc3932.commands.AutoRoughTerrain;
 import org.usfirst.frc3932.commands.DoNothing;
+import org.usfirst.frc3932.commands.MoveForward;
 import org.usfirst.frc3932.commands.DriveFromPosition1;
 import org.usfirst.frc3932.commands.DriveFromPosition2;
 import org.usfirst.frc3932.commands.DriveFromPosition2A;
@@ -46,6 +47,8 @@ public class CommandFactory {
 			return new DriveFromPosition5A();
 		case DRIVE_FROM_POSITION_5B:
 			return new DriveFromPosition5B();
+		case MOVE_FORWARD:
+			return new MoveForward();
 		case DO_NOTHING:
 			return new DoNothing();
 		default:
