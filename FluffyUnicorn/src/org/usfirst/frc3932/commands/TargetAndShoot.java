@@ -117,7 +117,7 @@ public class TargetAndShoot extends Command {
 		
 		if(count > 10 && shooter == null ) {
 			Robot.logf("TAS -- Start Shooter initial %d%n", count);
-			shooter = new ShooterSpeed(4000, 15);
+			shooter = new ShooterSpeed(4900, 15);
 			shooter.initialize();
 		}
 
@@ -125,7 +125,7 @@ public class TargetAndShoot extends Command {
 			if (targeting.isFinished()) {
 				if(shooter == null ) { //ensure that shooter is running
 					Robot.logf("TAS -- Start Shooter after target %d%n", count);
-					shooter = new ShooterSpeed(4000, 15);
+					shooter = new ShooterSpeed(4900, 15);
 					shooter.initialize();
 				}
 				targeting.end();

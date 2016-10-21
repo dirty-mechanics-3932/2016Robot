@@ -175,21 +175,26 @@ public class TurnToOrig extends Command {
 			}
 		}
 		if (Robot.robotType == ROBOTTYPES.SIBLING && goodPid) {
-			if (deltaYaw < 3) {
+			if (deltaYaw < 1.5) {
 				maxOutput = .5;
-				P = 0.1;
+				P = 0.12;
 				I = 0;
-				D = 0.008;
+				D = 0.03;
+			} else if (deltaYaw < 3) {
+				maxOutput = .5;
+				P = .08;
+				I = 0;
+				D = .01;
 			} else if (deltaYaw < 10) {
 				maxOutput = .5;
-				P = .07;
+				P = .06;
 				I = 0;
-				D = .008;
+				D = .01;
 			} else {
 				maxOutput = .5;
-				P = .04;
+				P = .035;
 				I = 0;
-				D = 0;
+				D = 0.008;
 			}
 		}
 

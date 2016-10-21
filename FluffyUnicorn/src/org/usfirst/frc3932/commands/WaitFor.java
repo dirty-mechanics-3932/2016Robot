@@ -70,7 +70,7 @@ public class WaitFor extends Command {
 		if (m_variableTimeout) {
 			m_time = Robot.shootTime;
 		}
-		Robot.logf("+++++ WaitFor Initialize time:%.0f Yaw:%.2f L:%.0f R:%.0f%n", m_time, Robot.ahrs.getYaw(), l0, r0);
+		Robot.logf("+++++ WaitFor Initialize time:%.2f Yaw:%.2f L:%.0f R:%.0f%n", m_time, Robot.ahrs.getYaw(), l0, r0);
 		waitForInit = new Date();
 	}
 

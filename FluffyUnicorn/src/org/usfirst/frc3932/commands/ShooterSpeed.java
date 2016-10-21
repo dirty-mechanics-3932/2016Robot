@@ -40,12 +40,13 @@ public class ShooterSpeed extends Command {
 	private CANTalon rightWheel = RobotMap.shooterWheelsRightWheel;
 	private Double m_speed;
 	private Double m_timeout;
-	public double P = 0.08d; // was .1097 should have been .22
+	public double P = 0.2d; // was .1097 should have been .22
 	public double I = 0; // was 0
 	public double D = 0; // was 0
 	public double F = 0.0265d; // was .22 should have been .1097
 	private long initTime;
 	private boolean goodPid = true;
+	private boolean adjustF = false;
 	private double fRight = 0;
 	private double fLeft = 0;
 	private int count = 0;
@@ -103,14 +104,14 @@ public class ShooterSpeed extends Command {
 		// setSpeed(leftWheel);
 		count++;
 		if (Robot.robotType == Robot.ROBOTTYPES.MINI) {
-			// adjustF(leftWheel, SIDE.Left);
-			Robot.logf("Shooter %s F:%.4f count:%d%n", miscData(leftWheel, SIDE.Left), fLeft, count);
-
+			adjustF(leftWheel, SIDE.Left);
+			Robot.logf("Shooter %s F:%.4f time:%d %s%n", miscData(leftWheel, SIDE.Left), fLeft,
+					(new Date().getTime() - initTime), speed());
 		} else {
 			adjustF(leftWheel, SIDE.Left);
 			adjustF(rightWheel, SIDE.Right);
-			Robot.logf("Shooter %s F:%.4f %s F:%.4f count:%d%n", miscData(rightWheel, SIDE.Right), fRight,
-					miscData(leftWheel, SIDE.Left), fLeft, count);
+			Robot.logf("Shooter %s F:%.4f %s F:%.4f time:%d %s%n", miscData(rightWheel, SIDE.Right), fRight,
+					miscData(leftWheel, SIDE.Left), fLeft, (new Date().getTime() - initTime) , speed());
 
 		}
 		double convTime = (new Date().getTime() - initTime);
@@ -131,19 +132,29 @@ public class ShooterSpeed extends Command {
 		Robot.log("ShooterSpeedInterupted");
 		end();
 	}
-	
+
+	public String speed() {
+		double leftDelta = Math.abs(Math.abs(leftWheel.getSpeed()) - m_speed);
+		double rightDelta = leftDelta; // Set for mini with only one wheel
+		if (Robot.robotType != Robot.ROBOTTYPES.MINI)
+			rightDelta = Math.abs(Math.abs(rightWheel.getSpeed()) - m_speed);
+		return String.format("RD:%.0f LD:%.0f", rightDelta, leftDelta);
+	}
+
 	public boolean speedOk(double tolerance) {
 		double leftDelta = Math.abs(Math.abs(leftWheel.getSpeed()) - m_speed);
 		double rightDelta = leftDelta; // Set for mini with only one wheel
-		if(Robot.robotType != Robot.ROBOTTYPES.MINI)
-			rightDelta= Math.abs(Math.abs(rightWheel.getSpeed()) - m_speed);
+		if (Robot.robotType != Robot.ROBOTTYPES.MINI)
+			rightDelta = Math.abs(Math.abs(rightWheel.getSpeed()) - m_speed);
 		Robot.logf("shooter.speedOk leftD:%.0f rightD:%.0f count:%d %n", leftDelta, rightDelta, count);
-		if(count < 20) 
+		if (count < 20)
 			return false;
 		return (rightDelta < tolerance) && (leftDelta < tolerance);
 	}
 
 	private void adjustF(CANTalon talon, SIDE side) {
+		if (!adjustF)
+			return;
 		if (count < 100)
 			return;
 		double err = talon.getClosedLoopError();
