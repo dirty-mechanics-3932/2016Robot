@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
-public class LIDAR implements PIDSource {
+public class LIDARV3 implements PIDSource {
 	private I2C i2c;
 	private byte[] distance;
 	private int dist;
@@ -32,12 +32,12 @@ public class LIDAR implements PIDSource {
 
 	int i = 0;
 
-	public LIDAR(Port port) {
+	public LIDARV3(Port port) {
 		i2c = new I2C(port, LIDAR_ADDR);
-
 		distance = new byte[1];
-
 		updater = new java.util.Timer();
+		setup();		
+		Timer.delay(.030);
 	}
 
 	// Distance in cm
@@ -56,7 +56,7 @@ public class LIDAR implements PIDSource {
 	// Start 25 Hz polling
 	public void start() {
 		// Was 40 on 10/12/16, Radu had it at 100
-		updater.scheduleAtFixedRate(new LIDARUpdater(), 0, 50); 
+		updater.scheduleAtFixedRate(new LIDARUpdater(), 0, 50);
 	}
 
 	// Start polling for period in milliseconds
@@ -72,7 +72,7 @@ public class LIDAR implements PIDSource {
 
 	private void processError(boolean w1, boolean r1, boolean r2) {
 		count++;
-		long second = new Date().getTime() / 1000 ;
+		long second = new Date().getTime() / 1000;
 		if (second != lastSecond) {
 			SmartDashboard.putNumber("Lidar CPS", count);
 			count = 0;
@@ -85,25 +85,78 @@ public class LIDAR implements PIDSource {
 			SmartDashboard.putNumber("Lidar Errors", lidarErrors);
 			showError = false;
 		}
-		
-		
+
 	}
 
 	// Update distance variable
 	public void update() {
 		int d = 0;
 		// Initiate measurement
+		Timer.delay(0.5); // .5 seconds
 		boolean w1 = i2c.write(LIDAR_CONFIG_REGISTER, 0x04);
 		Timer.delay(0.040); // Delay for measurement to be taken was .040
-		boolean r1 = i2c.read(0x0f, 1, distance); // Read in measurement
-		Timer.delay(0.008); // Delay to prevent over polling
+		
+		
+		//i2c.read(0x01, 1, distance);
+		//Timer.delay(0.008);
+		
+		//i2c.write(0x01, 0x0);
+		//i2c.readOnly(distance,1);
+		
+		
+		String s= "";
+		s += String.format("S:%02x ", distance[0]);
+		
+//		while (true) {
+//			for (int i = 0; i < 10; i++) {
+//				i2c.read(0x01, 1, distance);
+//				Timer.delay(0.008);
+//				s += String.format("%02x ", distance[0]);
+//				if ((distance[0] & 1) == 0)
+//					break;
+//			}
+//			Robot.log("Status:" + s);
+//			s ="";
+//			if ((distance[0] & 1) == 0)
+//				break;
+//		}
+//		Timer.delay(0.004); 
+		
+		
+		// boolean r1 = i2c.read(0x0f, 1, distance); // Read in measurement
+		
+		i2c.write(0xf,0);
+		boolean r1 = i2c.readOnly(distance, 1);
+		
+		
+		//Timer.delay(0.001); // Delay to prevent over polling
+		s += String.format("H:%02x ", distance[0]);
 		d += Integer.toUnsignedLong(distance[0] << 8);
-		boolean r2 = i2c.read(0x10, 1, distance);
+		
+		
+		//boolean r2 = i2c.read(0x10, 1, distance);
+		
+		  i2c.write(0x10,0);
+		 boolean r2= i2c.readOnly(distance, 1);
+		
 		d += Byte.toUnsignedInt(distance[0]);
+		s += String.format("L:%02x ", distance[0]);
+		Robot.log(s);
+		//boolean r2 = false;
 		dist = d;
 		processError(w1, r2, r1);
 		SmartDashboard.putNumber("Lidar Distance feet", dist / (12 * 2.54));
+	}
 
+	public void setup() {
+		boolean w0 = i2c.write(0x0, 0x0);
+		Timer.delay(0.050);
+		boolean w1 = i2c.write(0x02, 0x80);
+		//Timer.delay(0.1);
+		boolean w2 = i2c.write(0x04, 0x08);
+		//Timer.delay(0.1);
+		boolean w3 = i2c.write(0x1c, 0x00);
+		//Timer.delay(0.1);
 	}
 
 	// Timer task to keep distance updated
