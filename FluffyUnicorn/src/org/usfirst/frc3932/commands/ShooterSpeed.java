@@ -10,17 +10,18 @@
 
 package org.usfirst.frc3932.commands;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
-import edu.wpi.first.wpilibj.command.Command;
-
 import java.util.Date;
 
 import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.RobotMap;
 import org.usfirst.frc3932.commands.TurnToSRXPid.SIDE;
+
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *

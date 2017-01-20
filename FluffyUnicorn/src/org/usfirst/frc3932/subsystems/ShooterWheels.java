@@ -12,9 +12,9 @@ package org.usfirst.frc3932.subsystems;
 
 import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.RobotMap;
-import org.usfirst.frc3932.commands.*;
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.RobotDrive;
+
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

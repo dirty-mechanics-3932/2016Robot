@@ -2,7 +2,7 @@ package org.usfirst.frc3932.commands;
 
 import org.usfirst.frc3932.Robot;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 
 public class DriveTenFeet {
 

@@ -10,21 +10,12 @@
 
 package org.usfirst.frc3932.commands;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.Date;
 
 import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.RobotMap;
-import org.usfirst.frc3932.commands.TurnToSRXPid.SIDE;
-import org.usfirst.frc3932.pid.AhrsYawPIDSource;
-import org.usfirst.frc3932.pid.DriveSystemRotatePIDOutput;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *

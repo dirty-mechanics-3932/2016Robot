@@ -11,9 +11,9 @@
 
 package org.usfirst.frc3932.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc3932.Robot;
 import org.usfirst.frc3932.RobotMap;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *

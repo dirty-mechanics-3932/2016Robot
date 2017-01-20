@@ -1,20 +1,17 @@
 package org.usfirst.frc3932.commands;
 
-import org.usfirst.frc3932.Robot;
-import org.usfirst.frc3932.RobotMap;
-import org.usfirst.frc3932.Robot.ROBOTTYPES;
+import java.util.Date;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import org.usfirst.frc3932.Robot;
+import org.usfirst.frc3932.Robot.ROBOTTYPES;
+import org.usfirst.frc3932.RobotMap;
+
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.util.Date;
 
 public class TurnToSRXPid extends Command {
 	double m_degrees;

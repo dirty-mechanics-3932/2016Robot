@@ -2,7 +2,6 @@ package org.usfirst.frc3932;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
-import com.ni.vision.NIVision.ImageType;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
@@ -21,7 +20,7 @@ public class CameraConfig {
 		Image image = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		try {
 			camera.getImage(image);
-			CameraServer.getInstance().setImage(image);		
+//			CameraServer.getInstance().setImage(image);		
 		} catch (Exception e) {
 			System.err.println("Failed to get image from camera");
 			System.err.println(e.getStackTrace());

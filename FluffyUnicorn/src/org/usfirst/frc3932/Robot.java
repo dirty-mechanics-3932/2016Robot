@@ -10,28 +10,35 @@
 
 package org.usfirst.frc3932;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.usfirst.frc3932.Robot.ROBOTTYPES;
-import org.usfirst.frc3932.commands.*;
-import org.usfirst.frc3932.subsystems.*;
+import org.usfirst.frc3932.commands.FullAutonomous;
+import org.usfirst.frc3932.commands.TurnToOrig;
+import org.usfirst.frc3932.commands.Vision;
+import org.usfirst.frc3932.subsystems.Camera;
+import org.usfirst.frc3932.subsystems.Cannon;
+import org.usfirst.frc3932.subsystems.DriveSystem;
+import org.usfirst.frc3932.subsystems.OnBoardCompressor;
+import org.usfirst.frc3932.subsystems.Platform;
+import org.usfirst.frc3932.subsystems.PowerDistributionBoard;
+import org.usfirst.frc3932.subsystems.ShooterWheels;
 
+import com.ctre.CANTalon;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
