@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.usfirst.frc.team3932.robot.components.configs.AHRSConfig;
+import org.usfirst.frc.team3932.robot.components.configs.DriveControllerConfig;
 import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig;
 import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig.JoystickSide;
 import org.usfirst.frc.team3932.robot.components.configs.TalonConfig;
@@ -36,5 +37,9 @@ public class ComponentsConfiguration {
 
     @Getter
     @Setter
-    private AHRSConfig ahrs = null;
+    private AHRSConfig ahrs;
+
+    @Getter
+    @Setter
+    private DriveControllerConfig driveController;
 }

@@ -45,20 +45,21 @@ tasks.matching { task ->
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     // compile 'org.slf4j:slf4j-api:1.7.21'
-    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    // compile group: 'com.google.guava', name: 'guava', version: '19.0'
 
     // The following dependencies were found at http://wpilib.screenstepslive.com/s/4485/m/wpilib_source/l/480976-maven-artifacts
-    compile 'edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT' // WPILibJ uberjar
-    compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:3.0.0-SNAPSHOT:desktop'
+    // compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:3.0.0-SNAPSHOT:desktop'
+    compile 'edu.wpi.first.wpilibj:athena:2017.2.1'
 
     compile files('./lib/navx_frc.jar')
+    compile files('./lib/CTRLib.jar')
 
-    compileOnly "org.projectlombok:lombok:1.16.10"
+    compileOnly "org.projectlombok:lombok:1.16.12"
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.+'
     testCompile group: 'uk.com.robust-it', name: 'cloning', version: '1.9.3'
-    testCompileOnly "org.projectlombok:lombok:1.16.10"
+    testCompileOnly "org.projectlombok:lombok:1.16.12"
 
     sshAntTaskDef 'org.apache.ant:ant-jsch:1.9.7'
 }

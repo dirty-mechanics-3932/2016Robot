@@ -1,0 +1,29 @@
+MINIMIZE JAR GRADLE
+    /*
+     * TODO:\ =====CAN TALONS======
+     * 
+     * Make faults and sticky faults accessible.
+     * 
+     * getFaultOverTemp()
+getFaultUnderVoltage()
+getFaultForLim()
+getFaultRevLim()
+getFaultForSoftLim()
+getFaultRevSoftLim()
+getStickyFaultOverTemp()
+getStickyFaultUnderVoltage()
+getStickyFaultForLim()
+getStickyFaultRevLim()
+getStickyFaultForSoftLim()
+getStickyFaultRevSoftLim() 
+     * 
+     * 
+     * After setting the control mode of a talon, set() should be called immediately after to ensure the control mode is set.
+     *
+     * 
+     */
+
+
+Ensure robot application calls Set() on each Talon at least once per loop. Avoid strategies that
+attempt to write the Talon set-output “only when it changes”. There is no cost to updating the
+set-output of the Talon SRX using the robot API, and often such strategies trip the motor-safety 

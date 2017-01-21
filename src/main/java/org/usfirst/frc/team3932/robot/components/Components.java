@@ -5,29 +5,45 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.usfirst.frc.team3932.robot.Robot;
 import org.usfirst.frc.team3932.robot.components.configs.AHRSConfig;
 import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig;
 import org.usfirst.frc.team3932.robot.components.configs.JoystickConfig.JoystickSide;
 import org.usfirst.frc.team3932.robot.components.configs.TalonConfig;
 import org.usfirst.frc.team3932.robot.components.configs.TalonPIDConfig;
+import org.usfirst.frc.team3932.robot.drive.DriveController;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.StatusFrameRate;
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-public final class Components {
+public class Components {
 
     private final EnumMap<JoystickSide, Joystick> joysticks = new EnumMap<>(JoystickSide.class);
-    private final EnumMap<RobotSide, CANTalon> talons = new EnumMap<>(RobotSide.class);
+
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @EqualsAndHashCode
+    private class TalonKey {
+        private CANTalon talon;
+        private boolean isInverted;
+    }
+
+    private final EnumMap<RobotSide, TalonKey> talons = new EnumMap<>(RobotSide.class);
     @Getter
     private final AHRS ahrs;
 
-    public Components(ComponentsConfiguration config) {
+    @Getter
+    private final DriveController driveController;
+
+    public Components(Robot robot, ComponentsConfiguration config) {
         Iterator<Entry<JoystickSide, JoystickConfig>> joys = config.getJoysticks().iterator();
         while (joys.hasNext()) {
             Entry<JoystickSide, JoystickConfig> entry = joys.next();
@@ -41,8 +57,8 @@ public final class Components {
             CANTalon tal = new CANTalon(talConf.getChannel(), talConf.getCANUpdateInterval());
             if (talConf.getVoltageRampRate() != 0)
                 tal.setVoltageRampRate(talConf.getVoltageRampRate());
-            tal.reverseOutput(talConf.getReverseCloseLoopOutput());
-            tal.reverseSensor(talConf.getReverseCloseLoopSensor());
+            tal.reverseOutput(talConf.getInvertCloseLoopOutput());
+            tal.reverseSensor(talConf.getInvertCloseLoopSensor());
             if (talConf.getFeedbackDevice() != FeedbackDevice.QuadEncoder)
                 tal.setFeedbackDevice(talConf.getFeedbackDevice());
             if (talConf.getEncoderTicksPerRevolution() != 0)
@@ -85,11 +101,13 @@ public final class Components {
                     tal.set(0); // Calling set is required to change the control mode
             }
 
-            talons.put(entry.getKey(), tal);
+            talons.put(entry.getKey(), new TalonKey(tal, talConf.getInvertMotorOutput()));
         }
 
         AHRSConfig ahrsConfig = config.getAhrs();
-        ahrs = new AHRS(ahrsConfig.getPort(), ahrsConfig.getUpdateRateHz());
+        ahrs = ahrsConfig == null ? null : new AHRS(ahrsConfig.getPort(), ahrsConfig.getUpdateRateHz());
+
+        driveController = config.getDriveController() == null ? null : new DriveController(robot, this, config.getDriveController());
     }
 
     public Joystick getJoystick(JoystickSide side) {
@@ -97,6 +115,10 @@ public final class Components {
     }
 
     public CANTalon getTalon(RobotSide side) {
-        return talons.get(side);
+        return talons.get(side).talon;
+    }
+
+    public boolean isTalonInverted(RobotSide side) {
+        return talons.get(side).isInverted;
     }
 }

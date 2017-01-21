@@ -6,12 +6,11 @@ import org.junit.Test;
 import org.usfirst.frc.team3932.robot.components.configs.TalonConfig;
 import org.usfirst.frc.team3932.robot.components.configs.TalonPIDConfig;
 
+import com.ctre.CANTalon.TalonControlMode;
 import com.rits.cloning.Cloner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
 public class TalonConfigTest {
 

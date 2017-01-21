@@ -9,7 +9,7 @@ import lombok.Data;
 public class JoystickConfig {
     private int channel;
 
-    public enum JoystickSide {
+    public static enum JoystickSide {
         LEFT, RIGHT;
     }
 }

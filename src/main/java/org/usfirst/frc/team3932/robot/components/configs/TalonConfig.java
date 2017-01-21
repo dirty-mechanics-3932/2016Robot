@@ -5,9 +5,10 @@ import java.util.EnumMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.StatusFrameRate;
+import com.ctre.CANTalon.TalonControlMode;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -87,8 +88,11 @@ public class TalonConfig implements Cloneable {
     private int voltageRampRate;
 
     // These only effect the closed loop logic.
-    private boolean reverseCloseLoopOutput;
-    private boolean reverseCloseLoopSensor;
+    private boolean invertCloseLoopOutput;
+    private boolean invertCloseLoopSensor;
+
+    // Not implemented by CANTalon, but manually implemented in this project.
+    private boolean invertMotorOutput;
 
     private boolean safetyEnabled;
     private double safetyExpireationSeconds;
