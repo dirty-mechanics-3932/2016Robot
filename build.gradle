@@ -46,13 +46,14 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     // compile 'org.slf4j:slf4j-api:1.7.21'
     // compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    // compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
     // The following dependencies were found at http://wpilib.screenstepslive.com/s/4485/m/wpilib_source/l/480976-maven-artifacts
     // compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:3.0.0-SNAPSHOT:desktop'
     compile 'edu.wpi.first.wpilibj:athena:2017.2.1'
 
-    compile files('./lib/navx_frc.jar')
-    compile files('./lib/CTRLib.jar')
+    compile files('./lib/navx_frc.jar') // Found at http://www.pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+    compile files('./lib/CTRLib.jar') // Found at http://www.ctr-electronics.com/hro.html#product_tabs_technical_resources
 
     compileOnly "org.projectlombok:lombok:1.16.12"
 

@@ -3,6 +3,7 @@ package org.usfirst.frc.team3932.robot.drive;
 
 import org.usfirst.frc.team3932.robot.Periodic;
 import org.usfirst.frc.team3932.robot.Robot;
+import org.usfirst.frc.team3932.robot.YawProvider;
 import org.usfirst.frc.team3932.robot.components.Components;
 import org.usfirst.frc.team3932.robot.components.RobotSide;
 import org.usfirst.frc.team3932.robot.components.configs.DriveControllerConfig;
@@ -35,6 +36,8 @@ public class DriveController extends Periodic {
     @NonNull
     private DriveMode driveMode;
 
+    private final YawProvider yawProvider;
+
     public DriveController(Robot robot, Components comps, DriveControllerConfig config) {
         super(robot.getPeriodicController());
         leftInput = comps.getJoystick(config.getLeftInputSide());
@@ -49,7 +52,8 @@ public class DriveController extends Periodic {
         RobotSide right = config.getRightOutputSide();
         drive = new LeftRightDrive(comps.getTalon(left), comps.getTalon(right), comps.isTalonInverted(left), comps.isTalonInverted(right));
 
-        // TODO: Make Yaw/Signal provider Periodic class.
+        // TODO: Check to see if AHRS exists.
+        yawProvider = new YawProvider(robot.getPeriodicController(), comps.getAhrs());
     }
 
     public void run(PeriodicMode mode) {

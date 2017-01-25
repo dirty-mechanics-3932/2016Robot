@@ -3,12 +3,15 @@ package org.usfirst.frc.team3932.robot;
 
 import java.util.EnumSet;
 
+import lombok.NonNull;
+
 public abstract class Periodic {
 
     public static enum PeriodicMode {
         TELEOP, AUTONOMOUS, TEST;
     }
 
+    @NonNull
     private final EnumSet<PeriodicMode> modes;
 
     protected Periodic(PeriodicController controller) {
@@ -16,8 +19,8 @@ public abstract class Periodic {
         controller.register(this);
     }
 
-    protected Periodic(PeriodicController controller, PeriodicMode mode, PeriodicMode... rest) {
-        this.modes = EnumSet.of(mode, rest);
+    protected Periodic(PeriodicController controller, EnumSet<PeriodicMode> modes) {
+        this.modes = modes;
         controller.register(this);
     }
 
